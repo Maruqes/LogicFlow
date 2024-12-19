@@ -1,7 +1,7 @@
 # Variáveis
 SRC_DIR = src
 OUT_DIR = out
-CLASS_NAME = Demo1
+CLASS_NAME = Main
 PACKAGE_DIR = $(SRC_DIR)/logicircuit
 JAVA_FILES = $(SRC_DIR)/$(CLASS_NAME).java $(PACKAGE_DIR)/*.java
 

@@ -24,10 +24,10 @@ public class Demo1 {
      */
     private Demo1() {
         ProcessCommand processCommand = new ProcessCommand();
-        LCDFrameCmd frame = new LCDFrameCmd(processCommand,"Demo de Logic Circuit", 900, 700);
+        LCDFrameCmd frame = new LCDFrameCmd(processCommand, "Demo de Logic Circuit", 900, 700);
         drawPanel = frame.drawPanel();
         // Create circuit2 in memory
-        createCircuit2();
+        // createCircuit2();
     }
 
     /**
@@ -35,9 +35,9 @@ public class Demo1 {
      * para processar os commandos and develver, se necessário, mensagens de erro
      */
     class ProcessCommand implements CmdProcessor {
-        //@Override
+        // @Override
         public String process(String text) {
-           return processCommand(text);
+            return processCommand(text);
         }
     }
 
@@ -51,15 +51,17 @@ public class Demo1 {
         try {
             opcao = Integer.parseInt(text);
             isInteger = true;
-        } catch(Exception e) {
+        } catch (Exception e) {
             isInteger = false;
         }
         // Execute according to command
         if (isInteger) {
             switch (opcao) {
-                case 1: drawCircuit1();
+                case 1:
+                    drawCircuit1();
                     break;
-                case 2: drawCircuit2();
+                case 2:
+                    drawCircuit2();
                     break;
                 case 3:
                     boolean actual = circuit.elems.get("led").state;
@@ -71,7 +73,8 @@ public class Demo1 {
                     circuit.elems.get("led").state = !actual;
                     drawCircuit2();
                     break;
-                default: invalid = true;
+                default:
+                    invalid = true;
             }
         } else { // not an integer
             invalid = false;
@@ -81,11 +84,16 @@ public class Demo1 {
             if (tokens.length >= 2) {
                 if (tokens[1].equals("ON") || tokens[1].equals("OFF")) {
                     boolean isON = tokens[1].equals("ON");
-                    if (tokens[0].equals("SD")) sd = !sd;
-                    else if (tokens[0].equals("SE")) se = !se;
-                    else if (tokens[0].equals("SF")) sf = !sf;
-                    else invalid = true;
-                } else invalid = true;
+                    if (tokens[0].equals("SD"))
+                        sd = !sd;
+                    else if (tokens[0].equals("SE"))
+                        se = !se;
+                    else if (tokens[0].equals("SF"))
+                        sf = !sf;
+                    else
+                        invalid = true;
+                } else
+                    invalid = true;
             } else {
                 invalid = true;
             }
@@ -98,8 +106,7 @@ public class Demo1 {
     /**
      * Desenha o circuito exemplo 1
      */
-    private void drawCircuit1()
-    {
+    private void drawCircuit1() {
         // Clear logic canvas
         drawPanel.clear();
         // Draw switches (input)
@@ -108,21 +115,21 @@ public class Demo1 {
         drawPanel.drawComponent(SWITCH, 10, 330, true);
         // draw logic gates
         drawPanel.drawComponent(AND, 100, 100);
-        drawPanel.drawComponent(AND, 220,220,"AND e2");
-        drawPanel.drawComponent(OR, 330,330,"OR ou1");
+        drawPanel.drawComponent(AND, 220, 220, "AND e2");
+        drawPanel.drawComponent(OR, 330, 330, "OR ou1");
         // Draw links
-        drawPanel.drawWire(SWITCH, 10, 50, AND, 100, 100, PIN_A,false);
-        drawPanel.drawWire(SWITCH, 10, 150,AND, 100, 100, PIN_B,true);
-        drawPanel.drawWire(AND, 100, 100, AND, 220,220, PIN_A, false);
-        drawPanel.drawWire(SWITCH, 10, 330,AND, 220,220,PIN_B,true);
-        drawPanel.drawWire(SWITCH, 10, 330,OR, 330,330,PIN_B,true);
-        drawPanel.drawWire(AND, 220,220,OR, 330,330,PIN_A,false);
+        drawPanel.drawWire(SWITCH, 10, 50, AND, 100, 100, PIN_A, false);
+        drawPanel.drawWire(SWITCH, 10, 150, AND, 100, 100, PIN_B, true);
+        drawPanel.drawWire(AND, 100, 100, AND, 220, 220, PIN_A, false);
+        drawPanel.drawWire(SWITCH, 10, 330, AND, 220, 220, PIN_B, true);
+        drawPanel.drawWire(SWITCH, 10, 330, OR, 330, 330, PIN_B, true);
+        drawPanel.drawWire(AND, 220, 220, OR, 330, 330, PIN_A, false);
         // draw leds
         drawPanel.drawComponent(LED, 440, 220, false);
         drawPanel.drawComponent(LED, 440, 330, true);
         // Draw links
-        drawPanel.drawWire(AND, 220,220,LED, 440, 220,PIN_A,false);
-        drawPanel.drawWire(OR, 330,330,LED, 440, 330,PIN_A,true);
+        drawPanel.drawWire(AND, 220, 220, LED, 440, 220, PIN_A, false);
+        drawPanel.drawWire(OR, 330, 330, LED, 440, 330, PIN_A, true);
     }
 
     /**
@@ -173,7 +180,7 @@ public class Demo1 {
         }
 
         public void addConnection(String id1, String id2, LCInputPin inputPin, boolean state) {
-            this.connections.put(id1+"-"+id2, new Connection(id1, id2, inputPin, state));
+            this.connections.put(id1 + "-" + id2, new Connection(id1, id2, inputPin, state));
         }
     }
 
@@ -218,25 +225,28 @@ public class Demo1 {
      * Desenhar o circuito 2
      */
     private void drawCircuit2() {
-        drawPanel.clear();;
-        for(Element el: circuit.elems.values()) {
+        drawPanel.clear();
+        ;
+        for (Element el : circuit.elems.values()) {
             if (el.component == BIT3_DISPLAY)
                 drawPanel.drawComponent(el.component, el.x, el.y, el.value);
             else if (el.component.hasState())
                 drawPanel.drawComponent(el.component, el.x, el.y, el.state, el.legend);
-            else drawPanel.drawComponent(el.component, el.x, el.y, el.legend);
+            else
+                drawPanel.drawComponent(el.component, el.x, el.y, el.legend);
         }
-        for(Connection c: circuit.connections.values()) {
+        for (Connection c : circuit.connections.values()) {
             Element inp = circuit.elems.get(c.idInp);
             Element end = circuit.elems.get(c.idEnd);
-            drawPanel.drawWire(inp.component,inp.x,inp.y,end.component,end.x,end.y,c.pin,c.state);
+            drawPanel.drawWire(inp.component, inp.x, inp.y, end.component, end.x, end.y, c.pin, c.state);
         }
 
     }
 
     /**
      * Exemplo de alterar estado de um dos switchs ligados ao display
-     *  com a atualização das conexões e do display
+     * com a atualização das conexões e do display
+     * 
      * @param d Define o estado do switch D: 0 para ON e OFF para restantes valores
      * @param e Define o estado do switch E: 0 para ON e OFF para restantes valores
      * @param f Define o estado do switch F: 0 para ON e OFF para restantes valores
@@ -253,6 +263,6 @@ public class Demo1 {
         drawPanel.drawWire(elE.component, elE.x, elE.y, bit3.component, bit3.x, bit3.y, PIN_B, e != 0);
         drawPanel.drawComponent(elF.component, elF.x, elF.y, f != 0, elF.legend);
         drawPanel.drawWire(elF.component, elF.x, elF.y, bit3.component, bit3.x, bit3.y, PIN_C, f != 0);
-        drawPanel.drawComponent(bit3.component, bit3.x, bit3.y, d*4+e*2+f);
+        drawPanel.drawComponent(bit3.component, bit3.x, bit3.y, d * 4 + e * 2 + f);
     }
 }
