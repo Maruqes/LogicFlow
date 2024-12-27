@@ -1,6 +1,4 @@
-public interface ComponentInterface {
-    public void setInput(boolean[] inputs);
-    public boolean getOutput();
+public interface BasicComponentInterface {
     public void draw();
     public void setPosition(int x, int y);
     public void setLegend(String legend);

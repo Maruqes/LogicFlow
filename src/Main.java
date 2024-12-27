@@ -22,15 +22,11 @@ public class Main {
         // drawPannel.drawComponent(LCComponent.XOR, 0, 400);
         // drawPannel.drawComponent(LCComponent.NOR, 0, 500);
         AndStruct and1 = new AndStruct("and1");
-        SwitchStruct sw1 = new SwitchStruct();
 
         and1.setPosition(100, 100);
-        sw1.setPosition(10, 200);
 
         drawPannel.clear();
-        sw1.setInput(new boolean[]{true});
         and1.draw();
-        sw1.draw();
 
         
 
