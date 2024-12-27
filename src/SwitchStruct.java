@@ -1,39 +1,16 @@
 import logicircuit.LCComponent;
 
-public class AndStruct implements ComponentInterface {
+public class SwitchStruct implements ComponentInterface {
     private boolean[] inputs;
     private int setX;
     private int setY;
     private String legend;
     private String name;
 
-    public AndStruct(String nome){
-        name = nome;
-        setX = 0;
-        setY = 0;
-        legend = "";
-    }
-
-    public AndStruct(String nome, int x, int y){
-        name = nome;
-        setX = x;
-        setY = y;
-        legend = "";
-    }
-
-    public AndStruct(String nome, int x, int y, String legenda){
-        name = nome;
-        setX = x;
-        setY = y;
-        legend = legenda;
-    }
-
-
-
     @Override
     public void setInput(boolean[] inputs) {
-        if (inputs.length != 2) {
-            throw new IllegalArgumentException("AND gate must have 2 inputs");
+        if (inputs.length != 1) {
+            throw new IllegalArgumentException("SWITCH gate must have 1 inputs");
         }
         this.inputs = inputs;
     }
@@ -41,7 +18,7 @@ public class AndStruct implements ComponentInterface {
     @Override
     public boolean getOutput() {
         if (inputs == null) {
-            throw new IllegalStateException("AND gate inputs are not set");
+            throw new IllegalStateException("SWITCH gate inputs are not set");
         }
         return inputs[0] && inputs[1];
     }
@@ -59,7 +36,10 @@ public class AndStruct implements ComponentInterface {
 
     @Override
     public void draw(){
-        Main.drawPannel.drawComponent(LCComponent.AND, setX, setY, legend);
+        if (inputs == null) {
+            throw new IllegalStateException("SWITCH gate inputs are not set");
+        }
+        Main.drawPannel.drawComponent(LCComponent.SWITCH, setX, setY, inputs[0], legend);
     }
 
     @Override
