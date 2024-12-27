@@ -1,17 +1,17 @@
 import logicircuit.LCComponent;
 
-public class AndStruct extends BasicComponent implements IOComponent {
+public class And extends BasicComponent implements IOComponent {
     private boolean[] inputs;
 
-    public AndStruct(String nome) {
+    public And(String nome) {
         super(LCComponent.AND, nome);
     }
 
-    public AndStruct(String nome, int x, int y) {
+    public And(String nome, int x, int y) {
         super(LCComponent.AND, nome, x, y);
     }
 
-    public AndStruct(String nome, int x, int y, String legenda) {
+    public And(String nome, int x, int y, String legenda) {
         super(LCComponent.AND, nome, x, y, legenda);
     }
 

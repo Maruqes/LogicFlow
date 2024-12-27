@@ -21,7 +21,7 @@ public class Main {
         // drawPannel.drawComponent(LCComponent.BIT3_DISPLAY, 500, 500, 5);
         // drawPannel.drawComponent(LCComponent.XOR, 0, 400);
         // drawPannel.drawComponent(LCComponent.NOR, 0, 500);
-        AndStruct and1 = new AndStruct("and1");
+        And and1 = new And("and1");
 
         and1.setPosition(100, 100);
 
