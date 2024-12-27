@@ -62,4 +62,9 @@ public class BasicComponent implements BasicComponentInterface {
     public String getLegend() {
         return legend;
     }
+
+    @Override
+    public LCComponent getType() {
+        return ourCmp;
+    }
 }
