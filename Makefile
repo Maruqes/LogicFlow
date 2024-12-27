@@ -22,3 +22,6 @@ run: all
 # Limpar ficheiros compilados
 clean:
 	rm -rf $(OUT_DIR)
+
+
+make full: clean all run
