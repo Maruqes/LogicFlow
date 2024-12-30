@@ -1,44 +1,56 @@
 import logicircuit.LCComponent;
 import logicircuit.LCInputPin;
 
-public class Led extends BasicComponent{
-    private boolean state;
+public class Led extends BasicComponent implements OutputInterface {
+    private int value;
     private int pinCallCount;
     private LCInputPin currentPin;
 
-
-    public Led(boolean state, String nome) {
+    public Led(int value, String nome) {
         super(LCComponent.LED, nome);
-        this.state = state;
+        if (value < 0 || value > 1) {
+            throw new IllegalArgumentException("Invalid value");
+        }
+        this.value = value;
         pinCallCount = 0;
         currentPin = LCInputPin.PIN_A;
     }
 
-    public Led(boolean state, String nome, int setX, int setY) {
-        super(LCComponent.LED, nome, setX, setY);        
-        this.state = state;
+    public Led(int value, String nome, int setX, int setY) {
+        super(LCComponent.LED, nome, setX, setY);
+        if (value < 0 || value > 1) {
+            throw new IllegalArgumentException("Invalid value");
+        }
+        this.value = value;
         pinCallCount = 0;
         currentPin = LCInputPin.PIN_A;
     }
 
-    public Led(boolean state, String nome, int setX, int setY, String legend){
+    public Led(int value, String nome, int setX, int setY, String legend) {
         super(LCComponent.LED, nome, setX, setY, legend);
-        this.state = state;
+        if (value < 0 || value > 1) {
+            throw new IllegalArgumentException("Invalid value");
+        }
+        this.value = value;
         pinCallCount = 0;
         currentPin = LCInputPin.PIN_A;
     }
 
-    public void setState(boolean state) {
-        this.state = state;
+    public void setValue(int value) {
+        if (value < 0 || value > 1) {
+            throw new IllegalArgumentException("Invalid value");
+        }
+        this.value = value;
     }
 
-    public boolean getState() {
-        return state;
+    public int getValue() {
+        return value;
     }
 
     @Override
     public void draw() {
-        Main.drawPannel.drawComponent(super.getType(), super.getXY()[0], super.getXY()[1], state, super.getLegend());;
+        boolean state = (value != 0);
+        Main.drawPannel.drawComponent(super.getType(), super.getXY()[0], super.getXY()[1], state, super.getLegend());
     }
 
     public LCInputPin getNextPin() {

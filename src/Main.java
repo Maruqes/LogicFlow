@@ -7,22 +7,13 @@ public class Main {
     public static LCDPanel drawPannel;
 
     public static void main(String[] args) {
+        MainCircuit circuit = new MainCircuit();
+
         Parser parser = new Parser();
         LCDFrameCmd frame = new LCDFrameCmd(parser, "LogicFlow", 900, 700);
         drawPannel = frame.drawPanel();
         drawPannel.clear();
 
-        // drawPannel.drawComponent(LCComponent.AND, 0, 0);
-        // drawPannel.drawComponent(LCComponent.OR, 0, 100);
-        // drawPannel.drawComponent(LCComponent.NOT, 0, 200);
-        // drawPannel.drawComponent(LCComponent.NAND, 0, 300);
-
-        // drawPannel.drawWire(LCComponent.AND, 0, 0, LCComponent.OR, 0, 100, null,
-        // true);
-
-        // drawPannel.drawComponent(LCComponent.BIT3_DISPLAY, 500, 500, 5);
-        // drawPannel.drawComponent(LCComponent.XOR, 0, 400);
-        // drawPannel.drawComponent(LCComponent.NOR, 0, 500);
         Or or1 = new Or("or1");
         Not not1 = new Not("not1");
         Nand nand1 = new Nand("nand1");
@@ -31,7 +22,7 @@ public class Main {
         Xor xor2 = new Xor("xor2");
         Xor xor3 = new Xor("xor2");
         Switch switch1 = new Switch(true, "dsdfsd", 123, 123, "scdw");
-        Led led1 = new Led(false, "cddsxd");
+        Led led1 = new Led(0, "cddsxd");
         Display3bit display1 = new Display3bit(7, "dededdefdef");
 
         or1.setPosition(300, 100);
@@ -57,7 +48,7 @@ public class Main {
         wire6.setState(true);
         wire7.setState(true);
         switch1.setState(true);
-        led1.setState(true);
+        led1.setValue(0);
 
         drawPannel.clear();
         or1.draw();
