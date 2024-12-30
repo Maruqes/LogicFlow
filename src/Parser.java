@@ -30,11 +30,15 @@ public class Parser implements CmdProcessor {
             return current.toString();
         }
 
-        while (current == '\0') {
+        while (current == '\0' && old_index + i < text.length()) {
 
             token += text.charAt(old_index + i);
             i++;
-            current = isAToken(text.charAt(old_index + i));
+            if (old_index + i < text.length()) {
+                current = isAToken(text.charAt(old_index + i));
+            } else {
+                break;
+            }
         }
         tokenIndex = old_index + i;
 
@@ -42,6 +46,7 @@ public class Parser implements CmdProcessor {
     }
 
     public String process(String text) {
+        // obrigar a ficar tudo maiusculo or minusculo
         // get last char
         tokenIndex = 0;
         String token = getToken(text);
@@ -49,6 +54,11 @@ public class Parser implements CmdProcessor {
             if (!token.trim().isEmpty()) {
                 System.out.println(token);
             }
+
+            if (token.equals("add")) {
+                System.out.println("addicionandooo");
+            }
+
             token = getToken(text);
         }
         return "";
