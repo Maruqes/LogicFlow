@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import logicircuit.LCComponent;
 import logicircuit.LCInputPin;
@@ -149,11 +152,105 @@ public class MainCircuit {
         }
     }
 
+    public void setWires() {
+        for (Wire w : wires) {
+            for (IOComponent c : components) {
+                if (w.getComponent1().getName().equals(c.getName())) {
+                    try {
+                        w.setState(c.getOutput());
+                    } catch (IllegalStateException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                }
+            }
+        }
+    }
+
+    public void setComponent() {
+        for (IOComponent c : components) {
+            ArrayList<Boolean> wiresToComponent = new ArrayList<Boolean>();
+            for (Wire w : wires) {
+                if (w.getComponent2().getName().equals(c.getName())) {
+                    wiresToComponent.add(w.getState());
+                }
+            }
+            boolean[] inputs = new boolean[wiresToComponent.size()];
+            for (int i = 0; i < wiresToComponent.size(); i++) {
+                inputs[i] = wiresToComponent.get(i);
+            }
+            try {
+                c.setInput(inputs);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
+    }
+
+    public static int getNumberWithPins(boolean pin1, boolean pin2, boolean pin3) {
+        int number = 0;
+
+        if (pin1) {
+            number = number | 1; // Define o bit 0
+        }
+        if (pin2) {
+            number = number | 1 << 1; // Define o bit 1
+        }
+        if (pin3) {
+            number = number | 1 << 2; // Define o bit 2
+        }
+
+        return number;
+    }
+
     public void setAllStates() {
-        //settar wires dos componentes
-        //settar componentes dos wires
-        //settar wires dos componentes
-        //repeat
+        // settar wires dos componentes
+        // settar componentes dos wires
+        // settar wires dos componentes
+        // repeat
+
+        // manualmente os swicthes
+        for (Wire w : wires) {
+            for (Switch s : switches) {
+                if (w.getComponent1().getName().equals(s.getName())) {
+                    w.setState(s.getState());
+                }
+                if (w.getComponent2().getName().equals(s.getName())) {
+                    w.setState(s.getState());
+                }
+            }
+        }
+
+        // automaticamente os componentes
+        for (int i = 0; i < components.size(); i++) {
+            setWires();
+            setComponent();
+        }
+
+        // manualmente os outputs
+        for (OutputInterface o : outputs) {
+            ArrayList<Boolean> wiresToOutput = new ArrayList<Boolean>();
+            for (Wire w : wires) {
+
+                if (o instanceof Led) {
+                    if (w.getComponent2().getName().equals(o.getName())) {
+                        o.setValue(w.getState() ? 1 : 0);
+                    }
+                }
+                if (o instanceof Display3bit) {
+                    if (w.getComponent2().getName().equals(o.getName())) {
+                        wiresToOutput.add(w.getState());
+                    }
+                }
+            }
+
+            if (o instanceof Display3bit) {
+                try {
+                    o.setValue(getNumberWithPins(wiresToOutput.get(0), wiresToOutput.get(1), wiresToOutput.get(2)));
+                } catch (IndexOutOfBoundsException e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
+            }
+        }
     }
 
     // add cada um deles uma funcao pra settar valores

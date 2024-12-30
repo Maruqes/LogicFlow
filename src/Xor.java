@@ -54,4 +54,14 @@ public class Xor extends BasicComponent implements IOComponent {
             return false;
         }
     }
+
+    @Override
+    public int maxInput() {
+        return 2;
+    }
+
+    @Override
+    public int maxOutput() {
+        return 1;
+    }
 }

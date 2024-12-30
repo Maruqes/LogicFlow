@@ -22,7 +22,8 @@ public class Main {
         circuit.add(LCComponent.OR, "Or1", 100, 160, "Or1");
         circuit.add(LCComponent.OR, "Or2", 200, 110, "Or2");
         circuit.add(LCComponent.NOT, "Not1", 300, 110, "Not1");
-        circuit.add(LCComponent.LED, 0, "Led1", 400, 110, "Led1");
+        circuit.add(LCComponent.NOT, "Not2", 400, 110, "Not2");
+        circuit.add(LCComponent.BIT3_DISPLAY, 0, "bit1", 500, 110, "bit1");
 
         circuit.wire("Switch1", "And1", LCInputPin.PIN_A);
         circuit.wire("Switch2", "And1", LCInputPin.PIN_B);
@@ -34,7 +35,10 @@ public class Main {
 
         circuit.wire("Or2", "Not1", LCInputPin.PIN_A);
 
-        circuit.wire("Not1", "Led1", LCInputPin.PIN_A);
+        circuit.wire("Not1", "Not2", LCInputPin.PIN_A);
+        circuit.wire("Not2", "bit1", LCInputPin.PIN_A);
+        circuit.wire("Switch2", "bit1", LCInputPin.PIN_B);
+        circuit.wire("Switch3", "bit1", LCInputPin.PIN_C);
 
         circuit.drawCircuit();
     }

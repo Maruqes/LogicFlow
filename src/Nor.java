@@ -55,4 +55,14 @@ public class Nor extends BasicComponent implements IOComponent {
         }
     }
 
+    @Override
+    public int maxInput() {
+        return 2;
+    }
+
+    @Override
+    public int maxOutput() {
+        return 1;
+    }
+
 }

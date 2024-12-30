@@ -51,4 +51,14 @@ public class Not extends BasicComponent implements IOComponent {
         }
     }
 
+    @Override
+    public int maxInput() {
+        return 1;
+    }
+
+    @Override
+    public int maxOutput() {
+        return 1;
+    }
+
 }

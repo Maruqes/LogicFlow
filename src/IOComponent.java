@@ -12,4 +12,8 @@ public interface IOComponent {
     public void setUsedPin(LCInputPin pin);
 
     public String getName();
+
+    public int maxInput();
+
+    public int maxOutput();
 }
