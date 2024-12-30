@@ -7,4 +7,5 @@ public interface IOComponent {
 
     public LCInputPin getNextPin();
 
+    public void draw();
 }

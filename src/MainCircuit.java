@@ -11,6 +11,18 @@ public class MainCircuit {
         outputs = new ArrayList<OutputInterface>();
     }
 
-    //add cada um deles    uma funcao pra settar valores
+    // add cada um deles uma funcao pra settar valores
+
+    public void drawCircuit() {
+        for (Switch s : switches) {
+            s.draw();
+        }
+        for (IOComponent c : components) {
+            c.draw();
+        }
+        for (OutputInterface o : outputs) {
+            o.draw();
+        }
+    }
 
 }
