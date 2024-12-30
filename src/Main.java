@@ -1,7 +1,6 @@
 import logicircuit.LCComponent;
 import logicircuit.LCDFrameCmd;
 import logicircuit.LCDPanel;
-import logicircuit.LCInputPin;
 
 public class Main {
     public static LCDPanel drawPannel;
@@ -14,60 +13,17 @@ public class Main {
         drawPannel = frame.drawPanel();
         drawPannel.clear();
 
-        Or or1 = new Or("or1");
-        Not not1 = new Not("not1");
-        Nand nand1 = new Nand("nand1");
-        Nor nor1 = new Nor("nor1");
-        Xor xor1 = new Xor("xor1");
-        Xor xor2 = new Xor("xor2");
-        Xor xor3 = new Xor("xor2");
-        Switch switch1 = new Switch(true, "dsdfsd", 123, 123, "scdw");
-        Led led1 = new Led(0, "cddsxd");
-        Display3bit display1 = new Display3bit(7, "dededdefdef");
-
-        or1.setPosition(300, 100);
-        not1.setPosition(400, 200);
-        nand1.setPosition(500, 300);
-        nor1.setPosition(600, 400);
-        xor1.setPosition(700, 500);
-        xor3.setPosition(800, 600);
-        xor2.setPosition(000, 400);
-        led1.setPosition(233, 233);
-        display1.setPosition(800, 100);
-
-        Wire wire4 = new Wire(or1, not1);
-        Wire wire5 = new Wire(not1, nand1);
-        Wire wire6 = new Wire(nand1, nor1);
-        Wire wire7 = new Wire(nor1, xor1);
-        Wire wire8 = new Wire(xor2, xor1);
-        Wire wire10 = new Wire(switch1, display1);
-        Wire wire11 = new Wire(xor3, display1);
-
-        wire4.setState(true);
-        wire5.setState(true);
-        wire6.setState(true);
-        wire7.setState(true);
-        switch1.setState(true);
-        led1.setValue(0);
-
         drawPannel.clear();
-        or1.draw();
-        not1.draw();
-        nand1.draw();
-        nor1.draw();
-        xor1.draw();
-        wire4.draw();
-        wire5.draw();
-        wire6.draw();
-        wire7.draw();
-        xor2.draw();
-        wire8.draw();
-        xor3.draw();
-        switch1.draw();
-        led1.draw();
-        wire10.draw();
-        xor3.draw();
-        wire11.draw();
-        display1.draw();
+        circuit.add(LCComponent.SWITCH, true, "Switch1", 0, 10, "Switch1");
+        circuit.add(LCComponent.SWITCH, false, "Switch2", 0, 110, "Switch2");
+        circuit.add(LCComponent.SWITCH, true, "Switch3", 0, 210, "Switch3");
+        circuit.add(LCComponent.AND, "And1", 100, 60, "And1");
+        circuit.add(LCComponent.OR, "Or1", 100, 160, "Or1");
+        circuit.add(LCComponent.OR, "Or2", 200, 110, "Or2");
+        circuit.add(LCComponent.NOT, "Not1", 300, 110, "Not1");
+        circuit.add(LCComponent.LED, 0, "Led1", 400, 110, "Led1");
+        circuit.drawCircuit();
     }
 }
+
+

@@ -1,5 +1,3 @@
-import java.util.concurrent.ThreadPoolExecutor.DiscardPolicy;
-
 import logicircuit.LCInputPin;
 
 public class Wire {
