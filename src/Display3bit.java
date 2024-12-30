@@ -3,8 +3,7 @@ import logicircuit.LCInputPin;
 
 public class Display3bit extends BasicComponent implements OutputInterface {
     private int value;
-    private int pinCallCount;
-    private LCInputPin currentPin;
+    private boolean pins[] = { false, false, false };
 
     public Display3bit(int value, String nome) {
         super(LCComponent.BIT3_DISPLAY, nome);
@@ -12,8 +11,6 @@ public class Display3bit extends BasicComponent implements OutputInterface {
             throw new IllegalArgumentException("Invalid value");
         }
         this.value = value;
-        pinCallCount = 0;
-        currentPin = LCInputPin.PIN_A;
     }
 
     public Display3bit(int value, String nome, int setX, int setY) {
@@ -22,8 +19,6 @@ public class Display3bit extends BasicComponent implements OutputInterface {
             throw new IllegalArgumentException("Invalid value");
         }
         this.value = value;
-        pinCallCount = 0;
-        currentPin = LCInputPin.PIN_A;
     }
 
     public Display3bit(int value, String nome, int setX, int setY, String legend) {
@@ -32,8 +27,6 @@ public class Display3bit extends BasicComponent implements OutputInterface {
             throw new IllegalArgumentException("Invalid value");
         }
         this.value = value;
-        pinCallCount = 0;
-        currentPin = LCInputPin.PIN_A;
     }
 
     public void setValue(int value) {
@@ -52,17 +45,30 @@ public class Display3bit extends BasicComponent implements OutputInterface {
         Main.drawPannel.drawComponent(super.getType(), super.getXY()[0], super.getXY()[1], value);
     }
 
-    public LCInputPin getNextPin() {
-        if (pinCallCount == 0) {
-            currentPin = LCInputPin.PIN_A;
-        } else if (pinCallCount == 1) {
-            currentPin = LCInputPin.PIN_B;
-        } else if (pinCallCount == 2) {
-            currentPin = LCInputPin.PIN_C;
+    @Override
+    public boolean allowPin(LCInputPin pin) {
+        if (pin == LCInputPin.PIN_A) {
+            return !pins[0];
+        } else if (pin == LCInputPin.PIN_B) {
+            return !pins[1];
+        } else if (pin == LCInputPin.PIN_C) {
+            return !pins[2];
         } else {
-            throw new IllegalStateException("Invalid pin state");
+            throw new IllegalArgumentException("Invalid pin");
         }
-        pinCallCount++;
-        return currentPin;
     }
+
+    @Override
+    public void setUsedPin(LCInputPin pin) {
+        if (pin == LCInputPin.PIN_A) {
+            pins[0] = true;
+        } else if (pin == LCInputPin.PIN_B) {
+            pins[1] = true;
+        } else if (pin == LCInputPin.PIN_C) {
+            pins[2] = true;
+        } else {
+            throw new IllegalArgumentException("Invalid pin");
+        }
+    }
+
 }

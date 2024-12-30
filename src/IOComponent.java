@@ -5,7 +5,11 @@ public interface IOComponent {
 
     public boolean getOutput();
 
-    public LCInputPin getNextPin();
-
     public void draw();
+
+    public boolean allowPin(LCInputPin pin);
+
+    public void setUsedPin(LCInputPin pin);
+
+    public String getName();
 }

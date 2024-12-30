@@ -3,8 +3,8 @@ import logicircuit.LCInputPin;
 
 public class Led extends BasicComponent implements OutputInterface {
     private int value;
-    private int pinCallCount;
-    private LCInputPin currentPin;
+
+    private boolean pin1 = false;
 
     public Led(int value, String nome) {
         super(LCComponent.LED, nome);
@@ -12,8 +12,6 @@ public class Led extends BasicComponent implements OutputInterface {
             throw new IllegalArgumentException("Invalid value");
         }
         this.value = value;
-        pinCallCount = 0;
-        currentPin = LCInputPin.PIN_A;
     }
 
     public Led(int value, String nome, int setX, int setY) {
@@ -22,8 +20,6 @@ public class Led extends BasicComponent implements OutputInterface {
             throw new IllegalArgumentException("Invalid value");
         }
         this.value = value;
-        pinCallCount = 0;
-        currentPin = LCInputPin.PIN_A;
     }
 
     public Led(int value, String nome, int setX, int setY, String legend) {
@@ -32,8 +28,6 @@ public class Led extends BasicComponent implements OutputInterface {
             throw new IllegalArgumentException("Invalid value");
         }
         this.value = value;
-        pinCallCount = 0;
-        currentPin = LCInputPin.PIN_A;
     }
 
     public void setValue(int value) {
@@ -53,13 +47,18 @@ public class Led extends BasicComponent implements OutputInterface {
         Main.drawPannel.drawComponent(super.getType(), super.getXY()[0], super.getXY()[1], state, super.getLegend());
     }
 
-    public LCInputPin getNextPin() {
-        if (pinCallCount == 0) {
-            currentPin = LCInputPin.PIN_A;
-        } else {
-            throw new IllegalStateException("Invalid pin state");
+    public boolean allowPin(LCInputPin pin) {
+        if (pin != LCInputPin.PIN_A) {
+            throw new IllegalArgumentException("Invalid pin");
         }
-        pinCallCount++;
-        return currentPin;
+        return !pin1;
     }
+
+    public void setUsedPin(LCInputPin pin) {
+        if (pin != LCInputPin.PIN_A) {
+            throw new IllegalArgumentException("Invalid pin");
+        }
+        pin1 = true;
+    }
+
 }

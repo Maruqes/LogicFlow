@@ -3,25 +3,18 @@ import logicircuit.LCInputPin;
 
 public class Not extends BasicComponent implements IOComponent {
     private boolean[] inputs;
-    private LCInputPin currentPin;
-    private int pinCallCount;
+    private boolean[] pins = { false };
 
     public Not(String nome) {
         super(LCComponent.NOT, nome);
-        currentPin = LCInputPin.PIN_A;
-        pinCallCount = 0;
     }
 
     public Not(String nome, int x, int y) {
         super(LCComponent.NOT, nome, x, y);
-        currentPin = LCInputPin.PIN_A;
-        pinCallCount = 0;
     }
 
     public Not(String nome, int x, int y, String legenda) {
         super(LCComponent.NOT, nome, x, y, legenda);
-        currentPin = LCInputPin.PIN_A;
-        pinCallCount = 0;
     }
 
     @Override
@@ -41,13 +34,21 @@ public class Not extends BasicComponent implements IOComponent {
     }
 
     @Override
-    public LCInputPin getNextPin() {
-        if (pinCallCount == 0) {
-            currentPin = LCInputPin.PIN_A;
+    public void setUsedPin(LCInputPin pin) {
+        if (pin == LCInputPin.PIN_A) {
+            pins[0] = true;
         } else {
-            throw new IllegalStateException("Invalid pin state");
+            throw new IllegalArgumentException("Not gate has only 1 input pin");
         }
-        pinCallCount++;
-        return currentPin;
     }
+
+    @Override
+    public boolean allowPin(LCInputPin pin) {
+        if (!pins[0] && pin == LCInputPin.PIN_A) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

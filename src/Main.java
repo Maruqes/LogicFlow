@@ -1,6 +1,7 @@
 import logicircuit.LCComponent;
 import logicircuit.LCDFrameCmd;
 import logicircuit.LCDPanel;
+import logicircuit.LCInputPin;
 
 public class Main {
     public static LCDPanel drawPannel;
@@ -22,8 +23,19 @@ public class Main {
         circuit.add(LCComponent.OR, "Or2", 200, 110, "Or2");
         circuit.add(LCComponent.NOT, "Not1", 300, 110, "Not1");
         circuit.add(LCComponent.LED, 0, "Led1", 400, 110, "Led1");
+
+        circuit.wire("Switch1", "And1", LCInputPin.PIN_A);
+        circuit.wire("Switch2", "And1", LCInputPin.PIN_B);
+        circuit.wire("Switch2", "Or1", LCInputPin.PIN_A);
+        circuit.wire("Switch3", "Or1", LCInputPin.PIN_B);
+
+        circuit.wire("And1", "Or2", LCInputPin.PIN_A);
+        circuit.wire("Or1", "Or2", LCInputPin.PIN_B);
+
+        circuit.wire("Or2", "Not1", LCInputPin.PIN_A);
+
+        circuit.wire("Not1", "Led1", LCInputPin.PIN_A);
+
         circuit.drawCircuit();
     }
 }
-
-

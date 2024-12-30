@@ -3,25 +3,19 @@ import logicircuit.LCInputPin;
 
 public class And extends BasicComponent implements IOComponent {
     private boolean[] inputs;
-    private LCInputPin currentPin;
-    private int pinCallCount;
+
+    private boolean[] pins = { false, false };
 
     public And(String nome) {
         super(LCComponent.AND, nome);
-        currentPin = LCInputPin.PIN_A;
-        pinCallCount = 0;
     }
 
     public And(String nome, int x, int y) {
         super(LCComponent.AND, nome, x, y);
-        currentPin = LCInputPin.PIN_A;
-        pinCallCount = 0;
     }
 
     public And(String nome, int x, int y, String legenda) {
         super(LCComponent.AND, nome, x, y, legenda);
-        currentPin = LCInputPin.PIN_A;
-        pinCallCount = 0;
     }
 
     @Override
@@ -37,20 +31,36 @@ public class And extends BasicComponent implements IOComponent {
         if (inputs == null) {
             throw new IllegalStateException("AND gate inputs are not set");
         }
+        System.out.println("AND gate inputs are set to ->" + inputs[0] + " " + inputs[1]);
         return inputs[0] && inputs[1];
     }
 
     @Override
-    public LCInputPin getNextPin() {
-        if (pinCallCount == 0) {
-            currentPin = LCInputPin.PIN_A;
-        } else if (pinCallCount == 1) {
-            currentPin = LCInputPin.PIN_B;
+    public void setUsedPin(LCInputPin pin) {
+        if (pin == LCInputPin.PIN_A) {
+            System.out.println("Pin A");
+            System.out.println("Pin A");
+            System.out.println("Pin A");
+            System.out.println("Pin A");
+            System.out.println("Pin A");
+
+            pins[0] = true;
+        } else if (pin == LCInputPin.PIN_B) {
+            pins[1] = true;
         } else {
-            throw new IllegalStateException("Invalid pin state");
+            throw new IllegalArgumentException("AND gate has only 2 input pins");
         }
-        pinCallCount++;
-        return currentPin;
+    }
+
+    @Override
+    public boolean allowPin(LCInputPin pin) {
+        if (!pins[0] && pin == LCInputPin.PIN_A) {
+            return true;
+        } else if (!pins[1] && pin == LCInputPin.PIN_B) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 

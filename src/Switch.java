@@ -1,31 +1,23 @@
 import logicircuit.LCComponent;
 import logicircuit.LCInputPin;
 
-public class Switch extends BasicComponent{
+public class Switch extends BasicComponent {
     private boolean state;
-    private int pinCallCount;
-    private LCInputPin currentPin;
-
+    private boolean pin1 = false;
 
     public Switch(boolean state, String nome) {
         super(LCComponent.SWITCH, nome);
         this.state = state;
-        pinCallCount = 0;
-        currentPin = LCInputPin.PIN_A;
     }
 
     public Switch(boolean state, String nome, int setX, int setY) {
-        super(LCComponent.SWITCH, nome, setX, setY);        
+        super(LCComponent.SWITCH, nome, setX, setY);
         this.state = state;
-        pinCallCount = 0;
-        currentPin = LCInputPin.PIN_A;
     }
 
-    public Switch(boolean state, String nome, int setX, int setY, String legend){
+    public Switch(boolean state, String nome, int setX, int setY, String legend) {
         super(LCComponent.SWITCH, nome, setX, setY, legend);
         this.state = state;
-        pinCallCount = 0;
-        currentPin = LCInputPin.PIN_A;
     }
 
     public void setState(boolean state) {
@@ -41,13 +33,15 @@ public class Switch extends BasicComponent{
         Main.drawPannel.drawComponent(super.getType(), super.getXY()[0], super.getXY()[1], state, super.getLegend());
     }
 
-    public LCInputPin getNextPin() {
-        if (pinCallCount == 0) {
-            currentPin = LCInputPin.PIN_A;
-        } else {
-            throw new IllegalStateException("Invalid pin state");
+    public boolean allowPin(LCInputPin pin) {
+        if (pin != LCInputPin.PIN_A) {
+            throw new IllegalArgumentException("Invalid pin");
         }
-        pinCallCount++;
-        return currentPin;
+        return !pin1;
     }
+
+    public void setPin(boolean pin1) {
+        this.pin1 = pin1;
+    }
+
 }
