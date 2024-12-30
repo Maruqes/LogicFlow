@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import logicircuit.CmdProcessor;
 
 public class Parser implements CmdProcessor {
@@ -45,22 +47,38 @@ public class Parser implements CmdProcessor {
         return token;
     }
 
+    // return error message
+    private String handleTokens(ArrayList<String> tokens) {
+        System.out.println(tokens.size());
+        System.out.println(tokens);
+
+        if (tokens.get(0).equals("add")) {
+        } else if (tokens.get(0).equals("wire")) {
+        } else if (tokens.get(0).equals("turn")) {
+        } else if (tokens.get(0).equals("save")) {
+        } else if (tokens.get(0).equals("open")) {
+        } else {
+            return "Comando não reconhecido";
+        }
+        return "";
+    }
+
     public String process(String text) {
-        // obrigar a ficar tudo maiusculo or minusculo
+        text = text.toLowerCase();
+
+        ArrayList<String> tokens = new ArrayList<String>();
         // get last char
         tokenIndex = 0;
         String token = getToken(text);
         while (!token.equals("vazio")) {
+
+            // only add token if it is not empty
             if (!token.trim().isEmpty()) {
-                System.out.println(token);
+                tokens.add(token);
             }
-
-            if (token.equals("add")) {
-                System.out.println("addicionandooo");
-            }
-
             token = getToken(text);
         }
-        return "";
+
+        return handleTokens(tokens);
     }
 }
