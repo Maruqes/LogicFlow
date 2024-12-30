@@ -89,4 +89,16 @@ public class Wire {
         System.out.println("Component2: " + component2.getName());
         System.out.println("Pin: " + pin + "\n\n");
     }
+
+    public static LCInputPin getWithNome(String pin) {
+        if (pin.equals("pin_a")) {
+            return LCInputPin.PIN_A;
+        } else if (pin.equals("pin_b")) {
+            return LCInputPin.PIN_B;
+        } else if (pin.equals("pin_c")) {
+            return LCInputPin.PIN_C;
+        } else {
+            return null;
+        }
+    }
 }

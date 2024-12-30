@@ -66,4 +66,24 @@ public class BasicComponent implements BasicComponentInterface {
     public LCComponent getType() {
         return ourCmp;
     }
+
+    public static LCComponent getTypeWithComponent(String tipoPorta) {
+        if (tipoPorta.equalsIgnoreCase("and")) {
+            return LCComponent.AND;
+        } else if (tipoPorta.equalsIgnoreCase("or")) {
+            return LCComponent.OR;
+        } else if (tipoPorta.equalsIgnoreCase("not")) {
+            return LCComponent.NOT;
+        } else if (tipoPorta.equalsIgnoreCase("xor")) {
+            return LCComponent.XOR;
+        } else if (tipoPorta.equalsIgnoreCase("switch")) {
+            return LCComponent.SWITCH;
+        } else if (tipoPorta.equalsIgnoreCase("display")) {
+            return LCComponent.BIT3_DISPLAY;
+        } else if (tipoPorta.equalsIgnoreCase("led")) {
+            return LCComponent.LED;
+        } else {
+            throw new IllegalArgumentException("Invalid value");
+        }
+    }
 }

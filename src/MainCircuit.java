@@ -62,7 +62,7 @@ public class MainCircuit {
      * @param nome    name
      * @param setX    coordinate X
      * @param setY    coordinate Y
-     * @param legenda legend
+     * @param legend legend
      */
     public void add(LCComponent cmp, boolean state, String nome, int setX, int setY, String legend) {
         if (cmp == LCComponent.SWITCH) {
@@ -101,31 +101,31 @@ public class MainCircuit {
         BasicComponentInterface toType = null;
 
         for (int i = 0; i < switches.size(); i++) {
-            if (switches.get(i).getName().equals(from)) {
+            if (switches.get(i).getName().equalsIgnoreCase(from)) {
                 fromType = switches.get(i);
             }
 
-            if (switches.get(i).getName().equals(to)) {
+            if (switches.get(i).getName().equalsIgnoreCase(to)) {
                 toType = switches.get(i);
             }
         }
 
         for (int i = 0; i < components.size(); i++) {
-            if (components.get(i).getName().equals(from)) {
+            if (components.get(i).getName().equalsIgnoreCase(from)) {
                 fromType = (BasicComponentInterface) components.get(i);
             }
 
-            if (components.get(i).getName().equals(to)) {
+            if (components.get(i).getName().equalsIgnoreCase(to)) {
                 toType = (BasicComponentInterface) components.get(i);
             }
         }
 
         for (int i = 0; i < outputs.size(); i++) {
-            if (outputs.get(i).getName().equals(from)) {
+            if (outputs.get(i).getName().equalsIgnoreCase(from)) {
                 fromType = (BasicComponentInterface) outputs.get(i);
             }
 
-            if (outputs.get(i).getName().equals(to)) {
+            if (outputs.get(i).getName().equalsIgnoreCase(to)) {
                 toType = (BasicComponentInterface) outputs.get(i);
             }
         }
@@ -186,22 +186,6 @@ public class MainCircuit {
         }
     }
 
-    public static int getNumberWithPins(boolean pin1, boolean pin2, boolean pin3) {
-        int number = 0;
-
-        if (pin1) {
-            number = number | 1; // Define o bit 0
-        }
-        if (pin2) {
-            number = number | 1 << 1; // Define o bit 1
-        }
-        if (pin3) {
-            number = number | 1 << 2; // Define o bit 2
-        }
-
-        return number;
-    }
-
     public void setAllStates() {
         // settar wires dos componentes
         // settar componentes dos wires
@@ -245,7 +229,8 @@ public class MainCircuit {
 
             if (o instanceof Display3bit) {
                 try {
-                    o.setValue(getNumberWithPins(wiresToOutput.get(0), wiresToOutput.get(1), wiresToOutput.get(2)));
+                    o.setValue(Display3bit.getNumberWithPins(wiresToOutput.get(0), wiresToOutput.get(1),
+                            wiresToOutput.get(2)));
                 } catch (IndexOutOfBoundsException e) {
                     System.out.println("Error: " + e.getMessage());
                 }
@@ -256,7 +241,7 @@ public class MainCircuit {
     // add cada um deles uma funcao pra settar valores
 
     public void drawCircuit() {
-
+        Main.drawPannel.clear();
         setAllStates();
 
         for (Switch s : switches) {
@@ -272,6 +257,22 @@ public class MainCircuit {
             w.draw();
         }
 
+    }
+
+    public String turn(String onOff, String nome) {
+        for (Switch s : switches) {
+            if (s.getName().equalsIgnoreCase(nome)) {
+                if (onOff.equalsIgnoreCase("on")) {
+                    s.setState(true);
+                } else if (onOff.equalsIgnoreCase("off")) {
+                    s.setState(false);
+                } else {
+                    throw new IllegalArgumentException("Invalid value");
+                }
+                return "";
+            }
+        }
+        return "Error: Switch not found";
     }
 
 }

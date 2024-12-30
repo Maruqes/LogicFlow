@@ -44,4 +44,5 @@ public class Switch extends BasicComponent {
         this.pin1 = pin1;
     }
 
+
 }

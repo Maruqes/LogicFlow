@@ -71,4 +71,20 @@ public class Display3bit extends BasicComponent implements OutputInterface {
         }
     }
 
+    public static int getNumberWithPins(boolean pin1, boolean pin2, boolean pin3) {
+        int number = 0;
+
+        if (pin1) {
+            number = number | 1; // Define o bit 0
+        }
+        if (pin2) {
+            number = number | 1 << 1; // Define o bit 1
+        }
+        if (pin3) {
+            number = number | 1 << 2; // Define o bit 2
+        }
+
+        return number;
+    }
+
 }
