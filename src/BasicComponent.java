@@ -1,7 +1,6 @@
 import logicircuit.LCComponent;
 
 public class BasicComponent implements BasicComponentInterface {
-
     private int setX;
     private int setY;
     private String legend;

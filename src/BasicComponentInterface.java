@@ -14,4 +14,5 @@ public interface BasicComponentInterface {
     public int[] getXY();
 
     public LCComponent getType();
+
 }
