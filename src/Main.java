@@ -1,7 +1,5 @@
-import logicircuit.LCComponent;
 import logicircuit.LCDFrameCmd;
 import logicircuit.LCDPanel;
-import logicircuit.LCInputPin;
 
 public class Main {
     public static LCDPanel drawPannel;
