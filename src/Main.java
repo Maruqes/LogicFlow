@@ -35,7 +35,6 @@ public class Main {
         led1.setPosition(233, 233);
         display1.setPosition(800, 100);
 
-
         Wire wire4 = new Wire(or1, not1);
         Wire wire5 = new Wire(not1, nand1);
         Wire wire6 = new Wire(nand1, nor1);
