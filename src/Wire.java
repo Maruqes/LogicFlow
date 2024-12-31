@@ -103,6 +103,6 @@ public class Wire {
     }
 
     public String Strigonize() {
-        return "";
+        return "wire//" + component1.getName() + "//" + component2.getName();
     }
 }
