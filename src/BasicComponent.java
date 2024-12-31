@@ -82,6 +82,10 @@ public class BasicComponent implements BasicComponentInterface {
             return LCComponent.BIT3_DISPLAY;
         } else if (tipoPorta.equalsIgnoreCase("led")) {
             return LCComponent.LED;
+        } else if (tipoPorta.equalsIgnoreCase("nand")) {
+            return LCComponent.NAND;
+        } else if (tipoPorta.equalsIgnoreCase("nor")) {
+            return LCComponent.NOR;
         } else {
             throw new IllegalArgumentException("Invalid value");
         }
