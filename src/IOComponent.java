@@ -18,4 +18,6 @@ public interface IOComponent {
     public int maxOutput();
 
     public String Strigonize();
+
+    public void setPosition(int x, int y);
 }

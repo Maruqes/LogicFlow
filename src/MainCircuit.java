@@ -335,4 +335,29 @@ public class MainCircuit {
         return "Error: Switch not found";
     }
 
+    public String move(String nome, int x, int y) {
+        for (Switch s : switches) {
+            if (s.getName().equalsIgnoreCase(nome)) {
+                s.setPosition(x, y);
+                return "";
+            }
+        }
+
+        for (IOComponent c : components) {
+            if (c.getName().equalsIgnoreCase(nome)) {
+                c.setPosition(x, y);
+                return "";
+            }
+        }
+
+        for (OutputInterface o : outputs) {
+            if (o.getName().equalsIgnoreCase(nome)) {
+                o.setPosition(x, y);
+                return "";
+            }
+        }
+
+        return "Error: Element not found";
+    }
+
 }

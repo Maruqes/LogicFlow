@@ -14,4 +14,6 @@ public interface OutputInterface {
     public String getName();
 
     public String Strigonize();
+
+    public void setPosition(int x, int y);
 }
