@@ -101,4 +101,8 @@ public class Wire {
             return null;
         }
     }
+
+    public String Strigonize() {
+        return "";
+    }
 }

@@ -90,4 +90,9 @@ public class BasicComponent implements BasicComponentInterface {
             throw new IllegalArgumentException("Invalid value");
         }
     }
+
+    @Override
+    public String Strigonize() {
+        return "";
+    }
 }
