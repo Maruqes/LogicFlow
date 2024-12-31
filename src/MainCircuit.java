@@ -426,10 +426,17 @@ public class MainCircuit {
     }
 
     // add cada um deles uma funcao pra settar valores
-
     public void drawCircuit() {
         setAllStates();
         forceDraw();
+    }
+
+    public void clear() {
+        switches.clear();
+        components.clear();
+        outputs.clear();
+        wires.clear();
+        drawCircuit();
     }
 
     public void setAllStates(boolean animacao) throws InterruptedException {

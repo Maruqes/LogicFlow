@@ -164,6 +164,8 @@ public class ProcessCommands extends Parser {
             circuit.printTabeldaDaVerdade();
         } else if (tokens.get(0).equals("animacaotabela")) {
             circuit.animacaoTabela();
+        } else if (tokens.get(0).equals("clear")) {
+            circuit.clear();
         } else {
             if (commands != null && commands.containsKey(tokens.get(0))) {
                 commands.get(tokens.get(0)).handleTokensFunc(tokens);
