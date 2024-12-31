@@ -1,7 +1,11 @@
 import java.util.ArrayList;
 import java.io.BufferedWriter;
+import java.io.BufferedReader;
 import java.io.FileWriter;
+import java.io.FileReader;
 import java.io.IOException;
+import java.security.cert.CertPathValidatorException.BasicReason;
+
 import logicircuit.LCComponent;
 import logicircuit.LCInputPin;
 
@@ -172,7 +176,7 @@ public class MainCircuit {
     public void save() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))) {
             for (Switch sw : switches) {
-                writer.write(sw.Strigonize());
+                writer.write(sw.Strigonize() + "//" + sw.getState());
                 writer.newLine();
             }
             for (IOComponent ic : components) {
@@ -188,8 +192,40 @@ public class MainCircuit {
         }
     }
 
-    public void open() {
-        // TODO
+    public String open() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("output.txt"))) {
+            while(reader.ready()){
+                //ler linha
+                String aux = reader.readLine();
+                System.out.println("Linha lida");
+                //dividir a linha
+                String[] res = aux.split("//");
+                LCComponent cmp = BasicComponent.getTypeWithComponent(res[1]);
+                String nome = res[2];
+                int x = Integer.parseInt(res[3]);
+                int y = Integer.parseInt(res[4]);
+                String legend = "";
+                try{
+                    legend = res[5];
+                } catch(Exception e){
+                }
+
+                //adicionar elemento
+                if (cmp == LCComponent.SWITCH) {
+                    add(cmp, false, nome, x, y, legend);
+                } else if(cmp == LCComponent.BIT3_DISPLAY || cmp == LCComponent.LED){
+                    add(cmp, y, nome, x, y, legend);
+                } else{
+                    add(cmp, nome, x, y, legend);
+                }
+            }
+        } catch (IOException e) {
+            return e.toString();
+        } catch(IllegalArgumentException er){
+            return er.toString();
+        }
+        drawCircuit();
+        return "";    
     }
 
     public String removeElement(String name) {
