@@ -5,9 +5,11 @@ public class Language extends ProcessCommands {
     private static HashMap<String, HandleTokensInterface> commands = new HashMap<String, HandleTokensInterface>();
 
     public Language(MainCircuit circuit) {
-        super(circuit, commands);
+        super(circuit);
         HandleTokensInterface randfunc = (tokens) -> test(tokens);
         commands.put("mds", randfunc);
+
+        super.addComands(commands);
     }
 
     // todo some programming language stuff like loops int at minimum

@@ -8,19 +8,58 @@ public class ProcessCommands extends Parser {
     private HashMap<String, HandleTokensInterface> commands;
 
     public ProcessCommands(MainCircuit circuit) {
-        super(circuit, null);
+        super(circuit);
 
         HandleTokensInterface handleTokensInterface = tokens -> {
             return handleTokens(tokens);
         };
+        super.setHandleTokensInterface(handleTokensInterface);
 
-        this.handleTokensInterface = handleTokensInterface;
+        commands = new HashMap<String, HandleTokensInterface>();
+
+        HandleTokensInterface addFunc = (tokensVar) -> addFunc(tokensVar);
+        commands.put("add", addFunc);
+
+        HandleTokensInterface wireFunc = (tokensVar) -> wireFunc(tokensVar);
+        commands.put("wire", wireFunc);
+
+        HandleTokensInterface turnFunc = (tokensVar) -> turnFunc(tokensVar);
+        commands.put("turn", turnFunc);
+
+        HandleTokensInterface saveFunc = (tokensVar) -> handleSave(tokensVar);
+        commands.put("save", saveFunc);
+
+        HandleTokensInterface openFunc = (tokensVar) -> handleOpen(tokensVar);
+        commands.put("open", openFunc);
+
+        HandleTokensInterface moveFunc = (tokensVar) -> moveFunc(tokensVar);
+        commands.put("move", moveFunc);
+
+        HandleTokensInterface removeFunc = (tokensVar) -> removeFunc(tokensVar);
+        commands.put("remove", removeFunc);
+
+        HandleTokensInterface tabelaFunc = (tokensVar) -> {
+            circuit.printTabeldaDaVerdade();
+            return "";
+        };
+        commands.put("tabela", tabelaFunc);
+
+        HandleTokensInterface animacaoTabelaFunc = (tokensVar) -> {
+            circuit.animacaoTabela();
+            return "";
+        };
+        commands.put("animacaotabela", animacaoTabelaFunc);
+
+        HandleTokensInterface clearFunc = (tokensVar) -> {
+            circuit.clear();
+            return "";
+        };
+        commands.put("clear", clearFunc);
 
     }
 
-    public ProcessCommands(MainCircuit circuit, HashMap<String, HandleTokensInterface> commands) {
-        this(circuit);
-        this.commands = commands;
+    public void addComands(HashMap<String, HandleTokensInterface> commands) {
+        this.commands.putAll(commands);
     }
 
     private String addFunc(ArrayList<String> tokens) {
@@ -146,34 +185,16 @@ public class ProcessCommands extends Parser {
         System.out.println(tokens.size());
         System.out.println(tokens);
 
-        if (tokens.get(0).equals("add")) {
-            return addFunc(tokens);
-        } else if (tokens.get(0).equals("wire")) {
-            return wireFunc(tokens);
-        } else if (tokens.get(0).equals("turn")) {
-            return turnFunc(tokens);
-        } else if (tokens.get(0).equals("save")) {
-            return handleSave(tokens);
-        } else if (tokens.get(0).equals("open")) {
-            return handleOpen(tokens);
-        } else if (tokens.get(0).equals("move")) {
-            return moveFunc(tokens);
-        } else if (tokens.get(0).equals("remove")) {
-            return removeFunc(tokens);
-        } else if (tokens.get(0).equals("tabela")) {
-            circuit.printTabeldaDaVerdade();
-        } else if (tokens.get(0).equals("animacaotabela")) {
-            circuit.animacaoTabela();
-        } else if (tokens.get(0).equals("clear")) {
-            circuit.clear();
-        } else {
-            if (commands != null && commands.containsKey(tokens.get(0))) {
-                commands.get(tokens.get(0)).handleTokensFunc(tokens);
-            } else {
-                return "Error: Command not found";
-            }
-
+        if (tokens.size() == 0) {
+            return "Error: Empty command";
         }
+
+        if (commands != null && commands.containsKey(tokens.get(0))) {
+            commands.get(tokens.get(0)).handleTokensFunc(tokens);
+        } else {
+            return "Error: Command not found";
+        }
+
         return "";
     }
 

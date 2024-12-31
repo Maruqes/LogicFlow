@@ -15,10 +15,13 @@ public class Parser implements CmdProcessor {
     private int tokenIndex = 0;
     public MainCircuit circuit;
 
-    public HandleTokensInterface handleTokensInterface;
+    private HandleTokensInterface handleTokensInterface;
 
-    public Parser(MainCircuit circuit, HandleTokensInterface handleTokensInterface) {
+    public Parser(MainCircuit circuit) {
         this.circuit = circuit;
+    }
+
+    public void setHandleTokensInterface(HandleTokensInterface handleTokensInterface) {
         this.handleTokensInterface = handleTokensInterface;
     }
 
