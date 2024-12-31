@@ -175,11 +175,11 @@ public class MainCircuit {
 
     }
 
-    public void save(String filename) {
+    public String save(String filename) {
         try {
             Files.createDirectories(Paths.get("./saves"));
         } catch (IOException e) {
-            e.printStackTrace();
+            return e.getMessage();
         }
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("./saves/" + filename))) {
             for (Switch sw : switches) {
@@ -199,8 +199,9 @@ public class MainCircuit {
                 writer.newLine();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            return e.getMessage();
         }
+        return "";
     }
 
     public String open(String filename) {
@@ -259,9 +260,9 @@ public class MainCircuit {
 
             }
         } catch (IOException e) {
-            return e.toString();
+            return e.getMessage();
         } catch (IllegalArgumentException er) {
-            return er.toString();
+            return er.getMessage();
         }
         drawCircuit();
         return "";

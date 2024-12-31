@@ -1,8 +1,11 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import logicircuit.LCComponent;
 
 public class ProcessCommands extends Parser {
+
+    private HashMap<String, HandleTokensInterface> commands;
 
     public ProcessCommands(MainCircuit circuit) {
         super(circuit, null);
@@ -13,6 +16,11 @@ public class ProcessCommands extends Parser {
 
         this.handleTokensInterface = handleTokensInterface;
 
+    }
+
+    public ProcessCommands(MainCircuit circuit, HashMap<String, HandleTokensInterface> commands) {
+        this(circuit);
+        this.commands = commands;
     }
 
     private String addFunc(ArrayList<String> tokens) {
@@ -123,16 +131,14 @@ public class ProcessCommands extends Parser {
         if (tokens.size() != 2) {
             return "Error: Missing required parameters for open function";
         }
-        circuit.open(tokens.get(1));
-        return "";
+        return circuit.open(tokens.get(1));
     }
 
     private String handleSave(ArrayList<String> tokens) {
         if (tokens.size() != 2) {
             return "Error: Missing required parameters for save function";
         }
-        circuit.save(tokens.get(1));
-        return "";
+        return circuit.save(tokens.get(1));
     }
 
     // return error message
@@ -147,9 +153,9 @@ public class ProcessCommands extends Parser {
         } else if (tokens.get(0).equals("turn")) {
             return turnFunc(tokens);
         } else if (tokens.get(0).equals("save")) {
-            handleSave(tokens);
+            return handleSave(tokens);
         } else if (tokens.get(0).equals("open")) {
-            handleOpen(tokens);
+            return handleOpen(tokens);
         } else if (tokens.get(0).equals("move")) {
             return moveFunc(tokens);
         } else if (tokens.get(0).equals("remove")) {
@@ -159,7 +165,12 @@ public class ProcessCommands extends Parser {
         } else if (tokens.get(0).equals("animacaotabela")) {
             circuit.animacaoTabela();
         } else {
-            return "Comando não reconhecido";
+            if (commands != null && commands.containsKey(tokens.get(0))) {
+                commands.get(tokens.get(0)).handleTokensFunc(tokens);
+            } else {
+                return "Error: Command not found";
+            }
+
         }
         return "";
     }
