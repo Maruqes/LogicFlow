@@ -1,5 +1,7 @@
 import java.util.ArrayList;
-
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import logicircuit.LCComponent;
 import logicircuit.LCInputPin;
 
@@ -134,6 +136,25 @@ public class MainCircuit {
 
         wires.add(wire);
 
+    }
+
+    public void save(){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))) {
+            for (Switch sw : switches) {
+                writer.write(sw.Strigonize());
+                writer.newLine();
+            }
+            for (IOComponent ic : components) {
+                writer.write(ic.Strigonize());
+                writer.newLine();
+            }
+            for (OutputInterface oi : outputs) {
+                writer.write(oi.Strigonize());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public String removeElement(String name) {
