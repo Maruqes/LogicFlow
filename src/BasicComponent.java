@@ -94,6 +94,6 @@ public class BasicComponent implements BasicComponentInterface {
     // cmp, String nome, int x, int y, String legenda
     @Override
     public String Strigonize() {
-        return "BasicCmp//" + ourCmp + "//" + setX + "//" + setY + "//" + legend;
+        return "BasicCmp//" + ourCmp + "//" + name + "//" + setX + "//" + setY + "//" + legend;
     }
 }
