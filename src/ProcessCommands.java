@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -61,6 +62,28 @@ public class ProcessCommands extends Parser {
             return "";
         };
         commands.put("clear", clearFunc);
+
+        HandleTokensInterface screenWH = (tokensVar) -> {
+            String comma = tokensVar.get(2);
+            if (!comma.equals(",")) {
+                return "Error: Missing comma between width and height";
+            }
+
+            int width = Integer.parseInt(tokensVar.get(1));
+            int height = Integer.parseInt(tokensVar.get(3));
+
+            if (width < 400 || height < 400) {
+                return "Error: Screen width and height must be greater than 100";
+            }
+
+            try {
+                Main.restartProgram(tokensVar.get(1), tokensVar.get(3));
+            } catch (IOException e) {
+                return "Error: " + e.getMessage();
+            }
+            return "";
+        };
+        commands.put("screen", screenWH);
 
     }
 
