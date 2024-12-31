@@ -170,7 +170,9 @@ public class Parser implements CmdProcessor {
         } else if (tokens.get(0).equals("turn")) {
             return turnFunc(tokens);
         } else if (tokens.get(0).equals("save")) {
+            circuit.save();
         } else if (tokens.get(0).equals("open")) {
+            circuit.open();
         } else if (tokens.get(0).equals("move")) {
             return moveFunc(tokens);
         } else if (tokens.get(0).equals("remove")) {

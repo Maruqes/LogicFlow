@@ -169,7 +169,7 @@ public class MainCircuit {
 
     }
 
-    public void save(){
+    public void save() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))) {
             for (Switch sw : switches) {
                 writer.write(sw.Strigonize());
@@ -186,6 +186,10 @@ public class MainCircuit {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void open() {
+        // TODO
     }
 
     public String removeElement(String name) {
