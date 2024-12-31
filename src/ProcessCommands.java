@@ -24,6 +24,9 @@ public class ProcessCommands extends Parser {
         HandleTokensInterface wireFunc = (tokensVar) -> wireFunc(tokensVar);
         commands.put("wire", wireFunc);
 
+        HandleTokensInterface deWirefunc = (tokensVar) -> deWirefunc(tokensVar);
+        commands.put("dewire", deWirefunc);
+
         HandleTokensInterface turnFunc = (tokensVar) -> turnFunc(tokensVar);
         commands.put("turn", turnFunc);
 
@@ -142,6 +145,11 @@ public class ProcessCommands extends Parser {
             err = e.getMessage();
         }
         return err;
+    }
+
+    private String deWirefunc(ArrayList<String> tokens) {
+        // todo
+        return "";
     }
 
     private String turnFunc(ArrayList<String> tokens) {
