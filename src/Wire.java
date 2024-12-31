@@ -91,11 +91,11 @@ public class Wire {
     }
 
     public static LCInputPin getWithNome(String pin) {
-        if (pin.equals("pin_a")) {
+        if (pin.equalsIgnoreCase("pin_a")) {
             return LCInputPin.PIN_A;
-        } else if (pin.equals("pin_b")) {
+        } else if (pin.equalsIgnoreCase("pin_b")) {
             return LCInputPin.PIN_B;
-        } else if (pin.equals("pin_c")) {
+        } else if (pin.equalsIgnoreCase("pin_c")) {
             return LCInputPin.PIN_C;
         } else {
             return null;
@@ -103,6 +103,6 @@ public class Wire {
     }
 
     public String Strigonize() {
-        return "wire//" + component1.getName() + "//" + component2.getName();
+        return "Wire//" + component1.getName() + "//" + component2.getName() + "//" + pin;
     }
 }

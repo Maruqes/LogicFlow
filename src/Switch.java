@@ -44,5 +44,12 @@ public class Switch extends BasicComponent {
         this.pin1 = pin1;
     }
 
+    @Override
+    public String Strigonize() {
+        return "Switch//" + super.getType() + "//" + super.getName() + "//" + getState() + "//"
+                + super.getXY()[0]
+                + "//" + super.getXY()[1]
+                + "//" + super.getLegend();
+    }
 
 }

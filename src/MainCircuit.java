@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.cert.CertPathValidatorException.BasicReason;
 
 import logicircuit.LCComponent;
@@ -173,10 +175,15 @@ public class MainCircuit {
 
     }
 
-    public void save() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))) {
+    public void save(String filename) {
+        try {
+            Files.createDirectories(Paths.get("./saves"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("./saves/" + filename))) {
             for (Switch sw : switches) {
-                writer.write(sw.Strigonize() + "//" + sw.getState());
+                writer.write(sw.Strigonize());
                 writer.newLine();
             }
             for (IOComponent ic : components) {
@@ -187,51 +194,77 @@ public class MainCircuit {
                 writer.write(oi.Strigonize());
                 writer.newLine();
             }
+            for (Wire w : wires) {
+                writer.write(w.Strigonize());
+                writer.newLine();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public String open() {
-        try (BufferedReader reader = new BufferedReader(new FileReader("output.txt"))) {
-            while(reader.ready()){
-                //ler linha
+    public String open(String filename) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("./saves/" + filename))) {
+            while (reader.ready()) {
+
+                // ler linha
                 String aux = reader.readLine();
-                System.out.println("Linha lida");
-                //dividir a linha
+                // dividir a linha
                 String[] res = aux.split("//");
-                LCComponent cmp = BasicComponent.getTypeWithComponent(res[1]);
                 String nome = res[2];
-                int x = Integer.parseInt(res[3]);
-                int y = Integer.parseInt(res[4]);
-                String legend = "";
-                try{
-                    legend = res[5];
-                } catch(Exception e){
+
+                if (res[0].equals("Switch")) {
+
+                    LCComponent cmp = BasicComponent.getTypeWithComponent(res[1]);
+                    String state = res[3];
+                    boolean stateBool = Boolean.parseBoolean(state);
+                    int x = Integer.parseInt(res[4]);
+                    int y = Integer.parseInt(res[5]);
+                    String legend = "";
+
+                    try {
+                        legend = res[6];
+                    } catch (Exception e) {
+                    }
+
+                    // adicionar elemento
+                    if (cmp == LCComponent.SWITCH) {
+                        add(LCComponent.SWITCH, stateBool, nome, x, y, legend);
+                    }
+
+                } else if (res[0].equals("Wire")) {
+                    String from = res[1];
+                    String to = res[2];
+                    LCInputPin pin = Wire.getWithNome(res[3]);
+                    System.out.println(from + " " + to + " " + pin);
+                    wire(from, to, pin);
+                } else if (res[0].equals("BasicCmp")) {
+                    LCComponent cmp = BasicComponent.getTypeWithComponent(res[1]);
+                    int x = Integer.parseInt(res[3]);
+                    int y = Integer.parseInt(res[4]);
+                    String legend = "";
+
+                    try {
+                        legend = res[5];
+                    } catch (Exception e) {
+                    }
+
+                    // adicionar elemento
+                    if (cmp == LCComponent.BIT3_DISPLAY || cmp == LCComponent.LED) {
+                        add(cmp, 0, nome, x, y, legend);
+                    } else {
+                        add(cmp, nome, x, y, legend);
+                    }
                 }
 
-                //adicionar elemento
-                if (cmp == LCComponent.SWITCH) {
-                    try{
-                        add(cmp, false, nome, x, y, legend);
-                    }catch(Exception e){}
-                } else if(cmp == LCComponent.BIT3_DISPLAY || cmp == LCComponent.LED){
-                    try{
-                        add(cmp, y, nome, x, y, legend);
-                    }catch(Exception e){}
-                } else{
-                    try{
-                        add(cmp, nome, x, y, legend);
-                    }catch(Exception e){}
-                }
             }
         } catch (IOException e) {
             return e.toString();
-        } catch(IllegalArgumentException er){
+        } catch (IllegalArgumentException er) {
             return er.toString();
         }
         drawCircuit();
-        return "";    
+        return "";
     }
 
     public String removeElement(String name) {

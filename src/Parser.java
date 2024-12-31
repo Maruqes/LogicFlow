@@ -5,13 +5,21 @@ import logicircuit.CmdProcessor;
 import logicircuit.LCComponent;
 
 public class Parser implements CmdProcessor {
-    private Character[] tokens = { ';', ' ', '(', ')', '{', '}', '[', ']', ',', '.', ':', '=', '+', '-', '*', '/', '%',
-            '!', '<', '>', '&', '|', '^', '~', '?', '@', '#', '$', '\'', '"', '\\', '\n', '\t', '\r' };
-    private int tokenIndex = 0;
-    private MainCircuit circuit;
+    @FunctionalInterface
+    public interface HandleTokensInterface {
+        String handleTokensFunc(ArrayList<String> tokens);
+    }
 
-    public Parser(MainCircuit circuit) {
+    private Character[] tokens = { ';', ' ', '(', ')', '{', '}', '[', ']', ',', '.', ':', '=', '+', '-', '*', '/', '%',
+            '!', '<', '>', '&', '|', '^', '~', '?', '@', '#', '$', '\'', '"', '\\', '\n', '\t', '\r', '"' };
+    private int tokenIndex = 0;
+    public MainCircuit circuit;
+
+    public HandleTokensInterface handleTokensInterface;
+
+    public Parser(MainCircuit circuit, HandleTokensInterface handleTokensInterface) {
         this.circuit = circuit;
+        this.handleTokensInterface = handleTokensInterface;
     }
 
     private Character isAToken(char c) {
@@ -23,7 +31,27 @@ public class Parser implements CmdProcessor {
         return '\0';
     }
 
-    // ola;ola
+    public String getStringAsString(String text) {
+        String token = new String();
+        int old_index = tokenIndex;
+
+        int i = 1;
+        Character current = text.charAt(old_index + i);
+
+        while (current != '"' && old_index + i < text.length()) {
+            token += text.charAt(old_index + i); // add char to token
+            i++;
+            if (old_index + i < text.length()) {
+                current = text.charAt(old_index + i); // check if next char is a token
+            } else {
+                break;
+            }
+        }
+        tokenIndex = old_index + i + 1;
+        return token;
+    }
+
+    // ola;ola -> [ola, ;, ola]
     public String getToken(String text) {
         if (tokenIndex >= text.length()) {
             return "vazio";
@@ -34,17 +62,19 @@ public class Parser implements CmdProcessor {
 
         int i = 0;
         Character current = isAToken(text.charAt(old_index + i));
-        if (current != '\0') {
+        if (current == '"') {
+            return getStringAsString(text);
+        } else if (current != '\0') {
             tokenIndex = old_index + i + 1;
             return current.toString();
         }
 
-        while (current == '\0' && old_index + i < text.length()) {
+        while (current == '\0' && old_index + i < text.length()) { // while not EOF and not a token
 
-            token += text.charAt(old_index + i);
+            token += text.charAt(old_index + i); // add char to token
             i++;
             if (old_index + i < text.length()) {
-                current = isAToken(text.charAt(old_index + i));
+                current = isAToken(text.charAt(old_index + i)); // check if next char is a token
             } else {
                 break;
             }
@@ -52,139 +82,6 @@ public class Parser implements CmdProcessor {
         tokenIndex = old_index + i;
 
         return token;
-    }
-
-    private String addFunc(ArrayList<String> tokens) {
-        if (tokens.size() < 8) {
-            return "Error: Missing required parameters for add function";
-        }
-        String err = "";
-        String nome = tokens.get(1);
-        String tipoPorta = tokens.get(3);
-        String cordX = tokens.get(5);
-        String cordY = tokens.get(7);
-        String legends = "";
-
-        for (int i = 8; i < tokens.size(); i++) {
-            legends += tokens.get(i) + " ";
-        }
-
-        int x = Integer.parseInt(cordX);
-        int y = Integer.parseInt(cordY);
-
-        try {
-            LCComponent type = BasicComponent.getTypeWithComponent(tipoPorta);
-            if (type == LCComponent.SWITCH) {
-                circuit.add(type, false, nome, x, y, legends);
-            } else if (type == LCComponent.BIT3_DISPLAY || type == LCComponent.LED) {
-                circuit.add(type, 0, nome, x, y, legends);
-            } else {
-                circuit.add(type, nome, x, y, legends);
-            }
-            circuit.drawCircuit();
-        } catch (Exception e) {
-            err = e.getMessage();
-        }
-        return err;
-    }
-
-    private String wireFunc(ArrayList<String> tokens) {
-        String err = "";
-        if (tokens.size() < 4) {
-            return "Error: Missing required parameters for wire function";
-        }
-
-        String from = tokens.get(1);
-        String to = tokens.get(2);
-        String pin = tokens.get(3);
-
-        try {
-            circuit.wire(from, to, Wire.getWithNome(pin));
-            circuit.drawCircuit();
-        } catch (Exception e) {
-            err = e.getMessage();
-        }
-        return err;
-    }
-
-    private String turnFunc(ArrayList<String> tokens) {
-        if (tokens.size() < 3) {
-            return "Error: Missing required parameters for turn function";
-        }
-        String err = "";
-        String onOff = tokens.get(1);
-        String nome = tokens.get(2);
-
-        try {
-            err = circuit.turn(onOff, nome);
-            circuit.drawCircuit();
-        } catch (Exception e) {
-            return e.getMessage();
-        }
-        return err;
-    }
-
-    private String removeFunc(ArrayList<String> tokens) {
-        if (tokens.size() < 2) {
-            return "Error: Missing required parameters for turn function";
-        }
-        String err = "";
-        String nome = tokens.get(1);
-
-        try {
-            err = circuit.removeElement(nome);
-            circuit.drawCircuit();
-        } catch (Exception e) {
-            return e.getMessage();
-        }
-        return err;
-    }
-
-    private String moveFunc(ArrayList<String> tokens) {
-        if (tokens.size() != 5) {
-            return "Error: Missing required parameters for turn function";
-        }
-        String err = "";
-        String nome = tokens.get(1);
-        String x = tokens.get(2);
-        String y = tokens.get(4);
-
-        try {
-            err = circuit.move(nome, Integer.parseInt(x), Integer.parseInt(y));
-            circuit.drawCircuit();
-        } catch (Exception e) {
-            return e.getMessage();
-        }
-        return err;
-    }
-
-    // return error message
-    private String handleTokens(ArrayList<String> tokens) {
-        System.out.println(tokens.size());
-        System.out.println(tokens);
-
-        if (tokens.get(0).equals("add")) {
-            return addFunc(tokens);
-        } else if (tokens.get(0).equals("wire")) {
-            return wireFunc(tokens);
-        } else if (tokens.get(0).equals("turn")) {
-            return turnFunc(tokens);
-        } else if (tokens.get(0).equals("save")) {
-            circuit.save();
-        } else if (tokens.get(0).equals("open")) {
-            circuit.open();
-        } else if (tokens.get(0).equals("move")) {
-            return moveFunc(tokens);
-        } else if (tokens.get(0).equals("remove")) {
-            return removeFunc(tokens);
-        } else if (tokens.get(0).equals("tabela")) {
-            circuit.printTabeldaDaVerdade();
-        } else if (tokens.get(0).equals("animacaotabela")) {
-            circuit.animacaoTabela();
-        } else {
-            return "Comando não reconhecido";
-        }
-        return "";
     }
 
     public static List<List<String>> divideByChar(ArrayList<String> list, char separator) {
@@ -226,7 +123,7 @@ public class Parser implements CmdProcessor {
         List<List<String>> commands = divideByChar(tokens, ';');
 
         for (List<String> command : commands) {
-            String err = handleTokens(new ArrayList<String>(command));
+            String err = handleTokensInterface.handleTokensFunc(new ArrayList<String>(command));
             if (!err.isEmpty()) {
                 return err;
             }

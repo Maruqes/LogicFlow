@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
         MainCircuit circuit = new MainCircuit();
 
-        Parser parser = new Parser(circuit);
+        ProcessCommands parser = new ProcessCommands(circuit);
         LCDFrameCmd frame = new LCDFrameCmd(parser, "LogicFlow", 900, 700);
         drawPannel = frame.drawPanel();
         drawPannel.clear();
