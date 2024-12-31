@@ -212,11 +212,17 @@ public class MainCircuit {
 
                 //adicionar elemento
                 if (cmp == LCComponent.SWITCH) {
-                    add(cmp, false, nome, x, y, legend);
+                    try{
+                        add(cmp, false, nome, x, y, legend);
+                    }catch(Exception e){}
                 } else if(cmp == LCComponent.BIT3_DISPLAY || cmp == LCComponent.LED){
-                    add(cmp, y, nome, x, y, legend);
+                    try{
+                        add(cmp, y, nome, x, y, legend);
+                    }catch(Exception e){}
                 } else{
-                    add(cmp, nome, x, y, legend);
+                    try{
+                        add(cmp, nome, x, y, legend);
+                    }catch(Exception e){}
                 }
             }
         } catch (IOException e) {
