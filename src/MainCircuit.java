@@ -271,30 +271,7 @@ public class MainCircuit {
         }
     }
 
-    public void setAllStates() {
-        // settar wires dos componentes
-        // settar componentes dos wires
-        // settar wires dos componentes
-        // repeat
-
-        // manualmente os swicthes
-        for (Wire w : wires) {
-            for (Switch s : switches) {
-                if (w.getComponent1().getName().equals(s.getName())) {
-                    w.setState(s.getState());
-                }
-                if (w.getComponent2().getName().equals(s.getName())) {
-                    w.setState(s.getState());
-                }
-            }
-        }
-
-        // automaticamente os componentes
-        for (int i = 0; i < components.size(); i++) {
-            setWires();
-            setComponent();
-        }
-
+    private void setOutputs() {
         // manualmente os outputs
         for (OutputInterface o : outputs) {
             ArrayList<Boolean> wiresToOutput = new ArrayList<Boolean>();
@@ -323,11 +300,40 @@ public class MainCircuit {
         }
     }
 
-    // add cada um deles uma funcao pra settar valores
+    private void setSwitchesWire() {
+        // manualmente os swicthes
+        for (Wire w : wires) {
+            for (Switch s : switches) {
+                if (w.getComponent1().getName().equals(s.getName())) {
+                    w.setState(s.getState());
+                }
+                if (w.getComponent2().getName().equals(s.getName())) {
+                    w.setState(s.getState());
+                }
+            }
+        }
+    }
 
-    public void drawCircuit() {
+    public void setAllStates() {
+        // settar wires dos swictches
+        // settar componentes dos wires
+        // settar wires dos componentes
+        // repeat
+        // settar outputs dos wires
+
+        setSwitchesWire();
+
+        // automaticamente os componentes
+        for (int i = 0; i < components.size(); i++) {
+            setWires();
+            setComponent();
+        }
+
+        setOutputs();
+    }
+
+    public void forceDraw() {
         Main.drawPannel.clear();
-        setAllStates();
 
         for (Switch s : switches) {
             s.draw();
@@ -341,7 +347,55 @@ public class MainCircuit {
         for (Wire w : wires) {
             w.draw();
         }
+    }
 
+    // add cada um deles uma funcao pra settar valores
+
+    public void drawCircuit() {
+        setAllStates();
+        forceDraw();
+    }
+
+    public void setAllStates(boolean animacao) throws InterruptedException {
+        if (animacao) {
+            setSwitchesWire();
+            setOutputs();
+            forceDraw();
+            Thread.sleep(700);
+
+            // Atualiza automaticamente os componentes
+            for (int i = 0; i < components.size(); i++) {
+                setWires();
+                setComponent();
+                setOutputs();
+                forceDraw();
+                Thread.sleep(700);
+            }
+
+            setOutputs();
+            forceDraw();
+            Thread.sleep(700);
+        } else {
+            setAllStates();
+        }
+    }
+
+    public Thread drawCircuitAnimation(boolean animacao) {
+        Thread myThread = new Thread(() -> {
+            if (animacao) {
+                try {
+                    setAllStates(animacao);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                forceDraw();
+            } else {
+                drawCircuit();
+            }
+        });
+
+        myThread.start();
+        return myThread;
     }
 
     public String turn(String onOff, String nome) {
@@ -383,6 +437,81 @@ public class MainCircuit {
         }
 
         return "Error: Element not found";
+    }
+
+    public void printOutput() {
+        for (OutputInterface o : outputs) {
+            System.out.println(o.getName() + ": " + o.getValue());
+        }
+    }
+
+    private static boolean extractBit(int number, int position) {
+        return (number & (1 << position)) != 0;
+    }
+
+    public void printTabeldaDaVerdade() {
+        ArrayList<Switch> oldState = new ArrayList<Switch>();
+        for (Switch s : switches) {
+            oldState.add(new Switch(s.getState(), s.getName(), s.getXY()[0], s.getXY()[1], s.getLegend()));
+        }
+
+        int numSwitches = switches.size();
+        int numCombinations = (int) Math.pow(2, numSwitches);
+
+        for (int i = 0; i < numCombinations; i++) {
+            for (int j = 0; j < numSwitches; j++) {
+                boolean state = extractBit(i, j);
+                switches.get(j).setState(state);
+            }
+            drawCircuit();
+            System.out.print("\nCombination " + i + ": ");
+            for (Switch s : switches) {
+                System.out.print(s.getState() ? "1 " : "0 ");
+            }
+            System.out.println("\n");
+            printOutput();
+            System.out.println();
+        }
+
+        switches.clear();
+        switches.addAll(oldState);
+
+        drawCircuit();
+    }
+
+    public void animacaoTabela() {
+        // Cria um thread
+        Thread myThread = new Thread(() -> {
+            ArrayList<Switch> oldState = new ArrayList<Switch>();
+            for (Switch s : switches) {
+                oldState.add(new Switch(s.getState(), s.getName(), s.getXY()[0], s.getXY()[1], s.getLegend()));
+            }
+
+            int numSwitches = switches.size();
+            int numCombinations = (int) Math.pow(2, numSwitches);
+
+            for (int i = 0; i < numCombinations; i++) {
+                for (int j = 0; j < numSwitches; j++) {
+                    boolean state = extractBit(i, j);
+                    switches.get(j).setState(state);
+                }
+
+                try {
+                    Thread th = drawCircuitAnimation(true);
+                    th.join(); // Aguarda a conclusão do thread
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            switches.clear();
+            switches.addAll(oldState);
+
+            drawCircuit();
+        });
+
+        myThread.start();
+
     }
 
 }

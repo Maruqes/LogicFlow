@@ -177,6 +177,10 @@ public class Parser implements CmdProcessor {
             return moveFunc(tokens);
         } else if (tokens.get(0).equals("remove")) {
             return removeFunc(tokens);
+        } else if (tokens.get(0).equals("tabela")) {
+            circuit.printTabeldaDaVerdade();
+        } else if (tokens.get(0).equals("animacaotabela")) {
+            circuit.animacaoTabela();
         } else {
             return "Comando não reconhecido";
         }

@@ -30,7 +30,6 @@ public class Or extends BasicComponent implements IOComponent {
         if (inputs == null) {
             throw new IllegalStateException("OR gate inputs are not set");
         }
-        System.out.println("OR gate inputs are set to ->" + inputs[0] + " " + inputs[1]);
         return inputs[0] || inputs[1];
     }
 

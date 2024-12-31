@@ -31,19 +31,12 @@ public class And extends BasicComponent implements IOComponent {
         if (inputs == null) {
             throw new IllegalStateException("AND gate inputs are not set");
         }
-        System.out.println("AND gate inputs are set to ->" + inputs[0] + " " + inputs[1]);
         return inputs[0] && inputs[1];
     }
 
     @Override
     public void setUsedPin(LCInputPin pin) {
         if (pin == LCInputPin.PIN_A) {
-            System.out.println("Pin A");
-            System.out.println("Pin A");
-            System.out.println("Pin A");
-            System.out.println("Pin A");
-            System.out.println("Pin A");
-
             pins[0] = true;
         } else if (pin == LCInputPin.PIN_B) {
             pins[1] = true;
