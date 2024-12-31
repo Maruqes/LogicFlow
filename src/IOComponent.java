@@ -16,4 +16,6 @@ public interface IOComponent {
     public int maxInput();
 
     public int maxOutput();
+
+    public String Strigonize();
 }

@@ -15,4 +15,6 @@ public interface BasicComponentInterface {
 
     public LCComponent getType();
 
+    public String Strigonize();
+
 }

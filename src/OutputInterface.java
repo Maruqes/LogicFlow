@@ -12,4 +12,6 @@ public interface OutputInterface {
     public void setUsedPin(LCInputPin pin);
 
     public String getName();
+
+    public String Strigonize();
 }
