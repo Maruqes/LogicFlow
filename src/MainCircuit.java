@@ -17,6 +17,28 @@ public class MainCircuit {
         wires = new ArrayList<Wire>();
     }
 
+    private boolean block_same_names(String name) {
+        for (int i = 0; i < switches.size(); i++) {
+            if (switches.get(i).getName().equalsIgnoreCase(name)) {
+                return true;
+            }
+        }
+
+        for (int i = 0; i < components.size(); i++) {
+            if (components.get(i).getName().equalsIgnoreCase(name)) {
+                return true;
+            }
+        }
+
+        for (int i = 0; i < outputs.size(); i++) {
+            if (outputs.get(i).getName().equalsIgnoreCase(name)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Draw a component that has no state
      * 
@@ -27,6 +49,9 @@ public class MainCircuit {
      * @param legenda legend
      */
     public void add(LCComponent cmp, String nome, int x, int y, String legenda) {
+        if (block_same_names(nome)) {
+            throw new IllegalArgumentException("Name already exists");
+        }
         if (cmp == LCComponent.AND) {
             And and1 = new And(nome, x, y, legenda);
             components.add(and1);
@@ -61,6 +86,9 @@ public class MainCircuit {
      * @param legend legend
      */
     public void add(LCComponent cmp, boolean state, String nome, int setX, int setY, String legend) {
+        if (block_same_names(nome)) {
+            throw new IllegalArgumentException("Name already exists");
+        }
         if (cmp == LCComponent.SWITCH) {
             Switch switch1 = new Switch(state, nome, setX, setY, legend);
             switches.add(switch1);
@@ -80,6 +108,9 @@ public class MainCircuit {
      * @param legend legend
      */
     public void add(LCComponent cmp, int value, String nome, int setX, int setY, String legend) {
+        if (block_same_names(nome)) {
+            throw new IllegalArgumentException("Name already exists");
+        }
         if (cmp == LCComponent.BIT3_DISPLAY) {
             Display3bit display1 = new Display3bit(value, nome, setX, setY, legend);
             outputs.add(display1);
