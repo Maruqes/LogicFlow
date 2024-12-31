@@ -53,11 +53,11 @@ public class MainCircuit {
     /**
      * Draw a component that has no state
      * 
-     * @param cmp     Component type from LCComponent (SWITCH)
-     * @param state   state
-     * @param nome    name
-     * @param setX    coordinate X
-     * @param setY    coordinate Y
+     * @param cmp    Component type from LCComponent (SWITCH)
+     * @param state  state
+     * @param nome   name
+     * @param setX   coordinate X
+     * @param setY   coordinate Y
      * @param legend legend
      */
     public void add(LCComponent cmp, boolean state, String nome, int setX, int setY, String legend) {
@@ -134,6 +134,39 @@ public class MainCircuit {
 
         wires.add(wire);
 
+    }
+
+    public String removeElement(String name) {
+        for (int i = 0; i < wires.size(); i++) {
+            if (wires.get(i).getComponent1().getName().equalsIgnoreCase(name)
+                    || wires.get(i).getComponent2().getName().equalsIgnoreCase(name)) {
+                wires.remove(i);
+                i--;
+            }
+        }
+
+        for (int i = 0; i < switches.size(); i++) {
+            if (switches.get(i).getName().equalsIgnoreCase(name)) {
+                switches.remove(i);
+                return "";
+            }
+        }
+
+        for (int i = 0; i < components.size(); i++) {
+            if (components.get(i).getName().equalsIgnoreCase(name)) {
+                components.remove(i);
+                return "";
+            }
+        }
+
+        for (int i = 0; i < outputs.size(); i++) {
+            if (outputs.get(i).getName().equalsIgnoreCase(name)) {
+                outputs.remove(i);
+                return "";
+            }
+        }
+
+        return "Error: Element not found";
     }
 
     public void printAllNames() {

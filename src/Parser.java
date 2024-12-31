@@ -124,6 +124,22 @@ public class Parser implements CmdProcessor {
         return err;
     }
 
+    private String removeFunc(ArrayList<String> tokens) {
+        if (tokens.size() < 2) {
+            return "Error: Missing required parameters for turn function";
+        }
+        String err = "";
+        String nome = tokens.get(1);
+
+        try {
+            err = circuit.removeElement(nome);
+            circuit.drawCircuit();
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+        return err;
+    }
+
     // return error message
     private String handleTokens(ArrayList<String> tokens) {
         System.out.println(tokens.size());
@@ -137,6 +153,8 @@ public class Parser implements CmdProcessor {
             return turnFunc(tokens);
         } else if (tokens.get(0).equals("save")) {
         } else if (tokens.get(0).equals("open")) {
+        } else if (tokens.get(0).equals("remove")) {
+            return removeFunc(tokens);
         } else {
             return "Comando não reconhecido";
         }
