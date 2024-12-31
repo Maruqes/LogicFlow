@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import logicircuit.CmdProcessor;
-import logicircuit.LCComponent;
 
 public class Parser implements CmdProcessor {
     @FunctionalInterface

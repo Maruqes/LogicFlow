@@ -16,4 +16,6 @@ public interface OutputInterface {
     public String Strigonize();
 
     public void setPosition(int x, int y);
+
+    public void PrintAllInfo();
 }

@@ -61,4 +61,10 @@ public class Not extends BasicComponent implements IOComponent {
         return 1;
     }
 
+    @Override
+    public void PrintAllInfo() {
+        System.out.println("Not: " + this.getName() + " " + this.getXY()[0] + " " + this.getXY()[1] + " "
+                + this.getLegend());
+    }
+
 }

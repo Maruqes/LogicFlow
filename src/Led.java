@@ -61,4 +61,10 @@ public class Led extends BasicComponent implements OutputInterface {
         pin1 = true;
     }
 
+    @Override
+    public void PrintAllInfo() {
+        System.out.println("Led: " + super.getName() + " " + getValue() + " " + super.getXY()[0] + " "
+                + super.getXY()[1] + " " + super.getLegend());
+    }
+
 }

@@ -83,11 +83,7 @@ public class Wire {
     }
 
     public void PrintAllInfo() {
-        System.out.println("\n\nWire");
-        System.out.println("State: " + state);
-        System.out.println("Component1: " + component1.getName());
-        System.out.println("Component2: " + component2.getName());
-        System.out.println("Pin: " + pin + "\n\n");
+        System.out.println("Wire: " + component1.getName() + " " + component2.getName() + " " + pin);
     }
 
     public static LCInputPin getWithNome(String pin) {

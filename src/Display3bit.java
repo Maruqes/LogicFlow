@@ -87,4 +87,10 @@ public class Display3bit extends BasicComponent implements OutputInterface {
         return number;
     }
 
+    @Override
+    public void PrintAllInfo() {
+        System.out.println("Display3bit: " + super.getName() + " " + getValue() + " " + super.getXY()[0] + " "
+                + super.getXY()[1] + " " + super.getLegend());
+    }
+
 }

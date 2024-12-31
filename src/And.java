@@ -65,6 +65,12 @@ public class And extends BasicComponent implements IOComponent {
     public int maxOutput() {
         return 1;
     }
+
+    @Override
+    public void PrintAllInfo() {
+        System.out.println("And: " + super.getName() + " " + super.getXY()[0] + " " + super.getXY()[1] + " "
+                + super.getLegend());
+    }
 }
 
 //

@@ -65,4 +65,10 @@ public class Nor extends BasicComponent implements IOComponent {
         return 1;
     }
 
+    @Override
+    public void PrintAllInfo() {
+        System.out.println(
+                "NOR: " + super.getName() + " " + super.getXY()[0] + " " + super.getXY()[1] + " " + super.getLegend());
+    }
+
 }

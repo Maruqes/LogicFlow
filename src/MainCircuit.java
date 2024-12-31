@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.security.cert.CertPathValidatorException.BasicReason;
 
 import logicircuit.LCComponent;
 import logicircuit.LCInputPin;
@@ -595,6 +594,28 @@ public class MainCircuit {
 
         myThread.start();
 
+    }
+
+    public void printAllInfo() {
+        System.out.println("\n\nSwitches");
+        for (Switch s : switches) {
+            s.PrintAllInfo();
+        }
+
+        System.out.println("\n\nComponents");
+        for (IOComponent c : components) {
+            c.PrintAllInfo();
+        }
+
+        System.out.println("\n\nOutputs");
+        for (OutputInterface o : outputs) {
+            o.PrintAllInfo();
+        }
+
+        System.out.println("\n\nWires");
+        for (Wire w : wires) {
+            w.PrintAllInfo();
+        }
     }
 
 }

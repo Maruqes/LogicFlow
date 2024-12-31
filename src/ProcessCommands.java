@@ -38,6 +38,12 @@ public class ProcessCommands extends Parser {
         HandleTokensInterface removeFunc = (tokensVar) -> removeFunc(tokensVar);
         commands.put("remove", removeFunc);
 
+        HandleTokensInterface printAll = (tokensVar) -> {
+            circuit.printAllInfo();
+            return "";
+        };
+        commands.put("printall", printAll);
+
         HandleTokensInterface tabelaFunc = (tokensVar) -> {
             circuit.printTabeldaDaVerdade();
             return "";
@@ -190,12 +196,10 @@ public class ProcessCommands extends Parser {
         }
 
         if (commands != null && commands.containsKey(tokens.get(0))) {
-            commands.get(tokens.get(0)).handleTokensFunc(tokens);
+            return commands.get(tokens.get(0)).handleTokensFunc(tokens);
         } else {
             return "Error: Command not found";
         }
-
-        return "";
     }
 
 }

@@ -52,4 +52,9 @@ public class Switch extends BasicComponent {
                 + "//" + super.getLegend();
     }
 
+    public void PrintAllInfo() {
+        System.out.println("Switch: " + super.getName() + " " + getState() + " " + super.getXY()[0] + " "
+                + super.getXY()[1] + " " + super.getLegend());
+    }
+
 }
