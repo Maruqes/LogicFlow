@@ -90,9 +90,10 @@ public class BasicComponent implements BasicComponentInterface {
             throw new IllegalArgumentException("Invalid value");
         }
     }
-//cmp, String nome, int x, int y, String legenda
+
+    // cmp, String nome, int x, int y, String legenda
     @Override
     public String Strigonize() {
-        return "cmp//" + ourCmp + "//x" + setX + "//y" + setY + "//legend" + legend;
+        return "BasicCmp//" + ourCmp + "//" + setX + "//" + setY + "//" + legend;
     }
 }
