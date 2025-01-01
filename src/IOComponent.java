@@ -9,6 +9,8 @@ public interface IOComponent {
 
     public boolean allowPin(LCInputPin pin);
 
+    public void setNotUsedPin(LCInputPin pin);
+
     public void setUsedPin(LCInputPin pin);
 
     public String getName();

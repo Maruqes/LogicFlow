@@ -35,6 +35,17 @@ public class And extends BasicComponent implements IOComponent {
     }
 
     @Override
+    public void setNotUsedPin(LCInputPin pin) {
+        if (pin == LCInputPin.PIN_A) {
+            pins[0] = false;
+        } else if (pin == LCInputPin.PIN_B) {
+            pins[1] = false;
+        } else {
+            throw new IllegalArgumentException("AND gate has only 2 input pins");
+        }
+    }
+
+    @Override
     public void setUsedPin(LCInputPin pin) {
         if (pin == LCInputPin.PIN_A) {
             pins[0] = true;

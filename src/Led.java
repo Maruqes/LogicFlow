@@ -67,4 +67,12 @@ public class Led extends BasicComponent implements OutputInterface {
                 + super.getXY()[1] + " " + super.getLegend());
     }
 
+    @Override
+    public void setNotUsedPin(LCInputPin pin) {
+        if (pin != LCInputPin.PIN_A) {
+            throw new IllegalArgumentException("Invalid pin");
+        }
+        pin1 = false;
+    }
+
 }

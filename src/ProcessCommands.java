@@ -148,8 +148,22 @@ public class ProcessCommands extends Parser {
     }
 
     private String deWirefunc(ArrayList<String> tokens) {
-        // todo
-        return "";
+        String err = "";
+        if (tokens.size() < 4) {
+            return "Error: Missing required parameters for wire function";
+        }
+
+        String from = tokens.get(1);
+        String to = tokens.get(2);
+        String pin = tokens.get(3);
+
+        try {
+            circuit.dewire(from, to, Wire.getWithNome(pin));
+            circuit.drawCircuit();
+        } catch (Exception e) {
+            err = e.getMessage();
+        }
+        return err;
     }
 
     private String turnFunc(ArrayList<String> tokens) {

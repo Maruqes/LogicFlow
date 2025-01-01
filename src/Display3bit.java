@@ -93,4 +93,17 @@ public class Display3bit extends BasicComponent implements OutputInterface {
                 + super.getXY()[1] + " " + super.getLegend());
     }
 
+    @Override
+    public void setNotUsedPin(LCInputPin pin) {
+        if (pin == LCInputPin.PIN_A) {
+            pins[0] = false;
+        } else if (pin == LCInputPin.PIN_B) {
+            pins[1] = false;
+        } else if (pin == LCInputPin.PIN_C) {
+            pins[2] = false;
+        } else {
+            throw new IllegalArgumentException("Invalid pin");
+        }
+    }
+
 }

@@ -34,6 +34,15 @@ public class Not extends BasicComponent implements IOComponent {
     }
 
     @Override
+    public void setNotUsedPin(LCInputPin pin) {
+        if (pin == LCInputPin.PIN_A) {
+            pins[0] = false;
+        } else {
+            throw new IllegalArgumentException("Not gate has only 1 input pin");
+        }
+    }
+
+    @Override
     public void setUsedPin(LCInputPin pin) {
         if (pin == LCInputPin.PIN_A) {
             pins[0] = true;

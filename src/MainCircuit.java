@@ -174,6 +174,32 @@ public class MainCircuit {
 
     }
 
+    public void dewire(String from, String to, LCInputPin pin) throws IllegalArgumentException {
+
+        for (int i = 0; i < wires.size(); i++) {
+            if (wires.get(i).getComponent1().getName().equalsIgnoreCase(from)
+                    && wires.get(i).getComponent2().getName().equalsIgnoreCase(to)
+                    && wires.get(i).getPin() == pin) {
+                if (wires.get(i).getComponent2() instanceof OutputInterface) {
+                    OutputInterface o = (OutputInterface) wires.get(i).getComponent2();
+                    o.setNotUsedPin(pin);
+                    wires.remove(i);
+                    return;
+
+                } else if (wires.get(i).getComponent2() instanceof IOComponent) {
+                    IOComponent c = (IOComponent) wires.get(i).getComponent2();
+                    c.setNotUsedPin(pin);
+                    wires.remove(i);
+                    return;
+                } else {
+                    throw new IllegalArgumentException("Invalid value or problem with dewire");
+                }
+
+            }
+        }
+        throw new IllegalArgumentException("Not found");
+    }
+
     public String save(String filename) {
         try {
             Files.createDirectories(Paths.get("./saves"));

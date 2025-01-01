@@ -101,4 +101,8 @@ public class Wire {
     public String Strigonize() {
         return "Wire//" + component1.getName() + "//" + component2.getName() + "//" + pin;
     }
+
+    public LCInputPin getPin() {
+        return pin;
+    }
 }
