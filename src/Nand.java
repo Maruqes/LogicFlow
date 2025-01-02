@@ -82,4 +82,8 @@ public class Nand extends BasicComponent implements IOComponent {
                 + super.getLegend());
     }
 
+    @Override   
+    public IOComponent clone() {
+        return new Nand(this.getName(), this.getXY()[0], this.getXY()[1], this.getLegend());
+    }
 }

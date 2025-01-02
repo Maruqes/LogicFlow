@@ -81,5 +81,8 @@ public class Or extends BasicComponent implements IOComponent {
         System.out.println(
                 "Or: " + super.getName() + " " + super.getXY()[0] + " " + super.getXY()[1] + " " + super.getLegend());
     }
-
+    @Override   
+    public IOComponent clone()  {
+        return new Or(this.getName(), this.getXY()[0], this.getXY()[1], this.getLegend());
+    }
 }

@@ -82,4 +82,9 @@ public class Nor extends BasicComponent implements IOComponent {
                 "NOR: " + super.getName() + " " + super.getXY()[0] + " " + super.getXY()[1] + " " + super.getLegend());
     }
 
+    @Override   
+    public IOComponent clone() {
+        return new Nor(this.getName(), this.getXY()[0], this.getXY()[1], this.getLegend());
+    }
+
 }

@@ -45,6 +45,12 @@ public class ProcessCommands extends Parser {
         HandleTokensInterface validateCircuitInter = (tokensVar) -> validateCircuit(tokensVar);
         commands.put("validatecircuit", validateCircuitInter);
 
+        HandleTokensInterface undoFunc = (tokensVar) -> undoCircuit(tokensVar);
+        commands.put("undo", undoFunc);
+
+        HandleTokensInterface redoFunc = (tokensVar) -> redoCircuit(tokensVar);
+        commands.put("redo", redoFunc);
+
         HandleTokensInterface printAll = (tokensVar) -> {
             circuit.printAllInfo();
             return "";
@@ -65,6 +71,7 @@ public class ProcessCommands extends Parser {
 
         HandleTokensInterface clearFunc = (tokensVar) -> {
             circuit.clear();
+            saveCurrentState();
             return "";
         };
         commands.put("clear", clearFunc);
@@ -91,6 +98,43 @@ public class ProcessCommands extends Parser {
         };
         commands.put("screen", screenWH);
 
+    }
+
+    private ArrayList<MainCircuit> redoHistory = new ArrayList<>();
+    private ArrayList<MainCircuit> circuitsHistory = new ArrayList<>();
+
+    public void saveCurrentState() {
+        if (circuitsHistory == null) {
+            circuitsHistory = new ArrayList<>();
+        }
+        circuitsHistory.add(circuit.clone());
+        redoHistory.clear(); // limpa o redo
+    }
+
+    private String undoCircuit(ArrayList<String> tokens) {
+        if (circuitsHistory == null || circuitsHistory.size() <= 1) {
+            return "Error: No history to undo.";
+        }
+
+        redoHistory.add(circuit.clone()); // salva o estado atual para o redo
+
+        // reverte
+        circuitsHistory.remove(circuitsHistory.size() - 1); // remove o estado atual
+        circuit = circuitsHistory.get(circuitsHistory.size() - 1); // vai pra o ultimo estado
+        circuit.drawCircuit();
+        return "Undo successful.";
+    }
+
+    private String redoCircuit(ArrayList<String> tokens) {
+        if (redoHistory.isEmpty()) {
+            return "Error: No history to redo.";
+        }
+
+        circuitsHistory.add(circuit.clone()); // salva o atual para o undo
+
+        circuit = redoHistory.remove(redoHistory.size() - 1); // vai para o ultimo estado do redo
+        circuit.drawCircuit();
+        return "Redo successful.";
     }
 
     public void addComands(HashMap<String, HandleTokensInterface> commands) {
@@ -128,6 +172,7 @@ public class ProcessCommands extends Parser {
         } catch (Exception e) {
             err = e.getMessage();
         }
+        saveCurrentState();
         return err;
     }
 
@@ -147,6 +192,7 @@ public class ProcessCommands extends Parser {
         } catch (Exception e) {
             err = e.getMessage();
         }
+        saveCurrentState();
         return err;
     }
 
@@ -166,6 +212,7 @@ public class ProcessCommands extends Parser {
         } catch (Exception e) {
             err = e.getMessage();
         }
+        saveCurrentState();
         return err;
     }
 
@@ -183,6 +230,7 @@ public class ProcessCommands extends Parser {
         } catch (Exception e) {
             return e.getMessage();
         }
+        saveCurrentState();
         return err;
     }
 
@@ -199,6 +247,7 @@ public class ProcessCommands extends Parser {
         } catch (Exception e) {
             return e.getMessage();
         }
+        saveCurrentState();
         return err;
     }
 
@@ -217,6 +266,7 @@ public class ProcessCommands extends Parser {
         } catch (Exception e) {
             return e.getMessage();
         }
+        saveCurrentState();
         return err;
     }
 

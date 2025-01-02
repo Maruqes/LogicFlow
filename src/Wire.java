@@ -105,4 +105,8 @@ public class Wire {
     public LCInputPin getPin() {
         return pin;
     }
+
+    public Wire clone() {
+        return new Wire(component1.cloneCMP(), component2.cloneCMP(), pin);
+    }
 }

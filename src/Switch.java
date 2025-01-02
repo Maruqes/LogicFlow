@@ -57,4 +57,8 @@ public class Switch extends BasicComponent {
                 + super.getXY()[1] + " " + super.getLegend());
     }
 
+    public Switch clone() {
+        return new Switch(this.state, this.getName(), this.getXY()[0], this.getXY()[1], this.getLegend());
+    }
+
 }

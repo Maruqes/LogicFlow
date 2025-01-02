@@ -1,3 +1,4 @@
+import logicircuit.LCComponent;
 import logicircuit.LCInputPin;
 
 public interface IOComponent {
@@ -24,4 +25,12 @@ public interface IOComponent {
     public void setPosition(int x, int y);
 
     public void PrintAllInfo();
+
+    public IOComponent clone();
+
+    public LCComponent getType();
+
+    public int[] getXY();
+
+    public String getLegend();
 }

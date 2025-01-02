@@ -81,4 +81,9 @@ public class Xor extends BasicComponent implements IOComponent {
         System.out.println("Xor: " + super.getName() + " " + super.getXY()[0] + " " + super.getXY()[1] + " "
                 + super.getLegend());
     }
+
+    @Override
+    public IOComponent clone() {
+        return new Xor(super.getName(), super.getXY()[0], super.getXY()[1], super.getLegend());
+    }
 }

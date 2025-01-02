@@ -76,4 +76,9 @@ public class Not extends BasicComponent implements IOComponent {
                 + this.getLegend());
     }
 
+    @Override   
+    public IOComponent clone() {
+        return new Not(this.getName(), this.getXY()[0], this.getXY()[1], this.getLegend());
+    }
+
 }

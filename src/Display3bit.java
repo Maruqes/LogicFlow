@@ -106,4 +106,9 @@ public class Display3bit extends BasicComponent implements OutputInterface {
         }
     }
 
+    @Override
+    public OutputInterface clone() {
+        return new Display3bit(this.getValue(), this.getName(), this.getXY()[0], this.getXY()[1], this.getLegend());
+    }
+
 }

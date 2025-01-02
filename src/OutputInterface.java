@@ -1,3 +1,4 @@
+import logicircuit.LCComponent;
 import logicircuit.LCInputPin;
 
 public interface OutputInterface {
@@ -20,4 +21,12 @@ public interface OutputInterface {
     public void setPosition(int x, int y);
 
     public void PrintAllInfo();
+
+    public OutputInterface clone();
+
+    public LCComponent getType();
+
+    public int[] getXY();
+
+    public String getLegend();
 }

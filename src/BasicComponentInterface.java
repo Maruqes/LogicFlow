@@ -17,4 +17,5 @@ public interface BasicComponentInterface {
 
     public String Strigonize();
 
+    public BasicComponentInterface cloneCMP();
 }

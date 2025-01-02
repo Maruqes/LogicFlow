@@ -702,4 +702,24 @@ public class MainCircuit {
         return false;
     }
 
+    public MainCircuit clone() {
+        MainCircuit newCircuit = new MainCircuit();
+        for (Switch s : switches) {
+            newCircuit.add(LCComponent.SWITCH, s.getState(), s.getName(), s.getXY()[0], s.getXY()[1], s.getLegend());
+        }
+
+        for (IOComponent c : components) {
+            newCircuit.add(c.getType(), c.getName(), c.getXY()[0], c.getXY()[1], c.getLegend());
+        }
+
+        for (OutputInterface o : outputs) {
+            newCircuit.add(o.getType(), o.getValue(), o.getName(), o.getXY()[0], o.getXY()[1], o.getLegend());
+        }
+
+        for (Wire w : wires) {
+            newCircuit.wire(w.getComponent1().getName(), w.getComponent2().getName(), w.getPin());
+        }
+
+        return newCircuit;
+    }
 }

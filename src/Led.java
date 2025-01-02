@@ -75,4 +75,9 @@ public class Led extends BasicComponent implements OutputInterface {
         pin1 = false;
     }
 
+    @Override
+    public OutputInterface clone() {
+        return new Led(this.value, this.getName(), this.getXY()[0], this.getXY()[1], this.getLegend());
+    }
+
 }
