@@ -33,7 +33,7 @@ public class Main {
             SCREEN_HEIGHT = Integer.parseInt(args[1]);
         }
 
-        Language parser = new Language(circuit);
+        ProcessCommands parser = new ProcessCommands(circuit);
         LCDFrameCmd frame = new LCDFrameCmd(parser, "LogicFlow", SCREEN_WIDTH, 700);
         drawPannel = frame.drawPanel();
         drawPannel.clear();
