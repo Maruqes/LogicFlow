@@ -5,6 +5,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 /**
  * A window with a panel to draw the circuit and a text filed to read commands.
@@ -21,7 +23,9 @@ public class LCDFrameCmd {
 
     /**
      * Constructs a new LCDFrameCmd with default title and size
-     * @param processor The object whose process method is invoked when the enter key is pressed.
+     * 
+     * @param processor The object whose process method is invoked when the enter
+     *                  key is pressed.
      */
     public LCDFrameCmd(CmdProcessor processor) {
         this(processor, "Simulador de circuito lógico", WIDTH_DEFAULT, HEIGHT_DEFAULT);
@@ -29,19 +33,24 @@ public class LCDFrameCmd {
 
     /**
      * Constructs a new LCDFrameCmd with default size and specified title
-     * @param processor The object whose process method is invoked when the enter key is pressed.
-     * @param title the title to be displayed in the frame's border.
+     * 
+     * @param processor The object whose process method is invoked when the enter
+     *                  key is pressed.
+     * @param title     the title to be displayed in the frame's border.
      */
     public LCDFrameCmd(CmdProcessor processor, String title) {
         this(processor, title, WIDTH_DEFAULT, HEIGHT_DEFAULT);
     }
 
     /**
-     * Constructs a new LCDFrameCmd with specified title and has width width and height height
-     * @param processor The object whose process method is invoked when the enter key is pressed.
-     * @param title the title to be displayed in the frame's border.
-     * @param width the width of the frame in pixels
-     * @param height the height of the frame in pixels
+     * Constructs a new LCDFrameCmd with specified title and has width width and
+     * height height
+     * 
+     * @param processor The object whose process method is invoked when the enter
+     *                  key is pressed.
+     * @param title     the title to be displayed in the frame's border.
+     * @param width     the width of the frame in pixels
+     * @param height    the height of the frame in pixels
      */
     public LCDFrameCmd(CmdProcessor processor, String title, int width, int height) {
         this.frame = new JFrame(title);
@@ -57,7 +66,8 @@ public class LCDFrameCmd {
         cmdPanel.setBorder(new EmptyBorder(PADDING_DEFAULT, PADDING_DEFAULT, PADDING_DEFAULT, PADDING_DEFAULT));
         cmdPanel.setLayout(new BorderLayout(PADDING_DEFAULT, PADDING_DEFAULT));
         // Create labels for title and prompt
-        JLabel titleLabel = new JLabel("Introduzir comando (seguido de Enter) - Comando EXIT para terminar", SwingConstants.LEFT);
+        JLabel titleLabel = new JLabel("Introduzir comando (seguido de Enter) - Comando EXIT para terminar",
+                SwingConstants.LEFT);
         titleLabel.setPreferredSize(new Dimension(width, 20));
         cmdPanel.add(titleLabel, BorderLayout.NORTH);
         JLabel promptLabel = new JLabel("> ", SwingConstants.LEFT);
@@ -93,14 +103,37 @@ public class LCDFrameCmd {
             }
         });
 
-        this.frame.setPreferredSize(new Dimension(width, height+80));
-        this.frame.pack(); // Sizes the frame so that all its contents are at or above their preferred sizes
+        this.frame.setPreferredSize(new Dimension(width, height + 80));
+        this.frame.pack(); // Sizes the frame so that all its contents are at or above their preferred
+                           // sizes
         this.frame.setLocationRelativeTo(null); // Centers the frame on the screen
         this.frame.setVisible(true);
     }
 
+    public void setMinimumSize(Dimension dimension) {
+        this.frame.setMinimumSize(dimension);
+    }
+
+    @FunctionalInterface
+    public interface ResizeCallback {
+        void onResize(int width, int height);
+    }
+
+    // Método que aceita uma função como callback
+    public void windowResizingCallback(LCDFrameCmd frame, ResizeCallback callback) {
+        frame.frame.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                Dimension newSize = frame.frame.getSize();
+                callback.onResize(newSize.width, newSize.height);
+            }
+        });
+    }
+
     /**
-     * Return the drawing panel object (LCDPanel) to be used to draw components and connection
+     * Return the drawing panel object (LCDPanel) to be used to draw components and
+     * connection
+     * 
      * @return the drawing object panel of the frame
      */
     public LCDPanel drawPanel() {
