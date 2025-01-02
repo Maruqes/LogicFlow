@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.io.BufferedWriter;
 import java.io.BufferedReader;
 import java.io.FileWriter;
@@ -642,6 +643,63 @@ public class MainCircuit {
         for (Wire w : wires) {
             w.PrintAllInfo();
         }
+    }
+
+    public String validateCircuit() {
+        // Check for inputs and outputs
+        if (switches.isEmpty()) {
+            return "Erro: O circuito não possui nenhuma entrada (Switch).";
+        }
+        if (outputs.isEmpty()) {
+            return "Erro: O circuito não possui nenhuma saída (LED ou Display).";
+        }
+
+        HashSet<BasicComponentInterface> visited = new HashSet<>();
+        boolean hasCycle = false;
+
+        for (IOComponent component : components) {
+            BasicComponentInterface basicComponent = (BasicComponentInterface) component;
+            if (!visited.contains(basicComponent)) {
+                hasCycle = hasCycle || detectCicle(basicComponent, visited, new HashSet<>());
+            }
+        }
+
+        if (hasCycle) {
+            return "Erro: O circuito possui loops infinitos.";
+        }
+
+        return "Circuito válido!";
+    }
+
+    private boolean detectCicle(BasicComponentInterface component, HashSet<BasicComponentInterface> visited,
+            HashSet<BasicComponentInterface> currentPath) {
+        if (currentPath.contains(component)) {
+            // Cycle detected
+            return true;
+        }
+
+        if (visited.contains(component)) {
+            // Already fully explored
+            return false;
+        }
+
+        visited.add(component);
+        currentPath.add(component);
+
+        // Explore connected components
+        for (Wire wire : wires) {
+            if (wire.getComponent1().equals(component)) {
+                BasicComponentInterface nextComponent = wire.getComponent2();
+                if (detectCicle(nextComponent, visited, currentPath)) {
+                    return true;
+                }
+            }
+        }
+
+        // remove to avoid false positives
+        currentPath.remove(component);
+
+        return false;
     }
 
 }

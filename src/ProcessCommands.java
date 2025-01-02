@@ -42,6 +42,9 @@ public class ProcessCommands extends Parser {
         HandleTokensInterface removeFunc = (tokensVar) -> removeFunc(tokensVar);
         commands.put("remove", removeFunc);
 
+        HandleTokensInterface validateCircuitInter = (tokensVar) -> validateCircuit(tokensVar);
+        commands.put("validatecircuit", validateCircuitInter);
+
         HandleTokensInterface printAll = (tokensVar) -> {
             circuit.printAllInfo();
             return "";
@@ -245,6 +248,10 @@ public class ProcessCommands extends Parser {
         } else {
             return "Error: Command not found";
         }
+    }
+
+    private String validateCircuit(ArrayList<String> tokens) {
+        return circuit.validateCircuit();
     }
 
 }
