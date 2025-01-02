@@ -7,9 +7,10 @@ import logicircuit.LCComponent;
 public class ProcessCommands extends Parser {
 
     private HashMap<String, HandleTokensInterface> commands;
+    public MainCircuit circuit;
 
     public ProcessCommands(MainCircuit circuit) {
-        super(circuit);
+        this.circuit = circuit;
 
         HandleTokensInterface handleTokensInterface = tokens -> {
             return handleTokens(tokens);
@@ -72,6 +73,7 @@ public class ProcessCommands extends Parser {
         HandleTokensInterface clearFunc = (tokensVar) -> {
             circuit.clear();
             saveCurrentState();
+            circuit.drawCircuit();
             return "";
         };
         commands.put("clear", clearFunc);
@@ -104,11 +106,11 @@ public class ProcessCommands extends Parser {
     private ArrayList<MainCircuit> circuitsHistory = new ArrayList<>();
 
     public void saveCurrentState() {
-        if (circuitsHistory == null) {
-            circuitsHistory = new ArrayList<>();
-        }
-        circuitsHistory.add(circuit.clone());
-        redoHistory.clear(); // limpa o redo
+        // if (circuitsHistory == null) {
+        // circuitsHistory = new ArrayList<>();
+        // }
+        // circuitsHistory.add(circuit.clone());
+        // redoHistory.clear(); // limpa o redo
     }
 
     private String undoCircuit(ArrayList<String> tokens) {
@@ -168,11 +170,11 @@ public class ProcessCommands extends Parser {
             } else {
                 circuit.add(type, nome, x, y, legends);
             }
+            saveCurrentState();
             circuit.drawCircuit();
         } catch (Exception e) {
             err = e.getMessage();
         }
-        saveCurrentState();
         return err;
     }
 
@@ -188,11 +190,11 @@ public class ProcessCommands extends Parser {
 
         try {
             circuit.wire(from, to, Wire.getWithNome(pin));
+            saveCurrentState();
             circuit.drawCircuit();
         } catch (Exception e) {
             err = e.getMessage();
         }
-        saveCurrentState();
         return err;
     }
 
@@ -208,11 +210,11 @@ public class ProcessCommands extends Parser {
 
         try {
             circuit.dewire(from, to, Wire.getWithNome(pin));
+            saveCurrentState();
             circuit.drawCircuit();
         } catch (Exception e) {
             err = e.getMessage();
         }
-        saveCurrentState();
         return err;
     }
 
@@ -226,11 +228,11 @@ public class ProcessCommands extends Parser {
 
         try {
             err = circuit.turn(onOff, nome);
+            saveCurrentState();
             circuit.drawCircuit();
         } catch (Exception e) {
             return e.getMessage();
         }
-        saveCurrentState();
         return err;
     }
 
@@ -243,11 +245,11 @@ public class ProcessCommands extends Parser {
 
         try {
             err = circuit.removeElement(nome);
+            saveCurrentState();
             circuit.drawCircuit();
         } catch (Exception e) {
             return e.getMessage();
         }
-        saveCurrentState();
         return err;
     }
 
@@ -262,11 +264,11 @@ public class ProcessCommands extends Parser {
 
         try {
             err = circuit.move(nome, Integer.parseInt(x), Integer.parseInt(y));
+            saveCurrentState();
             circuit.drawCircuit();
         } catch (Exception e) {
             return e.getMessage();
         }
-        saveCurrentState();
         return err;
     }
 

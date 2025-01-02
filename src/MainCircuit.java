@@ -426,11 +426,10 @@ public class MainCircuit {
         setSwitchesWire();
 
         // automaticamente os componentes
-        for (int i = 0; i < components.size(); i++) {
+        for (int i = 0; i < components.size() + 1; i++) {
             setWires();
             setComponent();
         }
-
         setOutputs();
     }
 
@@ -473,7 +472,7 @@ public class MainCircuit {
             Thread.sleep(700);
 
             // Atualiza automaticamente os componentes
-            for (int i = 0; i < components.size(); i++) {
+            for (int i = 0; i < components.size() + 1; i++) {
                 setWires();
                 setComponent();
                 setOutputs();

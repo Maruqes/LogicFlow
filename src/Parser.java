@@ -12,13 +12,8 @@ public class Parser implements CmdProcessor {
     private Character[] tokens = { ';', ' ', '(', ')', '{', '}', '[', ']', ',', '.', ':', '=', '+', '-', '*', '/', '%',
             '!', '<', '>', '&', '|', '^', '~', '?', '@', '#', '$', '\'', '"', '\\', '\n', '\t', '\r', '"' };
     private int tokenIndex = 0;
-    public MainCircuit circuit;
 
     private HandleTokensInterface handleTokensInterface;
-
-    public Parser(MainCircuit circuit) {
-        this.circuit = circuit;
-    }
 
     public void setHandleTokensInterface(HandleTokensInterface handleTokensInterface) {
         this.handleTokensInterface = handleTokensInterface;
