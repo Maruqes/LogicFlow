@@ -22,6 +22,16 @@ public class Main {
     public static int SCREEN_WIDTH = 900;
     public static int SCREEN_HEIGHT = 700;
 
+    public static void DRAW_ALL_STUFF(MainCircuit circuit) {
+        Timer timer = new Timer(10, e -> {
+            drawPannel.clear();
+            Menu.drawAllMenus();
+            circuit.drawCircuit();
+            ((Timer) e.getSource()).stop();
+        });
+        timer.start();
+    }
+
     public static void restartProgram(String... newArgs) throws IOException {
         String javaBin = System.getProperty("java.home") + "/bin/java";
         String classPath = System.getProperty("java.class.path");
@@ -84,12 +94,11 @@ public class Main {
                 int y2 = xy2[1];
                 if (x2 < LeftMenuWidth) {
                     circuit.removeElement(cmp.getName());
-                    drawPannel.clear();
-                    circuit.drawCircuit();
+                    DRAW_ALL_STUFF(circuit);
                     return;
                 }
                 cmp.setPosition(x2, y2);
-                circuit.drawCircuit();
+                DRAW_ALL_STUFF(circuit);
 
             });
             timer.start();
@@ -108,7 +117,7 @@ public class Main {
         if (selectedComponentWire1 instanceof Switch) {
             Switch sw = (Switch) selectedComponentWire1;
             sw.setState(!sw.getState());
-            circuit.drawCircuit();
+            DRAW_ALL_STUFF(circuit);
         }
     }
 
@@ -169,8 +178,11 @@ public class Main {
                 }
                 selectedComponentWire1 = null;
                 selectedComponentWire2 = null;
-                circuit.drawCircuit();
+                DRAW_ALL_STUFF(circuit);
             }
+        } else {
+            selectedComponentWire1 = null;
+            selectedComponentWire2 = null;
         }
     }
 

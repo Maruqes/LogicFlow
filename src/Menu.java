@@ -6,6 +6,7 @@ import logicircuit.LCComponent;
 public class Menu {
 
     private static ArrayList<BasicComponent> components = new ArrayList<>();
+    public static String currentHolderName = "Nothing selected";
 
     public static BasicComponent getLeftClickColision() {
         int xy[] = Main.drawPannel.getMouseXY();
@@ -57,6 +58,7 @@ public class Menu {
         Main.drawPannel.clear();
         drawLeftSideBar();
         drawExampleGates(Main.SCREEN_HEIGHT / 15);
+        Main.drawPannel.drawText(50, -25, currentHolderName);
     }
 
     public static void callBackResize(int width, int height, MainCircuit circuit) {
@@ -115,6 +117,15 @@ public class Menu {
             }
 
         }
+    }
+
+    public static void SetCurrentHolderName(String name) {
+        currentHolderName = name;
+        drawAllMenus();
+    }
+
+    public static void clearCurrentHolderName() {
+        currentHolderName = "Nothing selected";
     }
 
 }

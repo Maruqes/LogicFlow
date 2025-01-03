@@ -275,6 +275,18 @@ public class MainCircuit {
         throw new IllegalArgumentException("Not found");
     }
 
+    public void dewireElement(String name) throws IllegalArgumentException {
+
+        for (int i = 0; i < wires.size(); i++) {
+            if (wires.get(i).getComponent1().getName().equalsIgnoreCase(name)
+                    || wires.get(i).getComponent2().getName().equalsIgnoreCase(name)) {
+                dewire(wires.get(i).getComponent1().getName(), wires.get(i).getComponent2().getName(),
+                        wires.get(i).getPin());
+                i--;
+            }
+        }
+    }
+
     public String save(String filename) {
         try {
             Files.createDirectories(Paths.get("./saves"));
@@ -369,6 +381,8 @@ public class MainCircuit {
     }
 
     public String removeElement(String name) {
+
+        dewireElement(name);
         for (int i = 0; i < wires.size(); i++) {
             if (wires.get(i).getComponent1().getName().equalsIgnoreCase(name)
                     || wires.get(i).getComponent2().getName().equalsIgnoreCase(name)) {
