@@ -168,6 +168,12 @@ public class MainCircuit {
         if (fromType == null || toType == null) {
             throw new IllegalArgumentException("Invalid value for from or to");
         }
+        if (fromType instanceof Led || fromType instanceof Display3bit) {
+            throw new IllegalArgumentException("Invalid value for to");
+        }
+        if (toType instanceof Switch) {
+            throw new IllegalArgumentException("Invalid value for to");
+        }
 
         Wire wire = new Wire(fromType, toType, pin);
 
@@ -340,6 +346,9 @@ public class MainCircuit {
     }
 
     public void setWires() {
+        if (wires.isEmpty()) {
+            return;
+        }
         for (Wire w : wires) {
             for (IOComponent c : components) {
                 if (w.getComponent1().getName().equals(c.getName())) {
@@ -354,6 +363,9 @@ public class MainCircuit {
     }
 
     public void setComponent() {
+        if (components.isEmpty()) {
+            return;
+        }
         for (IOComponent c : components) {
             ArrayList<Boolean> wiresToComponent = new ArrayList<Boolean>();
             for (Wire w : wires) {
@@ -369,11 +381,17 @@ public class MainCircuit {
                 c.setInput(inputs);
             } catch (IllegalArgumentException e) {
                 System.out.println("Error: " + e.getMessage());
+                if (!e.getMessage().contains("gate must have")) {
+                    System.out.println("Error: " + e.getMessage());
+                }
             }
         }
     }
 
     private void setOutputs() {
+        if (outputs.isEmpty()) {
+            return;
+        }
         // manualmente os outputs
         for (OutputInterface o : outputs) {
             ArrayList<Boolean> wiresToOutput = new ArrayList<Boolean>();
@@ -392,6 +410,9 @@ public class MainCircuit {
             }
 
             if (o instanceof Display3bit) {
+                if (wiresToOutput.size() < 3) {
+                    return;
+                }
                 try {
                     o.setValue(Display3bit.getNumberWithPins(wiresToOutput.get(0), wiresToOutput.get(1),
                             wiresToOutput.get(2)));
@@ -403,6 +424,9 @@ public class MainCircuit {
     }
 
     private void setSwitchesWire() {
+        if (wires.isEmpty()) {
+            return;
+        }
         // manualmente os swicthes
         for (Wire w : wires) {
             for (Switch s : switches) {
