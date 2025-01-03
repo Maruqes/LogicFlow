@@ -12,11 +12,11 @@ import logicircuit.LCComponent;
 import logicircuit.LCInputPin;
 
 public class MainCircuit {
-    private ArrayList<Switch> switches;
-    private ArrayList<IOComponent> components;
-    private ArrayList<OutputInterface> outputs; // leds and displays
+    public ArrayList<Switch> switches;
+    public ArrayList<IOComponent> components;
+    public ArrayList<OutputInterface> outputs; // leds and displays
 
-    private ArrayList<Wire> wires;
+    public ArrayList<Wire> wires;
 
     public MainCircuit() {
         switches = new ArrayList<Switch>();
@@ -342,7 +342,7 @@ public class MainCircuit {
 
                     // adicionar elemento
                     if (cmp == LCComponent.SWITCH) {
-                        add(LCComponent.SWITCH, stateBool, nome, x, y, legend);
+                        add(LCComponent.SWITCH, stateBool, nome, x - Main.LeftMenuWidth, y, legend);
                     }
 
                 } else if (res[0].equals("Wire")) {
@@ -364,9 +364,9 @@ public class MainCircuit {
 
                     // adicionar elemento
                     if (cmp == LCComponent.BIT3_DISPLAY || cmp == LCComponent.LED) {
-                        add(cmp, 0, nome, x, y, legend);
+                        add(cmp, 0, nome, x - Main.LeftMenuWidth, y, legend);
                     } else {
-                        add(cmp, nome, x, y, legend);
+                        add(cmp, nome, x - Main.LeftMenuWidth, y, legend);
                     }
                 }
 
@@ -808,7 +808,7 @@ public class MainCircuit {
         return false;
     }
 
-    public MainCircuit clone() {
+    public MainCircuit cloneMainCircuit() {
         MainCircuit newCircuit = new MainCircuit();
         for (Switch s : switches) {
             newCircuit.add(LCComponent.SWITCH, s.getState(), s.getName(), s.getXY()[0], s.getXY()[1], s.getLegend());

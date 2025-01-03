@@ -129,6 +129,8 @@ public class Main {
         if (cmp != null) {
             if (selectedComponentWire1 == null) {
                 selectedComponentWire1 = cmp;
+                Menu.SetCurrentHolderName("Selected: " + selectedComponentWire1.getName());
+                DRAW_ALL_STUFF(circuit);
                 while (drawPannel.rightClick()) {
                 }
 
@@ -141,7 +143,7 @@ public class Main {
                         turnOnSwitch(circuit);
                         selectedComponentWire1 = null;
                         selectedComponentWire2 = null;
-
+                        Menu.clearCurrentHolderName();
                         ((Timer) e.getSource()).stop();
                     });
                     timer.start();
@@ -178,11 +180,14 @@ public class Main {
                 }
                 selectedComponentWire1 = null;
                 selectedComponentWire2 = null;
+                Menu.clearCurrentHolderName();
                 DRAW_ALL_STUFF(circuit);
             }
         } else {
             selectedComponentWire1 = null;
             selectedComponentWire2 = null;
+            Menu.clearCurrentHolderName();
+            DRAW_ALL_STUFF(circuit);
         }
     }
 

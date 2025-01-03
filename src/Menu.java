@@ -121,7 +121,6 @@ public class Menu {
 
     public static void SetCurrentHolderName(String name) {
         currentHolderName = name;
-        drawAllMenus();
     }
 
     public static void clearCurrentHolderName() {

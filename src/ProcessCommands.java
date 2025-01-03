@@ -78,6 +78,15 @@ public class ProcessCommands extends Parser {
         };
         commands.put("clear", clearFunc);
 
+        HandleTokensInterface test = (tokensVar) -> {
+            MiniCircuit miniCircuit = new MiniCircuit(circuit.switches, circuit.components, circuit.outputs,
+                    circuit.wires);
+            miniCircuit.setInput(new boolean[] { true, false, false });
+            System.out.println(miniCircuit.getOutput());
+            return "";
+        };
+        commands.put("test", test);
+
         HandleTokensInterface screenWH = (tokensVar) -> {
             String comma = tokensVar.get(2);
             if (!comma.equals(",")) {
@@ -118,7 +127,7 @@ public class ProcessCommands extends Parser {
             return "Error: No history to undo.";
         }
 
-        redoHistory.add(circuit.clone()); // salva o estado atual para o redo
+        redoHistory.add(circuit.cloneMainCircuit()); // salva o estado atual para o redo
 
         // reverte
         circuitsHistory.remove(circuitsHistory.size() - 1); // remove o estado atual
@@ -132,7 +141,7 @@ public class ProcessCommands extends Parser {
             return "Error: No history to redo.";
         }
 
-        circuitsHistory.add(circuit.clone()); // salva o atual para o undo
+        circuitsHistory.add(circuit.cloneMainCircuit()); // salva o atual para o undo
 
         circuit = redoHistory.remove(redoHistory.size() - 1); // vai para o ultimo estado do redo
         circuit.drawCircuit();
