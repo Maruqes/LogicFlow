@@ -2,6 +2,7 @@ package logicircuit;
 
 import javax.swing.*;
 
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import java.awt.*;
@@ -22,6 +23,9 @@ public class LCDPanel {
     private final DrawPanel drawPanel;
     private BufferedImage canvas;
 
+    private volatile boolean leftClicked = false;
+    private volatile boolean rightClicked = false;
+
     // Constructor
     protected LCDPanel() {
         this(500, 500);
@@ -31,9 +35,30 @@ public class LCDPanel {
         drawPanel = new DrawPanel();
         drawPanel.setPreferredSize(new Dimension(width, height));
         drawPanel.setBackground(BACKGROUND_COLOR_DEFAULT);
+        drawPanel.setDoubleBuffered(true);
 
         // Initialize the canvas with the size of the panel
         canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        // Add mouse listener to track clicks
+        drawPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    leftClicked = true; // Mark as clicked when pressed
+                } else if (SwingUtilities.isRightMouseButton(e)) {
+                    rightClicked = true;
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    leftClicked = false; // Reset when released
+                } else if (SwingUtilities.isRightMouseButton(e)) {
+                    rightClicked = false;
+                }
+            }
+        });
     }
 
     /**
@@ -262,12 +287,22 @@ public class LCDPanel {
         }
     }
 
+    // public boolean leftClick() {
+    // AWTEvent event =
+    // Toolkit.getDefaultToolkit().getSystemEventQueue().peekEvent();
+    // if (event instanceof MouseEvent) {
+    // return SwingUtilities.isLeftMouseButton((MouseEvent) event);
+    // }
+    // return false;
+    // }
+
     public boolean leftClick() {
-        AWTEvent event = Toolkit.getDefaultToolkit().getSystemEventQueue().peekEvent();
-        if (event instanceof MouseEvent) {
-            return SwingUtilities.isLeftMouseButton((MouseEvent) event);
-        }
-        return false;
+        // tiras o volatil para de funfar hahah la po crl do java moço
+        return leftClicked;
+    }
+
+    public boolean rightClick() {
+        return rightClicked;
     }
 
     public void setNewSize(int width, int height) {

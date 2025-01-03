@@ -160,7 +160,6 @@ public class ProcessCommands extends Parser {
 
         int x = Integer.parseInt(cordX);
         int y = Integer.parseInt(cordY);
-
         try {
             LCComponent type = BasicComponent.getTypeWithComponent(tipoPorta);
             if (type == LCComponent.SWITCH) {

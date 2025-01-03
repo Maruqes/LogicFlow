@@ -3,14 +3,21 @@ import java.awt.Dimension;
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+
 import logicircuit.LCComponent;
 import logicircuit.LCDFrameCmd;
 import logicircuit.LCDFrameCmd.ResizeCallback;
 import logicircuit.LCDPanel;
+import logicircuit.LCInputPin;
+
+import java.util.ArrayList;
 
 public class Main {
     public static LCDPanel drawPannel;
     public static LCDFrameCmd frame;
+    public static int LeftMenuWidth = 190;
 
     public static int SCREEN_WIDTH = 900;
     public static int SCREEN_HEIGHT = 700;
@@ -30,40 +37,141 @@ public class Main {
         System.exit(0);
     }
 
-    private static void drawExampleGates(int space) {
-        drawPannel.drawText(20, 0, "Logic Gates");
-        drawPannel.drawComponent(LCComponent.AND, 10, 50, "AND");
-        drawPannel.drawComponent(LCComponent.OR, 10, 50 + space, "OR");
-        drawPannel.drawComponent(LCComponent.NOT, 10, 50 + 2 * space, "NOT");
-        drawPannel.drawComponent(LCComponent.XOR, 110, 50, "XOR");
-        drawPannel.drawComponent(LCComponent.NAND, 110, 50 + space, "NAND");
-        drawPannel.drawComponent(LCComponent.NOR, 110, 50 + 2 * space, "NOR");
+    private static void LeftMenuUsage(MainCircuit circuit) {
+        int xy[] = drawPannel.getMouseXY();
+        int x = xy[0];
+        int y = xy[1];
 
-        drawPannel.drawText(20, 50 + 4 * space, "Switches");
-        drawPannel.drawComponent(LCComponent.SWITCH, 10, 50 + 5 * space, false, "SWITCH");
-        drawPannel.drawComponent(LCComponent.SWITCH, 110, 50 + 5 * space, true, "SWITCH");
+        BasicComponent component = Menu.getLeftClickColision();
+        if (component != null) {
+            System.out.println("You pressed " + component.getType() + " at " + component.getXY()[0] + " "
+                    + component.getXY()[1]);
 
-        drawPannel.drawText(20, 50 + 9 * space, "Displays and LED");
-        drawPannel.drawComponent(LCComponent.LED, 10, 50 + 10 * space, false, "LED");
-        drawPannel.drawComponent(LCComponent.BIT3_DISPLAY, 110, 70 + 10 * space, 0);
+            Menu.setAnythingSelected(component);
+
+            // este timer é para desenhar o componente selecionado no mouse sem flickering
+            Timer timer = new Timer(10, e -> {
+                int xy2[] = drawPannel.getMouseXY();
+                int x2 = xy2[0];
+                int y2 = xy2[1];
+                Menu.drawOnMouse(x2, y2, circuit);
+            });
+            timer.start();
+
+            // Wait for the user to release the mouse button
+            while (drawPannel.leftClick()) {
+            }
+
+            if (Menu.isAnythingSelected()) {
+                timer.stop();
+                xy = drawPannel.getMouseXY();
+                x = xy[0];
+                y = xy[1];
+                Menu.moveSelected(x, y, circuit);
+            }
+        }
     }
 
-    private static void drawLeftSideBar() {
-        drawPannel.drawRectagle(0, 0, 190, SCREEN_HEIGHT, Color.GRAY);
+    private static void moveObjects(MainCircuit circuit) {
+        int xy[] = drawPannel.getMouseXY();
+        int x = xy[0];
+        int y = xy[1];
+        BasicComponent cmp = circuit.colideWithCompontent(x, y);
+        if (cmp != null) {
+            Timer timer = new Timer(10, e -> {
+                int xy2[] = drawPannel.getMouseXY();
+                int x2 = xy2[0];
+                int y2 = xy2[1];
+                if (x2 < LeftMenuWidth) {
+                    circuit.removeElement(cmp.getName());
+                    drawPannel.clear();
+                    circuit.drawCircuit();
+                    return;
+                }
+                cmp.setPosition(x2, y2);
+                circuit.drawCircuit();
+
+            });
+            timer.start();
+
+            while (drawPannel.leftClick()) {
+            }
+
+            timer.stop();
+        }
     }
 
-    private static void drawAllMenus() {
-        drawPannel.clear();
-        drawLeftSideBar();
-        drawExampleGates(SCREEN_HEIGHT / 15);
+    static BasicComponent selectedComponentWire1 = null;
+    static BasicComponent selectedComponentWire2 = null;
+
+    private static void turnOnSwitch(MainCircuit circuit) {
+        if (selectedComponentWire1 instanceof Switch) {
+            Switch sw = (Switch) selectedComponentWire1;
+            sw.setState(!sw.getState());
+            circuit.drawCircuit();
+        }
     }
 
-    public static void callBackResize(int width, int height) {
-        SCREEN_WIDTH = width;
-        SCREEN_HEIGHT = height;
-        drawPannel.setNewSize(width, height);
-        drawAllMenus();
-        System.out.println("Width: " + SCREEN_WIDTH + " Height: " + SCREEN_HEIGHT);
+    private static void wireObjects(MainCircuit circuit) {
+        int xy[] = drawPannel.getMouseXY();
+        int x = xy[0];
+        int y = xy[1];
+        BasicComponent cmp = circuit.colideWithCompontent(x, y);
+        if (cmp != null) {
+            if (selectedComponentWire1 == null) {
+                selectedComponentWire1 = cmp;
+                while (drawPannel.rightClick()) {
+                }
+
+            } else {
+                selectedComponentWire2 = cmp;
+                if (selectedComponentWire1.getName().equals(selectedComponentWire2.getName())) {
+                    // usar o timer para evitar o flickering nao enc0ntrei outra maneira ou seja sim
+                    // vamos ter um loop que roda so uma vez :D
+                    Timer timer = new Timer(10, e -> {
+                        turnOnSwitch(circuit);
+                        selectedComponentWire1 = null;
+                        selectedComponentWire2 = null;
+
+                        ((Timer) e.getSource()).stop();
+                    });
+                    timer.start();
+                    while (drawPannel.rightClick()) {
+                    }
+                    return;
+                }
+                while (drawPannel.rightClick()) {
+                }
+                try {
+                    circuit.wire(selectedComponentWire1.getName(), selectedComponentWire2.getName(), LCInputPin.PIN_A);
+                } catch (Exception e) {
+                    if (e.getMessage().equals("Invalid pin")) {
+                        try {
+                            circuit.wire(selectedComponentWire1.getName(), selectedComponentWire2.getName(),
+                                    LCInputPin.PIN_B);
+                        } catch (Exception e2) {
+
+                            if (e.getMessage().equals("Invalid pin")) {
+                                try {
+                                    circuit.wire(selectedComponentWire1.getName(), selectedComponentWire2.getName(),
+                                            LCInputPin.PIN_C);
+
+                                } catch (Exception e3) {
+                                    System.out.println("Error: " + e3.getMessage());
+                                }
+                            } else {
+                                System.out.println("Error: " + e.getMessage());
+                            }
+                        }
+                    } else {
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                }
+                selectedComponentWire1 = null;
+                selectedComponentWire2 = null;
+                circuit.drawCircuit();
+            }
+        }
     }
 
     public static void main(String[] args) {
@@ -81,21 +189,28 @@ public class Main {
         drawPannel = frame.drawPanel();
         drawPannel.clear();
 
-        callBackResize(SCREEN_WIDTH, SCREEN_HEIGHT);
-        drawAllMenus();
+        Menu.initComponents();
 
-        ResizeCallback resizeCallback = (int width, int height) -> callBackResize(width, height);
+        Menu.callBackResize(SCREEN_WIDTH, SCREEN_HEIGHT, circuit);
+        Menu.drawAllMenus();
+
+        ResizeCallback resizeCallback = (int width, int height) -> Menu.callBackResize(width, height, circuit);
 
         frame.windowResizingCallback(frame, resizeCallback);
 
         boolean running = true;
         while (running) {
-            if (drawPannel.leftClick()) {
-                int xy[] = drawPannel.getMouseXY();
-                int x = xy[0];
-                int y = xy[1];
-                System.out.println("X: " + x + " Y: " + y);
+            try {
+                if (drawPannel.leftClick()) {
+                    LeftMenuUsage(circuit);
+                    moveObjects(circuit);
+                } else if (drawPannel.rightClick()) {
+                    wireObjects(circuit);
+                }
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
             }
+
         }
 
     }

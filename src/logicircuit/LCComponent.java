@@ -399,7 +399,7 @@ public enum LCComponent {
         return Color.getHSBColor(hsb[0], hsb[1], newBrightness);
     }
 
-    public int getWidth(LCComponent component) {
+    public static int getWidth(LCComponent component) {
         switch (component) {
             case AND:
                 return 60;
@@ -419,7 +419,7 @@ public enum LCComponent {
         }
     }
 
-    public int getHeight(LCComponent component) {
+    public static int getHeight(LCComponent component) {
         switch (component) {
             case AND:
             case NAND:

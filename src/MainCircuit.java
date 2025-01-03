@@ -60,6 +60,7 @@ public class MainCircuit {
         if (block_same_names(nome)) {
             throw new IllegalArgumentException("Name already exists");
         }
+        x = x + Main.LeftMenuWidth;
         if (cmp == LCComponent.AND) {
             And and1 = new And(nome, x, y, legenda);
             components.add(and1);
@@ -86,6 +87,32 @@ public class MainCircuit {
     /**
      * Draw a component that has no state
      * 
+     * @param cmp     Component type from LCComponent (AND, NAND, NOR, NOT, OR, XOR)
+     * @param x       coordinate X
+     * @param y       coordinate Y
+     * @param legenda legend
+     */
+    public void add(LCComponent cmp, int x, int y, String legenda) {
+        if (cmp == LCComponent.AND) {
+            add(cmp, "and" + components.size(), x, y, "and" + components.size());
+        } else if (cmp == LCComponent.NAND) {
+            add(cmp, "nand" + components.size(), x, y, "nand" + components.size());
+        } else if (cmp == LCComponent.NOR) {
+            add(cmp, "nor" + components.size(), x, y, "nor" + components.size());
+        } else if (cmp == LCComponent.NOT) {
+            add(cmp, "not" + components.size(), x, y, "not" + components.size());
+        } else if (cmp == LCComponent.OR) {
+            add(cmp, "or" + components.size(), x, y, "or" + components.size());
+        } else if (cmp == LCComponent.XOR) {
+            add(cmp, "xor" + components.size(), x, y, "xor" + components.size());
+        } else {
+            throw new IllegalArgumentException("Invalid value");
+        }
+    }
+
+    /**
+     * Draw a component that has no state
+     * 
      * @param cmp    Component type from LCComponent (SWITCH)
      * @param state  state
      * @param nome   name
@@ -98,8 +125,26 @@ public class MainCircuit {
             throw new IllegalArgumentException("Name already exists");
         }
         if (cmp == LCComponent.SWITCH) {
+            setX = setX + Main.LeftMenuWidth;
             Switch switch1 = new Switch(state, nome, setX, setY, legend);
             switches.add(switch1);
+        } else {
+            throw new IllegalArgumentException("Invalid value");
+        }
+    }
+
+    /**
+     * Draw a component that has no state
+     * 
+     * @param cmp    Component type from LCComponent (SWITCH)
+     * @param state  state
+     * @param setX   coordinate X
+     * @param setY   coordinate Y
+     * @param legend legend
+     */
+    public void add(LCComponent cmp, boolean state, int setX, int setY, String legend) {
+        if (cmp == LCComponent.SWITCH) {
+            add(cmp, state, "switch" + switches.size(), setX, setY, "switch" + switches.size());
         } else {
             throw new IllegalArgumentException("Invalid value");
         }
@@ -119,6 +164,7 @@ public class MainCircuit {
         if (block_same_names(nome)) {
             throw new IllegalArgumentException("Name already exists");
         }
+        setX = setX + Main.LeftMenuWidth;
         if (cmp == LCComponent.BIT3_DISPLAY) {
             Display3bit display1 = new Display3bit(value, nome, setX, setY, legend);
             outputs.add(display1);
@@ -128,6 +174,26 @@ public class MainCircuit {
         } else {
             throw new IllegalArgumentException("Invalid value");
         }
+    }
+
+    /**
+     * Draw a component that has no state
+     * 
+     * @param cmp    Component type from LCComponent (DISPLAY, LED)
+     * @param value  value
+     * @param SetX   coordinate X
+     * @param SetY   coordinate Y
+     * @param legend legend
+     */
+    public void add(LCComponent cmp, int value, int setX, int setY, String legend) {
+        if (cmp == LCComponent.BIT3_DISPLAY) {
+            add(cmp, value, "display" + outputs.size(), setX, setY, "display" + outputs.size());
+        } else if (cmp == LCComponent.LED) {
+            add(cmp, value, "led" + outputs.size(), setX, setY, "led" + outputs.size());
+        } else {
+            throw new IllegalArgumentException("Invalid value");
+        }
+
     }
 
     public void wire(String from, String to, LCInputPin pin) {
@@ -167,6 +233,14 @@ public class MainCircuit {
 
         if (fromType == null || toType == null) {
             throw new IllegalArgumentException("Invalid value for from or to");
+        }
+
+        if (fromType instanceof Led || fromType instanceof Display3bit) {
+            throw new IllegalArgumentException("Invalid value for to");
+        }
+
+        if (toType instanceof Switch) {
+            throw new IllegalArgumentException("Invalid value for to");
         }
 
         Wire wire = new Wire(fromType, toType, pin);
@@ -340,6 +414,9 @@ public class MainCircuit {
     }
 
     public void setWires() {
+        if (wires.isEmpty()) {
+            return;
+        }
         for (Wire w : wires) {
             for (IOComponent c : components) {
                 if (w.getComponent1().getName().equals(c.getName())) {
@@ -354,6 +431,9 @@ public class MainCircuit {
     }
 
     public void setComponent() {
+        if (components.isEmpty()) {
+            return;
+        }
         for (IOComponent c : components) {
             ArrayList<Boolean> wiresToComponent = new ArrayList<Boolean>();
             for (Wire w : wires) {
@@ -368,13 +448,18 @@ public class MainCircuit {
             try {
                 c.setInput(inputs);
             } catch (IllegalArgumentException e) {
-                System.out.println("Error: " + e.getMessage());
+                if (!e.getMessage().contains("gate must have")) {
+                    System.out.println("Error: " + e.getMessage());
+                }
             }
         }
     }
 
     private void setOutputs() {
         // manualmente os outputs
+        if (outputs.isEmpty()) {
+            return;
+        }
         for (OutputInterface o : outputs) {
             ArrayList<Boolean> wiresToOutput = new ArrayList<Boolean>();
             for (Wire w : wires) {
@@ -393,6 +478,9 @@ public class MainCircuit {
 
             if (o instanceof Display3bit) {
                 try {
+                    if (wiresToOutput.size() < 3) {
+                        return;
+                    }
                     o.setValue(Display3bit.getNumberWithPins(wiresToOutput.get(0), wiresToOutput.get(1),
                             wiresToOutput.get(2)));
                 } catch (IndexOutOfBoundsException e) {
@@ -403,6 +491,9 @@ public class MainCircuit {
     }
 
     private void setSwitchesWire() {
+        if (wires.isEmpty()) {
+            return;
+        }
         // manualmente os swicthes
         for (Wire w : wires) {
             for (Switch s : switches) {
@@ -435,6 +526,8 @@ public class MainCircuit {
 
     public void forceDraw() {
         Main.drawPannel.clear();
+
+        Menu.drawAllMenus();
 
         for (Switch s : switches) {
             s.draw();
@@ -720,5 +813,30 @@ public class MainCircuit {
         }
 
         return newCircuit;
+    }
+
+    public BasicComponent colideWithCompontent(int x, int y) {
+        for (Switch s : switches) {
+            if (s.getXY()[0] <= x && x <= s.getXY()[0] + LCComponent.getWidth(s.getType()) && s.getXY()[1] <= y
+                    && y <= s.getXY()[1] + LCComponent.getHeight(s.getType())) {
+                return s;
+            }
+        }
+
+        for (IOComponent c : components) {
+            if (c.getXY()[0] <= x && x <= c.getXY()[0] + LCComponent.getWidth(c.getType()) && c.getXY()[1] <= y
+                    && y <= c.getXY()[1] + LCComponent.getHeight(c.getType())) {
+                return (BasicComponent) c;
+            }
+        }
+
+        for (OutputInterface o : outputs) {
+            if (o.getXY()[0] <= x && x <= o.getXY()[0] + LCComponent.getWidth(o.getType()) && o.getXY()[1] <= y
+                    && y <= o.getXY()[1] + LCComponent.getHeight(o.getType())) {
+                return (BasicComponent) o;
+            }
+        }
+
+        return null;
     }
 }
