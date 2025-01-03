@@ -5,6 +5,178 @@ import java.awt.geom.*;
 
 public enum LCComponent {
     /**
+     * Gate de um só input
+     */
+    ONE_INPUT(false, NumberInputPins.ONE, true) {
+        @Override
+        protected void pathToFill(Path2D path) {
+            // Exemplo de forma triangular (semelhante a um NOT simplificado)
+            path.moveTo(15, 0);
+            path.lineTo(15, 30);
+            path.lineTo(50, 15);
+            path.closePath();
+        }
+
+        @Override
+        protected void pathToOutline(Path2D path) {
+            // Desenha a forma base
+            this.pathToFill(path);
+            // Desenha o pino de entrada
+            drawGateInputPins(path, this.numberInputPins, 13);
+            // Desenha o pino de saída (sem o "bubble")
+            drawGateOutputPin(path, false);
+        }
+    },
+
+    /**
+     * Gate de dois inputs
+     */
+    TWO_INPUTS(false, NumberInputPins.TWO, true) {
+        @Override
+        protected void pathToFill(Path2D path) {
+            // Exemplo de rectângulo com cantos arredondados
+            path.append(new RoundRectangle2D.Double(10, 0, 40, 30, 8, 8), false);
+        }
+
+        @Override
+        protected void pathToOutline(Path2D path) {
+            this.pathToFill(path);
+            // Desenha 2 pinos de entrada
+            drawGateInputPins(path, this.numberInputPins, 13);
+            // Desenha o pino de saída (sem o "bubble")
+            drawGateOutputPin(path, false);
+        }
+    },
+
+    /**
+     * Gate de três inputs
+     */
+    THREE_INPUTS(false, NumberInputPins.THREE, true) {
+        @Override
+        protected void pathToFill(Path2D path) {
+            // Exemplo de rectângulo simples
+            path.moveTo(10, -20);
+            path.lineTo(10, 30);
+            path.lineTo(50, 30);
+            path.lineTo(50, -20);
+            path.closePath();
+        }
+
+        @Override
+        protected void pathToOutline(Path2D path) {
+            this.pathToFill(path);
+            // Desenha 3 pinos de entrada
+            drawGateInputPins(path, this.numberInputPins, 13);
+            // Desenha o pino de saída (sem o "bubble")
+            drawGateOutputPin(path, false);
+        }
+    },
+
+    /**
+     * Gate de três inputs
+     */
+    FOUR_INPUTS(false, NumberInputPins.FOUR, true) {
+        @Override
+        protected void pathToFill(Path2D path) {
+            // Exemplo de rectângulo simples
+            path.moveTo(10, -20);
+            path.lineTo(10, 30);
+            path.lineTo(50, 30);
+            path.lineTo(50, -20);
+            path.closePath();
+        }
+
+        @Override
+        protected void pathToOutline(Path2D path) {
+            this.pathToFill(path);
+            // Desenha 3 pinos de entrada
+            drawGateInputPins(path, this.numberInputPins, 13);
+            // Desenha o pino de saída (sem o "bubble")
+            drawGateOutputPin(path, false);
+        }
+    },
+
+    /**
+     * Gate com 5 entradas
+     */
+    FIVE_INPUTS(false, NumberInputPins.FIVE, true) {
+        @Override
+        protected void pathToFill(Path2D path) {
+            // Exemplo: RoundRectangle vertical, alto o suficiente para 5 pinos
+            path.append(
+                    new RoundRectangle2D.Double(10, -20, 40, 70, 10, 10),
+                    false);
+        }
+
+        @Override
+        protected void pathToOutline(Path2D path) {
+            this.pathToFill(path);
+            drawGateInputPins(path, this.numberInputPins, 13); // Desenha pinos de entrada
+            drawGateOutputPin(path, false); // Desenha pino de saída sem “bubble”
+        }
+    },
+
+    /**
+     * Gate com 6 entradas
+     */
+    SIX_INPUTS(false, NumberInputPins.SIX, true) {
+        @Override
+        protected void pathToFill(Path2D path) {
+            // Ajuste a altura para acomodar 6 pinos
+            path.append(
+                    new RoundRectangle2D.Double(10, -20, 40, 80, 10, 10),
+                    false);
+        }
+
+        @Override
+        protected void pathToOutline(Path2D path) {
+            this.pathToFill(path);
+            drawGateInputPins(path, this.numberInputPins, 13);
+            drawGateOutputPin(path, false);
+        }
+    },
+
+    /**
+     * Gate com 7 entradas
+     */
+    SEVEN_INPUTS(false, NumberInputPins.SEVEN, true) {
+        @Override
+        protected void pathToFill(Path2D path) {
+            // Ajuste a altura para acomodar 7 pinos
+            path.append(
+                    new RoundRectangle2D.Double(10, -20, 40, 90, 10, 10),
+                    false);
+        }
+
+        @Override
+        protected void pathToOutline(Path2D path) {
+            this.pathToFill(path);
+            drawGateInputPins(path, this.numberInputPins, 13);
+            drawGateOutputPin(path, false);
+        }
+    },
+
+    /**
+     * Gate com 8 entradas
+     */
+    EIGHT_INPUTS(false, NumberInputPins.EIGHT, true) {
+        @Override
+        protected void pathToFill(Path2D path) {
+            // Ajuste a altura para acomodar 8 pinos
+            path.append(
+                    new RoundRectangle2D.Double(10, -20, 40, 100, 10, 10),
+                    false);
+        }
+
+        @Override
+        protected void pathToOutline(Path2D path) {
+            this.pathToFill(path);
+            drawGateInputPins(path, this.numberInputPins, 13);
+            drawGateOutputPin(path, false);
+        }
+    },
+
+    /**
      * AND gate
      */
     AND(false, NumberInputPins.TWO, true) {
@@ -235,7 +407,12 @@ public enum LCComponent {
     protected enum NumberInputPins {
         ONE(0),
         TWO(1),
-        THREE(2);
+        THREE(2),
+        FOUR(3),
+        FIVE(4),
+        SIX(5),
+        SEVEN(6),
+        EIGHT(7);
 
         public final int index;
 
@@ -261,9 +438,16 @@ public enum LCComponent {
                 CONNECTOR_RADIUS * 2), false);
     }
 
-    private static final int[][][] COORD_INPUT_PIN = new int[/* NumberInputPins` */][][] { { { 0, 15 } },
-            { { 0, 7 }, { 0, 23 } },
-            { { 0, -12 }, { 0, 6 }, { 0, 22 } } };
+    private static final int[][][] COORD_INPUT_PIN = {
+            { { 0, 15 } }, // 1 pino
+            { { 0, 7 }, { 0, 23 } }, // 2 pinos
+            { { 0, -12 }, { 0, 6 }, { 0, 22 } }, // 3 pinos
+            { { 0, -12 }, { 0, 0 }, { 0, 12 }, { 0, 24 } }, // 4 pinos
+            { { 0, -12 }, { 0, 0 }, { 0, 12 }, { 0, 24 }, { 0, 36 } }, // 5 pinos
+            { { 0, -12 }, { 0, 0 }, { 0, 12 }, { 0, 24 }, { 0, 36 }, { 0, 48 } }, // 6 pinos
+            { { 0, -12 }, { 0, 0 }, { 0, 12 }, { 0, 24 }, { 0, 36 }, { 0, 48 }, { 0, 60 } }, // 7 pinos
+            { { 0, -12 }, { 0, 0 }, { 0, 12 }, { 0, 24 }, { 0, 36 }, { 0, 48 }, { 0, 60 }, { 0, 72 } } // 8 pinos
+    };
 
     protected int[] getCoordInputPin(LCInputPin pin) {
         switch (this.numberInputPins) {
@@ -275,6 +459,37 @@ public enum LCComponent {
             case THREE:
                 int indexPin2 = pin == LCInputPin.PIN_C ? 2 : (pin == LCInputPin.PIN_B ? 1 : 0);
                 return COORD_INPUT_PIN[NumberInputPins.THREE.index][indexPin2];
+            case FOUR:
+                int indexPin3 = pin == LCInputPin.PIN_D ? 3
+                        : (pin == LCInputPin.PIN_C ? 2 : (pin == LCInputPin.PIN_B ? 1 : 0));
+                return COORD_INPUT_PIN[NumberInputPins.FOUR.index][indexPin3];
+            case FIVE:
+                int indexPin4 = pin == LCInputPin.PIN_E ? 4
+                        : (pin == LCInputPin.PIN_D ? 3
+                                : (pin == LCInputPin.PIN_C ? 2 : (pin == LCInputPin.PIN_B ? 1 : 0)));
+                return COORD_INPUT_PIN[NumberInputPins.FIVE.index][indexPin4];
+            case SIX:
+                int indexPin5 = pin == LCInputPin.PIN_F ? 5
+                        : (pin == LCInputPin.PIN_E ? 4
+                                : (pin == LCInputPin.PIN_D ? 3
+                                        : (pin == LCInputPin.PIN_C ? 2 : (pin == LCInputPin.PIN_B ? 1 : 0))));
+                return COORD_INPUT_PIN[NumberInputPins.SIX.index][indexPin5];
+            case SEVEN:
+                int indexPin6 = pin == LCInputPin.PIN_G ? 6
+                        : (pin == LCInputPin.PIN_F ? 5
+                                : (pin == LCInputPin.PIN_E ? 4
+                                        : (pin == LCInputPin.PIN_D ? 3
+                                                : (pin == LCInputPin.PIN_C ? 2 : (pin == LCInputPin.PIN_B ? 1 : 0)))));
+                return COORD_INPUT_PIN[NumberInputPins.SEVEN.index][indexPin6];
+            case EIGHT:
+                int indexPin7 = pin == LCInputPin.PIN_H ? 7
+                        : (pin == LCInputPin.PIN_G ? 6
+                                : (pin == LCInputPin.PIN_F ? 5
+                                        : (pin == LCInputPin.PIN_E ? 4
+                                                : (pin == LCInputPin.PIN_D ? 3
+                                                        : (pin == LCInputPin.PIN_C ? 2
+                                                                : (pin == LCInputPin.PIN_B ? 1 : 0))))));
+                return COORD_INPUT_PIN[NumberInputPins.EIGHT.index][indexPin7];
         }
         return null;
     }
@@ -414,6 +629,22 @@ public enum LCComponent {
                 return 70;
             case SWITCH:
                 return 46;
+            case ONE_INPUT:
+                return 50;
+            case TWO_INPUTS:
+                return 50;
+            case THREE_INPUTS:
+                return 50;
+            case FOUR_INPUTS:
+                return 50;
+            case FIVE_INPUTS:
+                return 50;
+            case SIX_INPUTS:
+                return 50;
+            case SEVEN_INPUTS:
+                return 50;
+            case EIGHT_INPUTS:
+                return 50;
             default:
                 throw new IllegalArgumentException("Invalid LCComponent: " + component);
         }
@@ -433,6 +664,22 @@ public enum LCComponent {
                 return 50;
             case SWITCH:
                 return 30;
+            case ONE_INPUT:
+                return 30;
+            case TWO_INPUTS:
+                return 30;
+            case THREE_INPUTS:
+                return 30;
+            case FOUR_INPUTS:
+                return 50;
+            case FIVE_INPUTS:
+                return 50;
+            case SIX_INPUTS:
+                return 50;
+            case SEVEN_INPUTS:
+                return 50;
+            case EIGHT_INPUTS:
+                return 50;
             default:
                 throw new IllegalArgumentException("Invalid LCComponent: " + component);
         }

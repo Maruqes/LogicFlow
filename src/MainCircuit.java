@@ -18,6 +18,8 @@ public class MainCircuit {
 
     public ArrayList<Wire> wires;
 
+    private int nameCounter = 0;
+
     public MainCircuit() {
         switches = new ArrayList<Switch>();
         components = new ArrayList<IOComponent>();
@@ -57,6 +59,7 @@ public class MainCircuit {
      * @param legenda legend
      */
     public void add(LCComponent cmp, String nome, int x, int y, String legenda) {
+        nameCounter++;
         if (block_same_names(nome)) {
             throw new IllegalArgumentException("Name already exists");
         }
@@ -93,18 +96,19 @@ public class MainCircuit {
      * @param legenda legend
      */
     public void add(LCComponent cmp, int x, int y, String legenda) {
+        nameCounter++;
         if (cmp == LCComponent.AND) {
-            add(cmp, "and" + components.size(), x, y, "and" + components.size());
+            add(cmp, "and" + nameCounter, x, y, "and" + nameCounter);
         } else if (cmp == LCComponent.NAND) {
-            add(cmp, "nand" + components.size(), x, y, "nand" + components.size());
+            add(cmp, "nand" + nameCounter, x, y, "nand" + nameCounter);
         } else if (cmp == LCComponent.NOR) {
-            add(cmp, "nor" + components.size(), x, y, "nor" + components.size());
+            add(cmp, "nor" + nameCounter, x, y, "nor" + nameCounter);
         } else if (cmp == LCComponent.NOT) {
-            add(cmp, "not" + components.size(), x, y, "not" + components.size());
+            add(cmp, "not" + nameCounter, x, y, "not" + nameCounter);
         } else if (cmp == LCComponent.OR) {
-            add(cmp, "or" + components.size(), x, y, "or" + components.size());
+            add(cmp, "or" + nameCounter, x, y, "or" + nameCounter);
         } else if (cmp == LCComponent.XOR) {
-            add(cmp, "xor" + components.size(), x, y, "xor" + components.size());
+            add(cmp, "xor" + nameCounter, x, y, "xor" + nameCounter);
         } else {
             throw new IllegalArgumentException("Invalid value");
         }
@@ -121,6 +125,7 @@ public class MainCircuit {
      * @param legend legend
      */
     public void add(LCComponent cmp, boolean state, String nome, int setX, int setY, String legend) {
+        nameCounter++;
         if (block_same_names(nome)) {
             throw new IllegalArgumentException("Name already exists");
         }
@@ -143,8 +148,9 @@ public class MainCircuit {
      * @param legend legend
      */
     public void add(LCComponent cmp, boolean state, int setX, int setY, String legend) {
+        nameCounter++;
         if (cmp == LCComponent.SWITCH) {
-            add(cmp, state, "switch" + switches.size(), setX, setY, "switch" + switches.size());
+            add(cmp, state, "switch" + nameCounter, setX, setY, "switch" + nameCounter);
         } else {
             throw new IllegalArgumentException("Invalid value");
         }
@@ -161,6 +167,7 @@ public class MainCircuit {
      * @param legend legend
      */
     public void add(LCComponent cmp, int value, String nome, int setX, int setY, String legend) {
+        nameCounter++;
         if (block_same_names(nome)) {
             throw new IllegalArgumentException("Name already exists");
         }
@@ -186,14 +193,20 @@ public class MainCircuit {
      * @param legend legend
      */
     public void add(LCComponent cmp, int value, int setX, int setY, String legend) {
+        nameCounter++;
         if (cmp == LCComponent.BIT3_DISPLAY) {
-            add(cmp, value, "display" + outputs.size(), setX, setY, "display" + outputs.size());
+            add(cmp, value, "display" + nameCounter, setX, setY, "display" + nameCounter);
         } else if (cmp == LCComponent.LED) {
-            add(cmp, value, "led" + outputs.size(), setX, setY, "led" + outputs.size());
+            add(cmp, value, "led" + nameCounter, setX, setY, "led" + nameCounter);
         } else {
             throw new IllegalArgumentException("Invalid value");
         }
 
+    }
+
+    public void add_miniCircuit(MiniCircuit cmp) {
+        nameCounter++;
+        components.add(cmp);
     }
 
     public void wire(String from, String to, LCInputPin pin) {
@@ -367,6 +380,21 @@ public class MainCircuit {
                         add(cmp, 0, nome, x - Main.LeftMenuWidth, y, legend);
                     } else {
                         add(cmp, nome, x - Main.LeftMenuWidth, y, legend);
+                    }
+                } else if (res[0].equals("MiniCircuit")) {
+                    try {
+                        String nameLegends = res[1];
+                        MainCircuit miniOpenFile = new MainCircuit();
+                        miniOpenFile.open(res[4]);
+
+                        MiniCircuit miniCircuit = new MiniCircuit(miniOpenFile.switches, miniOpenFile.components,
+                                miniOpenFile.outputs, miniOpenFile.wires, nameLegends, nameLegends, res[4]);
+
+                        miniCircuit.setPosition(Integer.parseInt(res[2]), Integer.parseInt(res[3]));
+                        this.add_miniCircuit(miniCircuit);
+                        Main.DRAW_ALL_STUFF(this);
+                    } catch (Exception e) {
+                        System.out.println("Error: " + e.getMessage());
                     }
                 }
 
@@ -829,7 +857,7 @@ public class MainCircuit {
         return newCircuit;
     }
 
-    public BasicComponent colideWithCompontent(int x, int y) {
+    public BasicComponentInterface colideWithCompontent(int x, int y) {
         for (Switch s : switches) {
             if (s.getXY()[0] <= x && x <= s.getXY()[0] + LCComponent.getWidth(s.getType()) && s.getXY()[1] <= y
                     && y <= s.getXY()[1] + LCComponent.getHeight(s.getType())) {
@@ -840,14 +868,14 @@ public class MainCircuit {
         for (IOComponent c : components) {
             if (c.getXY()[0] <= x && x <= c.getXY()[0] + LCComponent.getWidth(c.getType()) && c.getXY()[1] <= y
                     && y <= c.getXY()[1] + LCComponent.getHeight(c.getType())) {
-                return (BasicComponent) c;
+                return (BasicComponentInterface) c;
             }
         }
 
         for (OutputInterface o : outputs) {
             if (o.getXY()[0] <= x && x <= o.getXY()[0] + LCComponent.getWidth(o.getType()) && o.getXY()[1] <= y
                     && y <= o.getXY()[1] + LCComponent.getHeight(o.getType())) {
-                return (BasicComponent) o;
+                return (BasicComponentInterface) o;
             }
         }
 

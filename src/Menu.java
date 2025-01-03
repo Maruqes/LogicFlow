@@ -84,8 +84,7 @@ public class Menu {
 
     public static void moveSelected(int x, int y, MainCircuit circuit) {
         if (x < Main.LeftMenuWidth) {
-            Main.drawPannel.clear();
-            circuit.drawCircuit();
+            Main.DRAW_ALL_STUFF(circuit);
             return;
         }
         if (anythingSelected) {
@@ -97,7 +96,7 @@ public class Menu {
             } else {
                 circuit.add(selectedComponent.getType(), x - Main.LeftMenuWidth, y, "");
             }
-            circuit.drawCircuit();
+            Main.DRAW_ALL_STUFF(circuit);
             anythingSelected = false;
         }
     }

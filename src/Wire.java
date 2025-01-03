@@ -87,14 +87,25 @@ public class Wire {
     }
 
     public static LCInputPin getWithNome(String pin) {
-        if (pin.equalsIgnoreCase("pin_a")) {
-            return LCInputPin.PIN_A;
-        } else if (pin.equalsIgnoreCase("pin_b")) {
-            return LCInputPin.PIN_B;
-        } else if (pin.equalsIgnoreCase("pin_c")) {
-            return LCInputPin.PIN_C;
-        } else {
-            return null;
+        switch (pin.toLowerCase()) {
+            case "pin_a":
+                return LCInputPin.PIN_A;
+            case "pin_b":
+                return LCInputPin.PIN_B;
+            case "pin_c":
+                return LCInputPin.PIN_C;
+            case "pin_d":
+                return LCInputPin.PIN_D;
+            case "pin_e":
+                return LCInputPin.PIN_E;
+            case "pin_f":
+                return LCInputPin.PIN_F;
+            case "pin_g":
+                return LCInputPin.PIN_G;
+            case "pin_h":
+                return LCInputPin.PIN_H;
+            default:
+                return null;
         }
     }
 

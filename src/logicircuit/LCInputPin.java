@@ -15,5 +15,11 @@ public enum LCInputPin {
     /**
      * Input PIN C
      */
-    PIN_C
+    PIN_C,
+
+    PIN_D,
+    PIN_E,
+    PIN_F,
+    PIN_G,
+    PIN_H
 }

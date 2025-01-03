@@ -14,6 +14,8 @@ import logicircuit.LCInputPin;
 
 import java.util.ArrayList;
 
+
+//probelma nos nomes
 public class Main {
     public static LCDPanel drawPannel;
     public static LCDFrameCmd frame;
@@ -59,12 +61,16 @@ public class Main {
 
             Menu.setAnythingSelected(component);
 
+            // fazer com que o cmp nao va pra ponta do mouse hehe :D
+            int xDiff = x - component.getXY()[0];
+            int yDiff = y - component.getXY()[1];
+
             // este timer é para desenhar o componente selecionado no mouse sem flickering
             Timer timer = new Timer(10, e -> {
                 int xy2[] = drawPannel.getMouseXY();
                 int x2 = xy2[0];
                 int y2 = xy2[1];
-                Menu.drawOnMouse(x2, y2, circuit);
+                Menu.drawOnMouse(x2 - xDiff, y2 - yDiff, circuit);
             });
             timer.start();
 
@@ -77,7 +83,7 @@ public class Main {
                 xy = drawPannel.getMouseXY();
                 x = xy[0];
                 y = xy[1];
-                Menu.moveSelected(x, y, circuit);
+                Menu.moveSelected(x - xDiff, y - yDiff, circuit);
             }
         }
     }
@@ -86,8 +92,11 @@ public class Main {
         int xy[] = drawPannel.getMouseXY();
         int x = xy[0];
         int y = xy[1];
-        BasicComponent cmp = circuit.colideWithCompontent(x, y);
+        BasicComponentInterface cmp = circuit.colideWithCompontent(x, y);
         if (cmp != null) {
+            // fazer com que o cmp nao va pra ponta do mouse hehe :D
+            int xDiff = x - cmp.getXY()[0];
+            int yDiff = y - cmp.getXY()[1];
             Timer timer = new Timer(10, e -> {
                 int xy2[] = drawPannel.getMouseXY();
                 int x2 = xy2[0];
@@ -97,7 +106,8 @@ public class Main {
                     DRAW_ALL_STUFF(circuit);
                     return;
                 }
-                cmp.setPosition(x2, y2);
+
+                cmp.setPosition(x2 - xDiff, y2 - yDiff);
                 DRAW_ALL_STUFF(circuit);
 
             });
@@ -110,8 +120,8 @@ public class Main {
         }
     }
 
-    static BasicComponent selectedComponentWire1 = null;
-    static BasicComponent selectedComponentWire2 = null;
+    static BasicComponentInterface selectedComponentWire1 = null;
+    static BasicComponentInterface selectedComponentWire2 = null;
 
     private static void turnOnSwitch(MainCircuit circuit) {
         if (selectedComponentWire1 instanceof Switch) {
@@ -125,14 +135,12 @@ public class Main {
         int xy[] = drawPannel.getMouseXY();
         int x = xy[0];
         int y = xy[1];
-        BasicComponent cmp = circuit.colideWithCompontent(x, y);
+        BasicComponentInterface cmp = circuit.colideWithCompontent(x, y);
         if (cmp != null) {
             if (selectedComponentWire1 == null) {
                 selectedComponentWire1 = cmp;
                 Menu.SetCurrentHolderName("Selected: " + selectedComponentWire1.getName());
                 DRAW_ALL_STUFF(circuit);
-                while (drawPannel.rightClick()) {
-                }
 
             } else {
                 selectedComponentWire2 = cmp;
@@ -153,31 +161,28 @@ public class Main {
                 }
                 while (drawPannel.rightClick()) {
                 }
-                try {
-                    circuit.wire(selectedComponentWire1.getName(), selectedComponentWire2.getName(), LCInputPin.PIN_A);
-                } catch (Exception e) {
-                    if (e.getMessage().equals("Invalid pin")) {
-                        try {
-                            circuit.wire(selectedComponentWire1.getName(), selectedComponentWire2.getName(),
-                                    LCInputPin.PIN_B);
-                        } catch (Exception e2) {
+                // Exemplificando com um array fixo, mas pode ser lido de qualquer outra fonte
+                LCInputPin[] pinsToTry = LCInputPin.values();
 
-                            if (e.getMessage().equals("Invalid pin")) {
-                                try {
-                                    circuit.wire(selectedComponentWire1.getName(), selectedComponentWire2.getName(),
-                                            LCInputPin.PIN_C);
+                boolean wiringSuccessful = false;
 
-                                } catch (Exception e3) {
-                                    System.out.println("Error: " + e3.getMessage());
-                                }
-                            } else {
-                                System.out.println("Error: " + e.getMessage());
-                            }
+                for (LCInputPin pin : pinsToTry) {
+                    try {
+                        circuit.wire(selectedComponentWire1.getName(), selectedComponentWire2.getName(), pin);
+                        wiringSuccessful = true;
+                        break;
+                    } catch (Exception e) {
+                        if (!"Invalid pin".equals(e.getMessage())) {
+                            System.err.println("Erro inesperado: " + e.getMessage());
+                            break;
                         }
-                    } else {
-                        System.out.println("Error: " + e.getMessage());
                     }
                 }
+
+                if (!wiringSuccessful) {
+                    System.out.println("Não foi possível ligar o componente em nenhum pino válido.");
+                }
+
                 selectedComponentWire1 = null;
                 selectedComponentWire2 = null;
                 Menu.clearCurrentHolderName();
@@ -188,6 +193,9 @@ public class Main {
             selectedComponentWire2 = null;
             Menu.clearCurrentHolderName();
             DRAW_ALL_STUFF(circuit);
+        }
+
+        while (drawPannel.rightClick()) {
         }
     }
 

@@ -78,14 +78,29 @@ public class ProcessCommands extends Parser {
         };
         commands.put("clear", clearFunc);
 
-        HandleTokensInterface test = (tokensVar) -> {
-            MiniCircuit miniCircuit = new MiniCircuit(circuit.switches, circuit.components, circuit.outputs,
-                    circuit.wires);
-            miniCircuit.setInput(new boolean[] { true, false, false });
+        HandleTokensInterface createMiniCircuit = (tokensVar) -> {
+            String nameLegends = "";
+            String filename = "";
+            try {
+                nameLegends = tokensVar.get(2);
+                filename = tokensVar.get(1);
+            } catch (Exception e) {
+                return "Error: Missing name for mini circuit";
+            }
+            
+            MainCircuit miniOpenFile = new MainCircuit();
+            miniOpenFile.open(filename);
+
+            MiniCircuit miniCircuit = new MiniCircuit(miniOpenFile.switches, miniOpenFile.components,
+                    miniOpenFile.outputs, miniOpenFile.wires, nameLegends, nameLegends, filename);
+
             System.out.println(miniCircuit.getOutput());
+            miniCircuit.setPosition(500, 500);
+            circuit.add_miniCircuit(miniCircuit);
+            Main.DRAW_ALL_STUFF(circuit);
             return "";
         };
-        commands.put("test", test);
+        commands.put("mini", createMiniCircuit);
 
         HandleTokensInterface screenWH = (tokensVar) -> {
             String comma = tokensVar.get(2);
