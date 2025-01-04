@@ -1,6 +1,8 @@
 import java.io.IOException;
 import java.util.Arrays;
 
+import javax.swing.Timer;
+
 import logicircuit.LCComponent;
 import logicircuit.LCDFrameCmd;
 import logicircuit.LCDPanel;
@@ -10,6 +12,15 @@ public class Main {
 
     public static int SCREEN_WIDTH = 900;
     public static int SCREEN_HEIGHT = 700;
+
+    public static void DRAW_ALL_STUFF(MainCircuit circuit) {
+        Timer timer = new Timer(10, e -> {
+            drawPannel.clear();
+            circuit.drawCircuit();
+            ((Timer) e.getSource()).stop();
+        });
+        timer.start();
+    }
 
     public static void restartProgram(String... newArgs) throws IOException {
         String javaBin = System.getProperty("java.home") + "/bin/java";
