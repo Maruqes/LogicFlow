@@ -133,7 +133,7 @@ public class ProcessCommands extends Parser {
         if (circuitsHistory == null) {
             circuitsHistory = new ArrayList<>();
         }
-        circuitsHistory.add(circuit.clone());
+        circuitsHistory.add(circuit.cloneMainCircuit());
         redoHistory.clear(); // limpa o redo
     }
 
