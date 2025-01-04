@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.util.Arrays;
 
+import logicircuit.LCComponent;
 import logicircuit.LCDFrameCmd;
 import logicircuit.LCDPanel;
 
@@ -39,6 +40,5 @@ public class Main {
         LCDFrameCmd frame = new LCDFrameCmd(parser, "LogicFlow", SCREEN_WIDTH, 700);
         drawPannel = frame.drawPanel();
         drawPannel.clear();
-
     }
 }
