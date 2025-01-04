@@ -37,6 +37,21 @@ public class LCDPanel {
         drawPanel.setBackground(BACKGROUND_COLOR_DEFAULT);
         drawPanel.setDoubleBuffered(true);
 
+        drawPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.DARK_GRAY, 2),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+
+        GroupLayout layout = new GroupLayout(drawPanel);
+        drawPanel.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
+
+        try {
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         // Initialize the canvas with the size of the panel
         canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         // Add mouse listener to track clicks
@@ -261,10 +276,16 @@ public class LCDPanel {
         drawPanel.repaint();
     }
 
-    public void drawRectagle(int x, int y, int width, int height, Color fillColor) {
+    public void drawRectangle(int x, int y, int width, int height, Color fillColor) {
         Graphics2D g2d = canvas.createGraphics();
         g2d.setColor(fillColor);
         g2d.fillRect(x, y, width, height);
+
+        // Desenhar borda
+        g2d.setColor(fillColor.darker());
+        g2d.setStroke(new BasicStroke(3)); // Define a espessura da borda
+        g2d.drawRect(x, y, width, height);
+
         g2d.dispose();
         drawPanel.repaint();
     }

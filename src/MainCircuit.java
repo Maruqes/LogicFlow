@@ -301,6 +301,9 @@ public class MainCircuit {
     }
 
     public String save(String filename) {
+        if (filename.contains("/") || filename.contains("\\") || filename.contains("..")) {
+            return "Error: Invalid filename";
+        }
         try {
             Files.createDirectories(Paths.get("./saves"));
         } catch (IOException e) {
@@ -330,6 +333,9 @@ public class MainCircuit {
     }
 
     public String open(String filename) {
+        if (filename.contains("/") || filename.contains("\\") || filename.contains("..")) {
+            return "Error: Invalid filename";
+        }
         try (BufferedReader reader = new BufferedReader(new FileReader("./saves/" + filename))) {
             while (reader.ready()) {
 
@@ -649,7 +655,7 @@ public class MainCircuit {
                 } else if (onOff.equalsIgnoreCase("off")) {
                     s.setState(false);
                 } else {
-                    throw new IllegalArgumentException("Invalid value");
+                    throw new IllegalArgumentException("Needs to be ON or OFF");
                 }
                 return "";
             }

@@ -51,7 +51,7 @@ public class Menu {
     }
 
     public static void drawLeftSideBar() {
-        Main.drawPannel.drawRectagle(0, 0, Main.LeftMenuWidth, Main.SCREEN_HEIGHT, Color.GRAY);
+        Main.drawPannel.drawRectangle(0, 0, Main.LeftMenuWidth, Main.SCREEN_HEIGHT, Color.GRAY);
     }
 
     public static void drawAllMenus() {
