@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import logicircuit.LCComponent;
+import logicircuit.LCInputPin;
 
 public class ProcessCommands extends Parser {
 
@@ -158,8 +159,15 @@ public class ProcessCommands extends Parser {
             legends += tokens.get(i) + " ";
         }
 
-        int x = Integer.parseInt(cordX);
-        int y = Integer.parseInt(cordY);
+        int x = 0;
+        int y = 0;
+
+        try {
+            x = Integer.parseInt(cordX);
+            y = Integer.parseInt(cordY);
+        } catch (NumberFormatException e) {
+            return "Error: Invalid coordinates";
+        }
 
         try {
             LCComponent type = BasicComponent.getTypeWithComponent(tipoPorta);
@@ -187,9 +195,12 @@ public class ProcessCommands extends Parser {
         String from = tokens.get(1);
         String to = tokens.get(2);
         String pin = tokens.get(3);
-
+        LCInputPin pinL = Wire.getWithNome(pin);
+        if (pinL == null) {
+            return "Error: Invalid pin";
+        }
         try {
-            circuit.wire(from, to, Wire.getWithNome(pin));
+            circuit.wire(from, to, pinL);
             saveCurrentState();
             Main.DRAW_ALL_STUFF(circuit);
         } catch (Exception e) {
@@ -208,8 +219,13 @@ public class ProcessCommands extends Parser {
         String to = tokens.get(2);
         String pin = tokens.get(3);
 
+        LCInputPin pinL = Wire.getWithNome(pin);
+        if (pinL == null) {
+            return "Error: Invalid pin";
+        }
+
         try {
-            circuit.dewire(from, to, Wire.getWithNome(pin));
+            circuit.dewire(from, to, pinL);
             saveCurrentState();
             Main.DRAW_ALL_STUFF(circuit);
         } catch (Exception e) {
@@ -259,11 +275,21 @@ public class ProcessCommands extends Parser {
         }
         String err = "";
         String nome = tokens.get(1);
-        String x = tokens.get(2);
-        String y = tokens.get(4);
+        String Sx = tokens.get(2);
+        String Sy = tokens.get(4);
+
+        int x = 0;
+        int y = 0;
 
         try {
-            err = circuit.move(nome, Integer.parseInt(x), Integer.parseInt(y));
+            x = Integer.parseInt(Sx);
+            y = Integer.parseInt(Sy);
+        } catch (NumberFormatException e) {
+            return "Error: Invalid coordinates";
+        }
+
+        try {
+            err = circuit.move(nome, x, y);
             saveCurrentState();
             Main.DRAW_ALL_STUFF(circuit);
         } catch (Exception e) {

@@ -87,7 +87,7 @@ public class BasicComponent implements BasicComponentInterface {
         } else if (tipoPorta.equalsIgnoreCase("nor")) {
             return LCComponent.NOR;
         } else {
-            throw new IllegalArgumentException("Invalid value");
+            throw new IllegalArgumentException("Invalid component");
         }
     }
 
