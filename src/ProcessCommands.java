@@ -87,7 +87,7 @@ public class ProcessCommands extends Parser {
             } catch (Exception e) {
                 return "Error: Missing name for mini circuit";
             }
-            
+
             MainCircuit miniOpenFile = new MainCircuit();
             miniOpenFile.open(filename);
 
@@ -130,11 +130,11 @@ public class ProcessCommands extends Parser {
     private ArrayList<MainCircuit> circuitsHistory = new ArrayList<>();
 
     public void saveCurrentState() {
-        // if (circuitsHistory == null) {
-        // circuitsHistory = new ArrayList<>();
-        // }
-        // circuitsHistory.add(circuit.clone());
-        // redoHistory.clear(); // limpa o redo
+        if (circuitsHistory == null) {
+            circuitsHistory = new ArrayList<>();
+        }
+        circuitsHistory.add(circuit.clone());
+        redoHistory.clear(); // limpa o redo
     }
 
     private String undoCircuit(ArrayList<String> tokens) {
