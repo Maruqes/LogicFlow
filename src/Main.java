@@ -14,7 +14,6 @@ import logicircuit.LCInputPin;
 
 import java.util.ArrayList;
 
-
 //probelma nos nomes
 public class Main {
     public static LCDPanel drawPannel;

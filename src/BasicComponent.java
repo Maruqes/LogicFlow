@@ -80,6 +80,8 @@ public class BasicComponent implements BasicComponentInterface {
             return LCComponent.SWITCH;
         } else if (tipoPorta.equalsIgnoreCase("display")) {
             return LCComponent.BIT3_DISPLAY;
+        } else if (tipoPorta.equalsIgnoreCase("BIT3_DISPLAY")) {
+            return LCComponent.BIT3_DISPLAY;
         } else if (tipoPorta.equalsIgnoreCase("led")) {
             return LCComponent.LED;
         } else if (tipoPorta.equalsIgnoreCase("nand")) {
