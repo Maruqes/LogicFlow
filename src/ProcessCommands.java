@@ -120,7 +120,7 @@ public class ProcessCommands extends Parser {
                 MiniCircuit miniCircuit = new MiniCircuit(miniOpenFile.switches, miniOpenFile.components,
                         miniOpenFile.outputs, miniOpenFile.wires, nameLegends, nameLegends, filename);
 
-                if (miniCircuit.validateCircuit() != "") {
+                if (miniCircuit.validateCircuit() != "Circuito válido!") {
                     return "Error: Not valid Mini circuit must have only 1 output and max 8 switches";
                 }
 
