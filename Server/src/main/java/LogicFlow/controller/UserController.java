@@ -91,4 +91,12 @@ public class UserController {
         ArrayList<String> files = getAllFiles(username);
         return ResponseEntity.ok(files);
     }
+
+    @PostMapping("/ping")
+    public ResponseEntity<?> ping(@RequestParam String username, @RequestParam String token) {
+        if (!Login.verificarTokenUsername(username, token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido ou inexistente.");
+        }
+        return ResponseEntity.ok("pong");
+    }
 }
