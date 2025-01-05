@@ -74,7 +74,7 @@ public class ProcessCommands extends Parser {
         HandleTokensInterface clearFunc = (tokensVar) -> {
             circuit.clear();
             saveCurrentState();
-            Main.DRAW_ALL_STUFF(circuit);
+            ProgCircuito.DRAW_ALL_STUFF(circuit);
             return "";
         };
         commands.put("clear", clearFunc);
@@ -93,7 +93,7 @@ public class ProcessCommands extends Parser {
             }
 
             try {
-                Main.restartProgram(tokensVar.get(1), tokensVar.get(3));
+                ProgCircuito.restartProgram(tokensVar.get(1), tokensVar.get(3));
             } catch (IOException e) {
                 return "Error: " + e.getMessage();
             }
@@ -124,7 +124,7 @@ public class ProcessCommands extends Parser {
         // reverte
         circuitsHistory.remove(circuitsHistory.size() - 1); // remove o estado atual
         circuit = circuitsHistory.get(circuitsHistory.size() - 1); // vai pra o ultimo estado
-        Main.DRAW_ALL_STUFF(circuit);
+        ProgCircuito.DRAW_ALL_STUFF(circuit);
         return "Undo successful.";
     }
 
@@ -136,7 +136,7 @@ public class ProcessCommands extends Parser {
         circuitsHistory.add(circuit.clone()); // salva o atual para o undo
 
         circuit = redoHistory.remove(redoHistory.size() - 1); // vai para o ultimo estado do redo
-        Main.DRAW_ALL_STUFF(circuit);
+        ProgCircuito.DRAW_ALL_STUFF(circuit);
         return "Redo successful.";
     }
 
@@ -179,7 +179,7 @@ public class ProcessCommands extends Parser {
                 circuit.add(type, nome, x, y, legends);
             }
             saveCurrentState();
-            Main.DRAW_ALL_STUFF(circuit);
+            ProgCircuito.DRAW_ALL_STUFF(circuit);
         } catch (Exception e) {
             err = e.getMessage();
         }
@@ -202,7 +202,7 @@ public class ProcessCommands extends Parser {
         try {
             circuit.wire(from, to, pinL);
             saveCurrentState();
-            Main.DRAW_ALL_STUFF(circuit);
+            ProgCircuito.DRAW_ALL_STUFF(circuit);
         } catch (Exception e) {
             err = e.getMessage();
         }
@@ -227,7 +227,7 @@ public class ProcessCommands extends Parser {
         try {
             circuit.dewire(from, to, pinL);
             saveCurrentState();
-            Main.DRAW_ALL_STUFF(circuit);
+            ProgCircuito.DRAW_ALL_STUFF(circuit);
         } catch (Exception e) {
             err = e.getMessage();
         }
@@ -245,7 +245,7 @@ public class ProcessCommands extends Parser {
         try {
             err = circuit.turn(onOff, nome);
             saveCurrentState();
-            Main.DRAW_ALL_STUFF(circuit);
+            ProgCircuito.DRAW_ALL_STUFF(circuit);
         } catch (Exception e) {
             return e.getMessage();
         }
@@ -262,7 +262,7 @@ public class ProcessCommands extends Parser {
         try {
             err = circuit.removeElement(nome);
             saveCurrentState();
-            Main.DRAW_ALL_STUFF(circuit);
+            ProgCircuito.DRAW_ALL_STUFF(circuit);
         } catch (Exception e) {
             return e.getMessage();
         }
@@ -291,7 +291,7 @@ public class ProcessCommands extends Parser {
         try {
             err = circuit.move(nome, x, y);
             saveCurrentState();
-            Main.DRAW_ALL_STUFF(circuit);
+            ProgCircuito.DRAW_ALL_STUFF(circuit);
         } catch (Exception e) {
             return e.getMessage();
         }

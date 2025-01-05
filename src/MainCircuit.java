@@ -314,7 +314,7 @@ public class MainCircuit {
         } catch (IllegalArgumentException er) {
             return er.getMessage();
         }
-        Main.DRAW_ALL_STUFF(this);
+        ProgCircuito.DRAW_ALL_STUFF(this);
         return "";
     }
 
@@ -478,7 +478,7 @@ public class MainCircuit {
     }
 
     public void forceDraw() {
-        Main.drawPannel.clear();
+        ProgCircuito.drawPannel.clear();
 
         for (Switch s : switches) {
             s.draw();
@@ -540,9 +540,9 @@ public class MainCircuit {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                Main.DRAW_ALL_STUFF(this);
+                ProgCircuito.DRAW_ALL_STUFF(this);
             } else {
-                Main.DRAW_ALL_STUFF(this);
+                ProgCircuito.DRAW_ALL_STUFF(this);
             }
         });
 
@@ -615,7 +615,7 @@ public class MainCircuit {
                 boolean state = extractBit(i, j);
                 switches.get(j).setState(state);
             }
-            Main.DRAW_ALL_STUFF(this);
+            ProgCircuito.DRAW_ALL_STUFF(this);
             System.out.print("\nCombination " + i + ": ");
             for (Switch s : switches) {
                 System.out.print(s.getState() ? "1 " : "0 ");
@@ -628,7 +628,7 @@ public class MainCircuit {
         switches.clear();
         switches.addAll(oldState);
 
-        Main.DRAW_ALL_STUFF(this);
+        ProgCircuito.DRAW_ALL_STUFF(this);
     }
 
     public void animacaoTabela() {
@@ -659,7 +659,7 @@ public class MainCircuit {
             switches.clear();
             switches.addAll(oldState);
 
-            Main.DRAW_ALL_STUFF(this);
+            ProgCircuito.DRAW_ALL_STUFF(this);
         });
 
         myThread.start();
