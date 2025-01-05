@@ -18,7 +18,7 @@ public class LCDFrameCmd {
     private static final String exitCommand = "exit";
 
     // Fields
-    private final JFrame frame;
+    public final JFrame frame;
     private final LCDPanel lcPanel;
 
     /**

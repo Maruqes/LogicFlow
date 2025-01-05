@@ -1,0 +1,11 @@
+Switch//SWITCH//switch17//false//450//299//switch17
+Switch//SWITCH//switch19//false//442//410//switch19
+Switch//SWITCH//switch21//false//459//522//switch21
+BasicCmp//AND//and15//707//378//and15
+BasicCmp//AND//and23//825//471//and23
+BasicCmp//LED//led25//979//449//led25
+Wire//switch17//and15//PIN_A
+Wire//switch19//and15//PIN_B
+Wire//and15//and23//PIN_A
+Wire//switch21//and23//PIN_B
+Wire//and23//led25//PIN_A

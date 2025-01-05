@@ -1,0 +1,11 @@
+Switch//SWITCH//switch2//false//216//209//switch2
+Switch//SWITCH//switch3//false//224//299//switch3
+Switch//SWITCH//switch4//false//228//380//switch4
+BasicCmp//AND//and1//409//253//and1
+BasicCmp//OR//or5//499//354//or5
+BasicCmp//LED//led6//624//338//led6
+Wire//switch2//and1//PIN_A
+Wire//switch3//and1//PIN_B
+Wire//and1//or5//PIN_A
+Wire//switch4//or5//PIN_B
+Wire//or5//led6//PIN_A

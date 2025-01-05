@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -304,31 +305,20 @@ public class MainCircuit {
         if (filename.contains("/") || filename.contains("\\") || filename.contains("..")) {
             return "Error: Invalid filename";
         }
-        try {
-            Files.createDirectories(Paths.get("./saves"));
-        } catch (IOException e) {
-            return e.getMessage();
+        StringBuilder sb = new StringBuilder();
+        for (Switch sw : switches) {
+            sb.append(sw.Strigonize()).append("\n");
         }
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("./saves/" + filename))) {
-            for (Switch sw : switches) {
-                writer.write(sw.Strigonize());
-                writer.newLine();
-            }
-            for (IOComponent ic : components) {
-                writer.write(ic.Strigonize());
-                writer.newLine();
-            }
-            for (OutputInterface oi : outputs) {
-                writer.write(oi.Strigonize());
-                writer.newLine();
-            }
-            for (Wire w : wires) {
-                writer.write(w.Strigonize());
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            return e.getMessage();
+        for (IOComponent ic : components) {
+            sb.append(ic.Strigonize()).append("\n");
         }
+        for (OutputInterface oi : outputs) {
+            sb.append(oi.Strigonize()).append("\n");
+        }
+        for (Wire w : wires) {
+            sb.append(w.Strigonize()).append("\n");
+        }
+        LoginRegisterPanel.saveOnServer(sb.toString(), filename);
         return "";
     }
 
@@ -336,12 +326,13 @@ public class MainCircuit {
         if (filename.contains("/") || filename.contains("\\") || filename.contains("..")) {
             return "Error: Invalid filename";
         }
-        try (BufferedReader reader = new BufferedReader(new FileReader("./saves/" + filename))) {
-            while (reader.ready()) {
+        ArrayList<String> content = LoginRegisterPanel.openSave(filename);
+        if (content == null) {
+            return "Error: File not found";
+        }
+        try {
+            for (String aux : content) {
 
-                // ler linha
-                String aux = reader.readLine();
-                // dividir a linha
                 String[] res = aux.split("//");
                 String nome = res[2];
 
@@ -405,8 +396,6 @@ public class MainCircuit {
                 }
 
             }
-        } catch (IOException e) {
-            return e.getMessage();
         } catch (IllegalArgumentException er) {
             return er.getMessage();
         }

@@ -1,7 +1,11 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.WebSocket;
 import java.util.Arrays;
+import java.util.concurrent.CompletionStage;
 
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -14,7 +18,7 @@ import logicircuit.LCInputPin;
 
 import java.util.ArrayList;
 
-//probelma nos nomes
+// probelma nos nomes
 public class Main {
     public static LCDPanel drawPannel;
     public static LCDFrameCmd frame;
@@ -22,6 +26,10 @@ public class Main {
 
     public static int SCREEN_WIDTH = 900;
     public static int SCREEN_HEIGHT = 700;
+
+    private static String[] argsPublic;
+
+    public static WebSocket webSocket;
 
     public static void DRAW_ALL_STUFF(MainCircuit circuit) {
         Timer timer = new Timer(10, e -> {
@@ -198,13 +206,18 @@ public class Main {
         }
     }
 
-    public static void main(String[] args) {
-        System.out.println("You are running the modded version of LogicFlow");
+    // é porco mas é oq ha sao 4 da matina
+    public static void sendMsgWebSocket(String msg) {
+        String finalMsg = LoginRegisterPanel.username + "://:" + LoginRegisterPanel.token + "://:" + msg;
+        webSocket.sendText(finalMsg, true);
+    }
+
+    public static void runFullApp() {
         MainCircuit circuit = new MainCircuit();
 
-        if (args.length > 0) {
-            SCREEN_WIDTH = Integer.parseInt(args[0]);
-            SCREEN_HEIGHT = Integer.parseInt(args[1]);
+        if (argsPublic.length > 0) {
+            SCREEN_WIDTH = Integer.parseInt(argsPublic[0]);
+            SCREEN_HEIGHT = Integer.parseInt(argsPublic[1]);
         }
 
         ProcessCommands parser = new ProcessCommands(circuit);
@@ -237,5 +250,25 @@ public class Main {
 
         }
 
+    }
+
+    public static void ErrorBox(String message) {
+        SwingUtilities.invokeLater(() -> {
+            javax.swing.JOptionPane.showMessageDialog(null, message, "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        });
+    }
+
+    public static void main(String[] args) {
+        argsPublic = args;
+        System.out.println("You are running the modded version of LogicFlow");
+        LoginRegisterPanel.drawTela();
+
+        // um bocado porco mas funciona :D2
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        runFullApp();
     }
 }

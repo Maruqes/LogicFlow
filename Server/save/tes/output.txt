@@ -1,0 +1,16 @@
+Switch//SWITCH//sw1//false//10//50//switch1 
+Switch//SWITCH//sw2//true//10//150//
+Switch//SWITCH//sw3//true//10//330//
+BasicCmp//AND//and1//100//100//
+BasicCmp//AND//and2//220//200//and e2 
+BasicCmp//OR//or//330//330//or ou1 
+BasicCmp//LED//led1//440//220//
+BasicCmp//LED//led2//440//330//
+Wire//sw1//and1//PIN_A
+Wire//sw2//and1//PIN_B
+Wire//and1//and2//PIN_A
+Wire//sw3//and2//PIN_B
+Wire//sw3//or//PIN_B
+Wire//and2//or//PIN_A
+Wire//and2//led1//PIN_A
+Wire//or//led2//PIN_A

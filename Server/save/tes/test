@@ -1,0 +1,3 @@
+Switch//SWITCH//switch1//false//342//301//switch1
+BasicCmp//NOR//nor3//690//293//nor3
+Wire//switch1//nor3//PIN_A

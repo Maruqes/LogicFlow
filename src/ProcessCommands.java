@@ -1,6 +1,24 @@
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Frame;
+import java.awt.GridLayout;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 
 import logicircuit.LCComponent;
 import logicircuit.LCInputPin;
@@ -53,6 +71,12 @@ public class ProcessCommands extends Parser {
         HandleTokensInterface redoFunc = (tokensVar) -> redoCircuit(tokensVar);
         commands.put("redo", redoFunc);
 
+        HandleTokensInterface lsFiles = (tokensVar) -> lsfiles();
+        commands.put("ls", lsFiles);
+
+        HandleTokensInterface lsSharedFiles = (tokensVar) -> lsSharedFiles();
+        commands.put("lsshared", lsSharedFiles);
+
         HandleTokensInterface printAll = (tokensVar) -> {
             circuit.printAllInfo();
             return "";
@@ -90,15 +114,24 @@ public class ProcessCommands extends Parser {
             }
 
             MainCircuit miniOpenFile = new MainCircuit();
-            miniOpenFile.open(filename);
+            try {
+                miniOpenFile.open(filename);
 
-            MiniCircuit miniCircuit = new MiniCircuit(miniOpenFile.switches, miniOpenFile.components,
-                    miniOpenFile.outputs, miniOpenFile.wires, nameLegends, nameLegends, filename);
+                MiniCircuit miniCircuit = new MiniCircuit(miniOpenFile.switches, miniOpenFile.components,
+                        miniOpenFile.outputs, miniOpenFile.wires, nameLegends, nameLegends, filename);
 
-            System.out.println(miniCircuit.getOutput());
-            miniCircuit.setPosition(500, 500);
-            circuit.add_miniCircuit(miniCircuit);
-            Main.DRAW_ALL_STUFF(circuit);
+                if (miniCircuit.validateCircuit() != "") {
+                    return "Error: Not valid Mini circuit must have only 1 output and max 8 switches";
+                }
+
+                System.out.println(miniCircuit.getOutput());
+                miniCircuit.setPosition(500, 500);
+                circuit.add_miniCircuit(miniCircuit);
+                Main.DRAW_ALL_STUFF(circuit);
+            } catch (Exception e) {
+                miniOpenFile.clear();
+                return "Error: Problem with mini circuit remeber to save the circuit with only 1 output and max 8 switches";
+            }
             return "";
         };
         commands.put("mini", createMiniCircuit);
@@ -125,6 +158,18 @@ public class ProcessCommands extends Parser {
         };
         commands.put("screen", screenWH);
 
+        HandleTokensInterface sendCircuit = (tokensVar) -> {
+            try {
+                String username = tokensVar.get(1);
+                String circuitSend = tokensVar.get(2);
+
+                LoginRegisterPanel.sendCircuit(username, circuitSend);
+                return "";
+            } catch (Exception e) {
+                return "Error: " + e.getMessage();
+            }
+        };
+        commands.put("send", sendCircuit);
     }
 
     private ArrayList<MainCircuit> redoHistory = new ArrayList<>();
@@ -348,6 +393,101 @@ public class ProcessCommands extends Parser {
 
     private String validateCircuit(ArrayList<String> tokens) {
         return circuit.validateCircuit();
+    }
+
+    private String lsfiles() {
+        ArrayList<String> files = LoginRegisterPanel.ListFiles();
+        // Criar a janela popup
+        JDialog popup = new JDialog((Frame) null, "File Selector", true);
+        popup.setSize(430, 300);
+        popup.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+        // Criar o painel principal para os botões
+        JPanel panel = new JPanel(new GridLayout(0, 1, 5, 5)); // GridLayout para alinhamento vertical
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Espaçamento interno
+
+        // Adicionar os botões dinamicamente
+        if (files == null || files.isEmpty()) {
+            JLabel noFilesLabel = new JLabel("No files available.");
+            noFilesLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            panel.add(noFilesLabel);
+        } else {
+            for (String file : files) {
+                JButton fileButton = new JButton(file.trim());
+                fileButton.setFocusPainted(false);
+                fileButton.setBackground(new Color(240, 240, 240));
+                fileButton.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(new Color(200, 200, 200)),
+                        BorderFactory.createEmptyBorder(5, 10, 5, 10)));
+                fileButton.addActionListener(e -> {
+                    circuit.open(fileButton.getText());
+                    popup.dispose(); // Fechar o popup após a seleção
+                });
+                panel.add(fileButton);
+            }
+        }
+
+        // Adicionar o painel ao JScrollPane
+        JScrollPane scrollPane = new JScrollPane(panel);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+        // Adicionar o JScrollPane à janela popup
+        popup.add(scrollPane, BorderLayout.CENTER);
+
+        // Tornar a janela visível
+        popup.setLocationRelativeTo(null);
+        popup.setVisible(true);
+
+        return "";
+    }
+
+    private String lsSharedFiles() {
+        ArrayList<String> files = LoginRegisterPanel.ListSharedFiles();
+        // Criar a janela popup
+        JDialog popup = new JDialog((Frame) null, "File Selector", true);
+        popup.setSize(430, 300);
+        popup.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+        // Criar o painel principal para os botões
+        JPanel panel = new JPanel(new GridLayout(0, 1, 5, 5)); // GridLayout para alinhamento vertical
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Espaçamento interno
+
+        // Adicionar os botões dinamicamente
+        if (files == null || files.isEmpty()) {
+            JLabel noFilesLabel = new JLabel("No files available.");
+            noFilesLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            panel.add(noFilesLabel);
+        } else {
+            for (String file : files) {
+                JButton fileButton = new JButton(file.trim());
+                fileButton.setFocusPainted(false);
+                fileButton.setBackground(new Color(240, 240, 240));
+                fileButton.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(new Color(200, 200, 200)),
+                        BorderFactory.createEmptyBorder(5, 10, 5, 10)));
+                fileButton.addActionListener(e -> {
+
+                    LoginRegisterPanel.AcceptCircuit(fileButton.getText());
+                    popup.dispose(); // Fechar o popup após a seleção
+                });
+                panel.add(fileButton);
+            }
+        }
+
+        // Adicionar o painel ao JScrollPane
+        JScrollPane scrollPane = new JScrollPane(panel);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+        // Adicionar o JScrollPane à janela popup
+        popup.add(scrollPane, BorderLayout.CENTER);
+
+        // Tornar a janela visível
+        popup.setLocationRelativeTo(null);
+        popup.setVisible(true);
+
+        return "";
     }
 
 }

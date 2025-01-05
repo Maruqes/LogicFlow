@@ -1,0 +1,11 @@
+Switch//SWITCH//switch0//false//353//336//switch0
+Switch//SWITCH//switch1//false//351//452//switch1
+Switch//SWITCH//switch2//true//375//560//switch2
+BasicCmp//XOR//xor0//524//401//xor0
+BasicCmp//XOR//xor1//642//476//xor1
+BasicCmp//LED//led0//825//448//led0
+Wire//switch1//xor0//PIN_A
+Wire//switch0//xor0//PIN_B
+Wire//xor0//xor1//PIN_A
+Wire//switch2//xor1//PIN_B
+Wire//xor1//led0//PIN_A
