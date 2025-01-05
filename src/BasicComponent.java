@@ -44,7 +44,7 @@ public class BasicComponent implements BasicComponentInterface {
 
     @Override
     public void draw() {
-        Main.drawPannel.drawComponent(ourCmp, setX, setY, legend);
+        ProgCircuito.drawPannel.drawComponent(ourCmp, setX, setY, legend);
     }
 
     @Override

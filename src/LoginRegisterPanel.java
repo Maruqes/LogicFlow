@@ -334,7 +334,7 @@ public class LoginRegisterPanel extends JPanel {
             } else if (responseCode == 401) {
                 JOptionPane.showMessageDialog(null, "Credenciais inválidas!", "Erro", JOptionPane.ERROR_MESSAGE);
             } else {
-                Main.ErrorBox("Erro: Ao fazer login!");
+                ProgCircuito.ErrorBox("Erro: Ao fazer login!");
                 System.out.println("Erro: O servidor retornou o código " + responseCode);
             }
 
@@ -372,7 +372,7 @@ public class LoginRegisterPanel extends JPanel {
                 JOptionPane.showMessageDialog(null, "Utilizador criado com sucesso!", "Sucesso",
                         JOptionPane.INFORMATION_MESSAGE);
             } else {
-                Main.ErrorBox("Erro: Ao criar utilizador!");
+                ProgCircuito.ErrorBox("Erro: Ao criar utilizador!");
                 JOptionPane.showMessageDialog(null, "Erro ao criar utilizador!", "Erro", JOptionPane.ERROR_MESSAGE);
             }
 
@@ -414,10 +414,10 @@ public class LoginRegisterPanel extends JPanel {
             if (responseCode == 200) {
                 System.out.println("Ficheiro guardado com sucesso no servidor.");
             } else if (responseCode == 401) {
-                Main.ErrorBox("Erro: Autorização falhou. Token inválido ou expirado.");
+                ProgCircuito.ErrorBox("Erro: Autorização falhou. Token inválido ou expirado.");
                 System.out.println("Erro: Autorização falhou. Token inválido ou expirado.");
             } else {
-                Main.ErrorBox("Erro: O servidor retornou o código " + responseCode);
+                ProgCircuito.ErrorBox("Erro: O servidor retornou o código " + responseCode);
                 System.out.println("Erro: O servidor retornou o código " + responseCode);
             }
 
@@ -467,10 +467,10 @@ public class LoginRegisterPanel extends JPanel {
                     return response;
                 }
             } else if (responseCode == 401) {
-                Main.ErrorBox("Erro: Autorização falhou. Token inválido ou expirado.");
+                ProgCircuito.ErrorBox("Erro: Autorização falhou. Token inválido ou expirado.");
                 System.out.println("Erro: Autorização falhou. Token inválido ou expirado.");
             } else {
-                Main.ErrorBox("Erro: O servidor retornou o código " + responseCode + "\n Provavelmente o " + filename
+                ProgCircuito.ErrorBox("Erro: O servidor retornou o código " + responseCode + "\n Provavelmente o " + filename
                         + " não existe.");
                 System.out.println("Erro: O servidor retornou o código " + responseCode);
             }
@@ -535,10 +535,10 @@ public class LoginRegisterPanel extends JPanel {
                     return convertToArrayList(response);
                 }
             } else if (responseCode == 401) {
-                Main.ErrorBox("Erro: Autorização falhou. Token inválido ou expirado.");
+                ProgCircuito.ErrorBox("Erro: Autorização falhou. Token inválido ou expirado.");
                 System.out.println("Erro: Autorização falhou. Token inválido ou expirado.");
             } else {
-                Main.ErrorBox("Erro: O servidor retornou o código " + responseCode);
+                ProgCircuito.ErrorBox("Erro: O servidor retornou o código " + responseCode);
                 System.out.println("Erro: O servidor retornou o código " + responseCode);
             }
 
@@ -582,11 +582,11 @@ public class LoginRegisterPanel extends JPanel {
                 System.out.println("Circuito enviado com sucesso.");
                 return "Circuito enviado com sucesso.";
             } else if (responseCode == 401) {
-                Main.ErrorBox("Erro: Autorização falhou. Token inválido ou expirado.");
+                ProgCircuito.ErrorBox("Erro: Autorização falhou. Token inválido ou expirado.");
                 System.out.println("Erro: Autorização falhou. Token inválido ou expirado.");
                 return "Erro: Autorização falhou. Token inválido ou expirado.";
             } else {
-                Main.ErrorBox("Erro: O servidor retornou o código " + responseCode);
+                ProgCircuito.ErrorBox("Erro: O servidor retornou o código " + responseCode);
                 System.out.println("Erro: O servidor retornou o código " + responseCode);
                 return "Erro: O servidor retornou o código " + responseCode;
             }

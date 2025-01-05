@@ -9,7 +9,7 @@ public class Menu {
     public static String currentHolderName = "Nothing selected";
 
     public static BasicComponent getLeftClickColision() {
-        int xy[] = Main.drawPannel.getMouseXY();
+        int xy[] = ProgCircuito.drawPannel.getMouseXY();
         int x = xy[0];
         int y = xy[1];
         for (BasicComponent component : components) {
@@ -24,14 +24,14 @@ public class Menu {
 
     public static void initComponents() {
         components.add(new BasicComponent(LCComponent.AND, "and", 10, 50, "AND"));
-        components.add(new BasicComponent(LCComponent.OR, "or", 10, 50 + Main.SCREEN_HEIGHT / 15, "OR"));
-        components.add(new BasicComponent(LCComponent.NOT, "not", 10, 50 + 2 * Main.SCREEN_HEIGHT / 15, "NOT"));
+        components.add(new BasicComponent(LCComponent.OR, "or", 10, 50 + ProgCircuito.SCREEN_HEIGHT / 15, "OR"));
+        components.add(new BasicComponent(LCComponent.NOT, "not", 10, 50 + 2 * ProgCircuito.SCREEN_HEIGHT / 15, "NOT"));
         components.add(new BasicComponent(LCComponent.XOR, "xor", 110, 50, "XOR"));
-        components.add(new BasicComponent(LCComponent.NAND, "nand", 110, 50 + Main.SCREEN_HEIGHT / 15, "NAND"));
-        components.add(new BasicComponent(LCComponent.NOR, "nor", 110, 50 + 2 * Main.SCREEN_HEIGHT / 15, "NOR"));
-        components.add(new Switch(false, "switch1", 10, 50 + 5 * Main.SCREEN_HEIGHT / 15, "SWITCH"));
-        components.add(new Led(0, "led", 10, 50 + 10 * Main.SCREEN_HEIGHT / 15, "LED"));
-        components.add(new Display3bit(0, "display", 110, 70 + 10 * Main.SCREEN_HEIGHT / 15));
+        components.add(new BasicComponent(LCComponent.NAND, "nand", 110, 50 + ProgCircuito.SCREEN_HEIGHT / 15, "NAND"));
+        components.add(new BasicComponent(LCComponent.NOR, "nor", 110, 50 + 2 * ProgCircuito.SCREEN_HEIGHT / 15, "NOR"));
+        components.add(new Switch(false, "switch1", 10, 50 + 5 * ProgCircuito.SCREEN_HEIGHT / 15, "SWITCH"));
+        components.add(new Led(0, "led", 10, 50 + 10 * ProgCircuito.SCREEN_HEIGHT / 15, "LED"));
+        components.add(new Display3bit(0, "display", 110, 70 + 10 * ProgCircuito.SCREEN_HEIGHT / 15));
     }
 
     public static void drawExampleGates(int space) {
@@ -51,23 +51,23 @@ public class Menu {
     }
 
     public static void drawLeftSideBar() {
-        Main.drawPannel.drawRectangle(0, 0, Main.LeftMenuWidth, Main.SCREEN_HEIGHT, Color.GRAY);
+        ProgCircuito.drawPannel.drawRectangle(0, 0, ProgCircuito.LeftMenuWidth, ProgCircuito.SCREEN_HEIGHT, Color.GRAY);
     }
 
     public static void drawAllMenus() {
-        Main.drawPannel.clear();
+        ProgCircuito.drawPannel.clear();
         drawLeftSideBar();
-        drawExampleGates(Main.SCREEN_HEIGHT / 15);
-        Main.drawPannel.drawText(50, -25, currentHolderName);
+        drawExampleGates(ProgCircuito.SCREEN_HEIGHT / 15);
+        ProgCircuito.drawPannel.drawText(50, -25, currentHolderName);
     }
 
     public static void callBackResize(int width, int height, MainCircuit circuit) {
-        Main.SCREEN_WIDTH = width;
-        Main.SCREEN_HEIGHT = height;
-        Main.drawPannel.setNewSize(width, height);
+        ProgCircuito.SCREEN_WIDTH = width;
+        ProgCircuito.SCREEN_HEIGHT = height;
+        ProgCircuito.drawPannel.setNewSize(width, height);
         drawAllMenus();
         circuit.drawCircuit();
-        System.out.println("Width: " + Main.SCREEN_WIDTH + " Height: " + Main.SCREEN_HEIGHT);
+        System.out.println("Width: " + ProgCircuito.SCREEN_WIDTH + " Height: " + ProgCircuito.SCREEN_HEIGHT);
     }
 
     private static boolean anythingSelected = false;
@@ -83,36 +83,36 @@ public class Menu {
     }
 
     public static void moveSelected(int x, int y, MainCircuit circuit) {
-        if (x < Main.LeftMenuWidth) {
-            Main.DRAW_ALL_STUFF(circuit);
+        if (x < ProgCircuito.LeftMenuWidth) {
+            ProgCircuito.DRAW_ALL_STUFF(circuit);
             return;
         }
         if (anythingSelected) {
             if (selectedComponent.getType() == LCComponent.SWITCH) {
-                circuit.add(LCComponent.SWITCH, false, x - Main.LeftMenuWidth, y, "");
+                circuit.add(LCComponent.SWITCH, false, x - ProgCircuito.LeftMenuWidth, y, "");
             } else if (selectedComponent.getType() == LCComponent.LED
                     || selectedComponent.getType() == LCComponent.BIT3_DISPLAY) {
-                circuit.add(selectedComponent.getType(), 0, x - Main.LeftMenuWidth, y, "");
+                circuit.add(selectedComponent.getType(), 0, x - ProgCircuito.LeftMenuWidth, y, "");
             } else {
-                circuit.add(selectedComponent.getType(), x - Main.LeftMenuWidth, y, "");
+                circuit.add(selectedComponent.getType(), x - ProgCircuito.LeftMenuWidth, y, "");
             }
-            Main.DRAW_ALL_STUFF(circuit);
+            ProgCircuito.DRAW_ALL_STUFF(circuit);
             anythingSelected = false;
         }
     }
 
     public static void drawOnMouse(int x, int y, MainCircuit circuit) {
         if (anythingSelected) {
-            Main.drawPannel.clear();
+            ProgCircuito.drawPannel.clear();
             circuit.drawCircuit();
             if (selectedComponent.getType() == LCComponent.SWITCH) {
-                Main.drawPannel.drawComponent(selectedComponent.getType(), x, y, false, "");
+                ProgCircuito.drawPannel.drawComponent(selectedComponent.getType(), x, y, false, "");
             } else if (selectedComponent.getType() == LCComponent.LED) {
-                Main.drawPannel.drawComponent(selectedComponent.getType(), x, y, false, "");
+                ProgCircuito.drawPannel.drawComponent(selectedComponent.getType(), x, y, false, "");
             } else if (selectedComponent.getType() == LCComponent.BIT3_DISPLAY) {
-                Main.drawPannel.drawComponent(selectedComponent.getType(), x, y, 0);
+                ProgCircuito.drawPannel.drawComponent(selectedComponent.getType(), x, y, 0);
             } else {
-                Main.drawPannel.drawComponent(selectedComponent.getType(), x, y, "");
+                ProgCircuito.drawPannel.drawComponent(selectedComponent.getType(), x, y, "");
             }
 
         }

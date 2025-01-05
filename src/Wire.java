@@ -46,7 +46,7 @@ public class Wire {
 
     private void draw_IO() {
         if (component2 instanceof IOComponent) {
-            Main.drawPannel.drawWire(component1.getType(), component1.getXY()[0], component1.getXY()[1],
+            ProgCircuito.drawPannel.drawWire(component1.getType(), component1.getXY()[0], component1.getXY()[1],
                     component2.getType(), component2.getXY()[0], component2.getXY()[1], pin,
                     state);
         }
@@ -54,7 +54,7 @@ public class Wire {
 
     private void draw_Switch() {
         if (component2 instanceof Switch) {
-            Main.drawPannel.drawWire(component1.getType(), component1.getXY()[0], component1.getXY()[1],
+            ProgCircuito.drawPannel.drawWire(component1.getType(), component1.getXY()[0], component1.getXY()[1],
                     component2.getType(), component2.getXY()[0], component2.getXY()[1], pin,
                     state);
         }
@@ -62,7 +62,7 @@ public class Wire {
 
     private void draw_Outs() {
         if (component2 instanceof OutputInterface) {
-            Main.drawPannel.drawWire(component1.getType(), component1.getXY()[0], component1.getXY()[1],
+            ProgCircuito.drawPannel.drawWire(component1.getType(), component1.getXY()[0], component1.getXY()[1],
                     component2.getType(), component2.getXY()[0], component2.getXY()[1], pin,
                     state);
         }

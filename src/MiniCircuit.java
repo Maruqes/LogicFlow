@@ -129,7 +129,7 @@ public class MiniCircuit extends MainCircuit implements IOComponent, BasicCompon
 
     @Override
     public void draw() {
-        Main.drawPannel.drawComponent(type, xy[0], xy[1], legend);
+        ProgCircuito.drawPannel.drawComponent(type, xy[0], xy[1], legend);
     }
 
     @Override

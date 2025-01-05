@@ -42,7 +42,7 @@ public class Display3bit extends BasicComponent implements OutputInterface {
 
     @Override
     public void draw() {
-        Main.drawPannel.drawComponent(super.getType(), super.getXY()[0], super.getXY()[1], value);
+        ProgCircuito.drawPannel.drawComponent(super.getType(), super.getXY()[0], super.getXY()[1], value);
     }
 
     @Override

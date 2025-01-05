@@ -44,7 +44,7 @@ public class Led extends BasicComponent implements OutputInterface {
     @Override
     public void draw() {
         boolean state = (value != 0);
-        Main.drawPannel.drawComponent(super.getType(), super.getXY()[0], super.getXY()[1], state, super.getLegend());
+        ProgCircuito.drawPannel.drawComponent(super.getType(), super.getXY()[0], super.getXY()[1], state, super.getLegend());
     }
 
     public boolean allowPin(LCInputPin pin) {

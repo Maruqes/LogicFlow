@@ -64,7 +64,7 @@ public class MainCircuit {
         if (block_same_names(nome)) {
             throw new IllegalArgumentException("Name already exists");
         }
-        x = x + Main.LeftMenuWidth;
+        x = x + ProgCircuito.LeftMenuWidth;
         if (cmp == LCComponent.AND) {
             And and1 = new And(nome, x, y, legenda);
             components.add(and1);
@@ -131,7 +131,7 @@ public class MainCircuit {
             throw new IllegalArgumentException("Name already exists");
         }
         if (cmp == LCComponent.SWITCH) {
-            setX = setX + Main.LeftMenuWidth;
+            setX = setX + ProgCircuito.LeftMenuWidth;
             Switch switch1 = new Switch(state, nome, setX, setY, legend);
             switches.add(switch1);
         } else {
@@ -172,7 +172,7 @@ public class MainCircuit {
         if (block_same_names(nome)) {
             throw new IllegalArgumentException("Name already exists");
         }
-        setX = setX + Main.LeftMenuWidth;
+        setX = setX + ProgCircuito.LeftMenuWidth;
         if (cmp == LCComponent.BIT3_DISPLAY) {
             Display3bit display1 = new Display3bit(value, nome, setX, setY, legend);
             outputs.add(display1);
@@ -352,7 +352,7 @@ public class MainCircuit {
 
                     // adicionar elemento
                     if (cmp == LCComponent.SWITCH) {
-                        add(LCComponent.SWITCH, stateBool, nome, x - Main.LeftMenuWidth, y, legend);
+                        add(LCComponent.SWITCH, stateBool, nome, x - ProgCircuito.LeftMenuWidth, y, legend);
                     }
 
                 } else if (res[0].equals("Wire")) {
@@ -374,9 +374,9 @@ public class MainCircuit {
 
                     // adicionar elemento
                     if (cmp == LCComponent.BIT3_DISPLAY || cmp == LCComponent.LED) {
-                        add(cmp, 0, nome, x - Main.LeftMenuWidth, y, legend);
+                        add(cmp, 0, nome, x - ProgCircuito.LeftMenuWidth, y, legend);
                     } else {
-                        add(cmp, nome, x - Main.LeftMenuWidth, y, legend);
+                        add(cmp, nome, x - ProgCircuito.LeftMenuWidth, y, legend);
                     }
                 } else if (res[0].equals("MiniCircuit")) {
                     try {
@@ -389,7 +389,7 @@ public class MainCircuit {
 
                         miniCircuit.setPosition(Integer.parseInt(res[2]), Integer.parseInt(res[3]));
                         this.add_miniCircuit(miniCircuit);
-                        Main.DRAW_ALL_STUFF(this);
+                        ProgCircuito.DRAW_ALL_STUFF(this);
                     } catch (Exception e) {
                         System.out.println("Error: " + e.getMessage());
                     }
@@ -563,7 +563,7 @@ public class MainCircuit {
     }
 
     public void forceDraw() {
-        Main.drawPannel.clear();
+        ProgCircuito.drawPannel.clear();
 
         Menu.drawAllMenus();
 
