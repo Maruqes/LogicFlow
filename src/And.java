@@ -88,7 +88,6 @@ public class And extends BasicComponent implements IOComponent {
         return new And(this.getName(), this.getXY()[0], this.getXY()[1], this.getLegend());
     }
 
-    
 }
 
 //
