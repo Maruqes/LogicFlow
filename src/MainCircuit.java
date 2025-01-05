@@ -551,6 +551,7 @@ public class MainCircuit {
         // repeat
         // settar outputs dos wires
 
+        //settar os fios dos swicthes
         setSwitchesWire();
 
         // automaticamente os componentes

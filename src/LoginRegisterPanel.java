@@ -548,7 +548,7 @@ public class LoginRegisterPanel extends JPanel {
         return null;
     }
 
-    public static void sendCircuit(String username, String filename) {
+    public static String sendCircuit(String username, String filename) {
         System.out.println("[SEND CIRCUIT] Username: " + username + " | Filename: " + filename);
         try {
             // URL do endpoint
@@ -580,14 +580,20 @@ public class LoginRegisterPanel extends JPanel {
 
             if (responseCode == 200) {
                 System.out.println("Circuito enviado com sucesso.");
+                return "Circuito enviado com sucesso.";
             } else if (responseCode == 401) {
+                Main.ErrorBox("Erro: Autorização falhou. Token inválido ou expirado.");
                 System.out.println("Erro: Autorização falhou. Token inválido ou expirado.");
+                return "Erro: Autorização falhou. Token inválido ou expirado.";
             } else {
+                Main.ErrorBox("Erro: O servidor retornou o código " + responseCode);
                 System.out.println("Erro: O servidor retornou o código " + responseCode);
+                return "Erro: O servidor retornou o código " + responseCode;
             }
 
         } catch (Exception e) {
             e.printStackTrace();
+            return "Erro: " + e.getMessage();
         }
     }
 

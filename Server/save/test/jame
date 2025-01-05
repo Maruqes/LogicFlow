@@ -1,0 +1,5 @@
+Switch//SWITCH//switch1//false//264//282//switch1
+BasicCmp//NOT//not3//381//262//not3
+BasicCmp//LED//led5//553//257//led5
+Wire//switch1//not3//PIN_A
+Wire//not3//led5//PIN_A

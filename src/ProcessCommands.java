@@ -163,8 +163,7 @@ public class ProcessCommands extends Parser {
                 String username = tokensVar.get(1);
                 String circuitSend = tokensVar.get(2);
 
-                LoginRegisterPanel.sendCircuit(username, circuitSend);
-                return "";
+                return LoginRegisterPanel.sendCircuit(username, circuitSend);
             } catch (Exception e) {
                 return "Error: " + e.getMessage();
             }
