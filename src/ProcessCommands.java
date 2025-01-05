@@ -65,11 +65,11 @@ public class ProcessCommands extends Parser {
         HandleTokensInterface validateCircuitInter = (tokensVar) -> validateCircuit(tokensVar);
         commands.put("validatecircuit", validateCircuitInter);
 
-        HandleTokensInterface undoFunc = (tokensVar) -> undoCircuit(tokensVar);
-        commands.put("undo", undoFunc);
+        // HandleTokensInterface undoFunc = (tokensVar) -> undoCircuit(tokensVar);
+        // commands.put("undo", undoFunc);
 
-        HandleTokensInterface redoFunc = (tokensVar) -> redoCircuit(tokensVar);
-        commands.put("redo", redoFunc);
+        // HandleTokensInterface redoFunc = (tokensVar) -> redoCircuit(tokensVar);
+        // commands.put("redo", redoFunc);
 
         HandleTokensInterface lsFiles = (tokensVar) -> lsfiles();
         commands.put("ls", lsFiles);

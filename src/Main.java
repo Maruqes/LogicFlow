@@ -29,8 +29,6 @@ public class Main {
 
     private static String[] argsPublic;
 
-    public static WebSocket webSocket;
-
     public static void DRAW_ALL_STUFF(MainCircuit circuit) {
         Timer timer = new Timer(10, e -> {
             drawPannel.clear();
@@ -204,12 +202,6 @@ public class Main {
 
         while (drawPannel.rightClick()) {
         }
-    }
-
-    // é porco mas é oq ha sao 4 da matina
-    public static void sendMsgWebSocket(String msg) {
-        String finalMsg = LoginRegisterPanel.username + "://:" + LoginRegisterPanel.token + "://:" + msg;
-        webSocket.sendText(finalMsg, true);
     }
 
     public static void runFullApp() {
