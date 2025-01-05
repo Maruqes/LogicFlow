@@ -92,7 +92,7 @@ public class UserController {
         return ResponseEntity.ok(files);
     }
 
-    @PostMapping("/ping")
+    @GetMapping("/ping")
     public ResponseEntity<?> ping(@RequestParam String username, @RequestParam String token) {
         if (!Login.verificarTokenUsername(username, token)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido ou inexistente.");
