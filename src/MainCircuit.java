@@ -763,7 +763,8 @@ public class MainCircuit {
                 boolean state = extractBit(i, j);
                 switches.get(j).setState(state);
             }
-            drawCircuit();
+            ProgCircuito.drawPannel.clear();
+            this.drawCircuit();
             System.out.print("\nCombination " + i + ": ");
             for (Switch s : switches) {
                 System.out.print(s.getState() ? "1 " : "0 ");
@@ -776,7 +777,7 @@ public class MainCircuit {
         switches.clear();
         switches.addAll(oldState);
 
-        drawCircuit();
+        ProgCircuito.DRAW_ALL_STUFF(this);
     }
 
     public void animacaoTabela() {
@@ -807,7 +808,7 @@ public class MainCircuit {
             switches.clear();
             switches.addAll(oldState);
 
-            drawCircuit();
+            ProgCircuito.DRAW_ALL_STUFF(this);
         });
 
         myThread.start();
