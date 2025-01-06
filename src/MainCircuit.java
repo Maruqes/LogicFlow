@@ -686,10 +686,20 @@ public class MainCircuit {
         return myThread;
     }
 
-    
-    public String turn(String onOff, String nome) {
+    /**
+     * 
+     * <b>TURN SWITCHES ON OR OFF</b>
+     * @param name  name of component to turn <b>on</b> or <b>off</b>.
+     * @param onOff
+     *  <ul>
+     * <li>Case <b>onOff</b>: {@code on} turn switch <b>on</b>.</li>
+     * <li>Case  <b>onOff</b>: {@code off} turn switch <b>off</b>.</li>
+     * </ul>
+     * 
+     */
+    public String turn(String onOff, String name) {
         for (Switch s : switches) {
-            if (s.getName().equalsIgnoreCase(nome)) {
+            if (s.getName().equalsIgnoreCase(name)) {
                 if (onOff.equalsIgnoreCase("on")) {
                     s.setState(true);
                 } else if (onOff.equalsIgnoreCase("off")) {
@@ -703,23 +713,31 @@ public class MainCircuit {
         return "Error: Switch not found";
     }
 
-    public String move(String nome, int x, int y) {
+    /**
+     * 
+     * <b>MOVE COMPONENT POSITION</b>
+     * @param name name of component to be moved.
+     * @param x new x cordinate.
+     * @param y new y cordinate.
+     * 
+     */
+    public String move(String name, int x, int y) {
         for (Switch s : switches) {
-            if (s.getName().equalsIgnoreCase(nome)) {
+            if (s.getName().equalsIgnoreCase(name)) {
                 s.setPosition(x, y);
                 return "";
             }
         }
 
         for (IOComponent c : components) {
-            if (c.getName().equalsIgnoreCase(nome)) {
+            if (c.getName().equalsIgnoreCase(name)) {
                 c.setPosition(x, y);
                 return "";
             }
         }
 
         for (OutputInterface o : outputs) {
-            if (o.getName().equalsIgnoreCase(nome)) {
+            if (o.getName().equalsIgnoreCase(name)) {
                 o.setPosition(x, y);
                 return "";
             }
@@ -738,6 +756,11 @@ public class MainCircuit {
         return (number & (1 << position)) != 0;
     }
 
+    /**
+     * 
+     * <b>PRINT TRUTH TABLE</b>
+     *
+     */
     public void printTabeldaDaVerdade() {
         ArrayList<Switch> oldState = new ArrayList<Switch>();
         for (Switch s : switches) {
@@ -769,6 +792,11 @@ public class MainCircuit {
         ProgCircuito.DRAW_ALL_STUFF(this);
     }
 
+    /**
+     * 
+     * <b>ANIMATE TRUTH TABLE</b>
+     *
+     */
     public void animacaoTabela() {
         // Cria um thread
         Thread myThread = new Thread(() -> {
@@ -804,6 +832,11 @@ public class MainCircuit {
 
     }
 
+    /**
+     * 
+     * <b>PRINT ALL COMPONENTS INFO ON CONSOLE</b>
+     *
+     */
     public void printAllInfo() {
         System.out.println("\n\nSwitches");
         for (Switch s : switches) {
@@ -826,6 +859,11 @@ public class MainCircuit {
         }
     }
 
+    /**
+     * 
+     * <b>VALIDATE IF CIRCUIT IS CORRECTLY IMPLEMENTED</b>
+     *
+     */
     public String validateCircuit() {
         // Check for inputs and outputs
         if (switches.isEmpty()) {
@@ -852,6 +890,11 @@ public class MainCircuit {
         return "Circuito válido!";
     }
 
+     /**
+     * 
+     * <b>DETECT IF CIRCUIT IS CORRECTLY IMPLEMENTED</b>
+     *
+     */
     private boolean detectCicle(BasicComponentInterface component, HashSet<BasicComponentInterface> visited,
             HashSet<BasicComponentInterface> currentPath) {
         if (currentPath.contains(component)) {
@@ -883,6 +926,11 @@ public class MainCircuit {
         return false;
     }
 
+     /**
+     * 
+     * <b>DUPLICATE ALL CIRCUIT</b>
+     *
+     */
     public MainCircuit clone() {
         MainCircuit newCircuit = new MainCircuit();
         for (Switch s : switches) {
