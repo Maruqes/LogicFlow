@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 import java.util.HashSet;
+
+import javax.swing.Timer;
+
 import java.io.BufferedWriter;
 import java.io.BufferedReader;
 import java.io.FileWriter;
@@ -56,9 +59,10 @@ public class MainCircuit {
     /**
      * <b>ADD A COMPONENT THAT HAS NO STATE</b>
      * 
-     * @param cmp     Component type from LCComponent <b>AND, NAND, NOR, NOT, OR, XOR</b>.
+     * @param cmp     Component type from LCComponent <b>AND, NAND, NOR, NOT, OR,
+     *                XOR</b>.
      * @param nome    Component name.
-     * @param x       Component coordinate <b>X</b>.  
+     * @param x       Component coordinate <b>X</b>.
      * @param y       Component coordinate <b>Y</b>.
      * @param legenda Component legend.
      * 
@@ -140,9 +144,9 @@ public class MainCircuit {
     /**
      * <b>ADD A WIRE</b>
      * 
-     * @param from   Origin component name (Ex: <b>Switch1, Or9</b>).
-     * @param to     Destination component name (Ex: <b>And1, Xor7</b>).
-     * @param pin    Destination PIN {@code PIN_A, PIN_B, PIN_C}.
+     * @param from Origin component name (Ex: <b>Switch1, Or9</b>).
+     * @param to   Destination component name (Ex: <b>And1, Xor7</b>).
+     * @param pin  Destination PIN {@code PIN_A, PIN_B, PIN_C}.
      *
      */
     public void wire(String from, String to, LCInputPin pin) {
@@ -199,9 +203,9 @@ public class MainCircuit {
     /**
      * <b>REMOVE A WIRE</b>
      * 
-     * @param from   Origin component name (Ex: <b>Switch1, Or9</b>).
-     * @param to     Destination component name (Ex: <b>And1, Xor7</b>).
-     * @param pin    Destination PIN {@code PIN_A, PIN_B, PIN_C}.
+     * @param from Origin component name (Ex: <b>Switch1, Or9</b>).
+     * @param to   Destination component name (Ex: <b>And1, Xor7</b>).
+     * @param pin  Destination PIN {@code PIN_A, PIN_B, PIN_C}.
      *
      */
     public void dewire(String from, String to, LCInputPin pin) throws IllegalArgumentException {
@@ -233,7 +237,8 @@ public class MainCircuit {
     /**
      * <b>REMOVE THE WIRES THAT HAS CONNECTED TO SOME COMPONENT</b>
      * 
-     * @param name  Component name (Ex: <b>Switch1, Or9</b>) where wires gonna be disconnected.
+     * @param name Component name (Ex: <b>Switch1, Or9</b>) where wires gonna be
+     *             disconnected.
      *
      */
     public void dewireElement(String name) throws IllegalArgumentException {
@@ -251,7 +256,7 @@ public class MainCircuit {
     /**
      * <b>SAVE THE CURRENT DIAGRAM IN A TEXT FILE</b>
      * 
-     * @param filename  File name to be saved (Ex:{@code filename.txt}).
+     * @param filename File name to be saved (Ex:{@code filename.txt}).
      *
      */
     public String save(String filename) {
@@ -289,7 +294,7 @@ public class MainCircuit {
     /**
      * <b>OPEN A SAVED FILE IMAGE HAS DIAGRAM</b>
      * 
-     * @param filename  File name to be opened (Ex:{@code filename.txt}).
+     * @param filename File name to be opened (Ex:{@code filename.txt}).
      *
      */
     public String open(String filename) {
@@ -351,8 +356,10 @@ public class MainCircuit {
 
             }
         } catch (IOException e) {
+            e.getStackTrace();
             return e.getMessage();
         } catch (IllegalArgumentException er) {
+            er.getStackTrace();
             return er.getMessage();
         }
         ProgCircuito.DRAW_ALL_STUFF(this);
@@ -362,7 +369,7 @@ public class MainCircuit {
     /**
      * <b>REMOVE A COMPONENT</b>
      * 
-     * @param name  Component name to be removed.
+     * @param name Component name to be removed.
      *
      */
     public String removeElement(String name) {
@@ -621,23 +628,22 @@ public class MainCircuit {
 
     public void setAllStates(boolean animacao) throws InterruptedException {
         if (animacao) {
-            setSwitchesWire();
-            setOutputs();
-            forceDraw();
-            Thread.sleep(700);
 
-            // Atualiza automaticamente os componentes
-            for (int i = 0; i < components.size() + 1; i++) {
-                setWires();
-                setComponent();
-                setOutputs();
-                forceDraw();
-                Thread.sleep(700);
-            }
+            Timer timer = new Timer(10, new java.awt.event.ActionListener() {
+                int i = 0;
 
-            setOutputs();
-            forceDraw();
-            Thread.sleep(700);
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    ProgCircuito.drawPannel.clear();
+                    MainCircuit.this.drawCircuit();
+                    if (i == components.size() + 1) {
+                        ((Timer) e.getSource()).stop();
+                    }
+                    i++;
+                }
+
+            });
+            timer.start();
         } else {
             setAllStates();
         }
@@ -648,12 +654,12 @@ public class MainCircuit {
             if (animacao) {
                 try {
                     setAllStates(animacao);
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                ProgCircuito.DRAW_ALL_STUFF(this);
             } else {
-                ProgCircuito.DRAW_ALL_STUFF(this);
+                drawCircuit();
             }
         });
 
@@ -726,7 +732,8 @@ public class MainCircuit {
                 boolean state = extractBit(i, j);
                 switches.get(j).setState(state);
             }
-            ProgCircuito.DRAW_ALL_STUFF(this);
+            ProgCircuito.drawPannel.clear();
+            this.drawCircuit();
             System.out.print("\nCombination " + i + ": ");
             for (Switch s : switches) {
                 System.out.print(s.getState() ? "1 " : "0 ");
