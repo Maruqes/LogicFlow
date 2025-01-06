@@ -359,7 +359,7 @@ public class ProcessCommands extends Parser {
             return "Error: Invalid coordinates";
         }
         try {
-            err = circuit.move(nome, x, y);
+            err = circuit.move(nome, x + ProgCircuito.LeftMenuWidth, y);
             saveCurrentState();
             ProgCircuito.DRAW_ALL_STUFF(circuit);
         } catch (Exception e) {
