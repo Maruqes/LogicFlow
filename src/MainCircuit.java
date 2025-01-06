@@ -672,7 +672,8 @@ public class MainCircuit {
                 boolean state = extractBit(i, j);
                 switches.get(j).setState(state);
             }
-            ProgCircuito.DRAW_ALL_STUFF(this);
+            ProgCircuito.drawPannel.clear();
+            this.drawCircuit();
             System.out.print("\nCombination " + i + ": ");
             for (Switch s : switches) {
                 System.out.print(s.getState() ? "1 " : "0 ");
