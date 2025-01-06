@@ -415,6 +415,10 @@ public class MainCircuit {
         }
     }
 
+    /**
+     * <b>SET WIRE STATE</b>
+     * <p>Get origin wire state, if {@code  true}, turn wire <b>green (ON)</b>, else {@code false} <b>gray (OFF)</b>.</p>
+     */
     private void setWires() {
         if (wires.isEmpty()) {
             return;
@@ -432,6 +436,10 @@ public class MainCircuit {
         }
     }
 
+    /**
+     * <b>SET COMPONENT</b>
+     * <p>In each component, get a <b>previous wire state</b> to define the <b>PINs states</b>.</p>
+     */
     private void setComponent() {
         if (components.isEmpty()) {
             return;
@@ -459,7 +467,23 @@ public class MainCircuit {
     }
 
     /**
-     * <b>PRINT ALL NAMES ON CONSOLE</b>
+     * <b>SET DISPLAY AND LED OUTPUTS</b>
+     * 
+     * @return
+     * <b>LED</b> <ul><li>Case {@code 0} turn led <b>off</b>.</li> <li>Case {@code 1} turn led <b>on</b>.</li></ul>
+     * 
+     * <b>DISPLAY3BIT</b> 
+     * <p>The display with <b>3 binery inputs</b> can represent on output <b>8 decimal numbers</b> from <b>0</b> to <b>7</b>.</p>
+     * <ul>
+     *  <li>Case {@code 000}, represent <b>0</b>.</li>
+     *  <li>Case {@code 001}, represent <b>1</b>.</li>
+     *  <li>Case {@code 010}, represent <b>2</b>.</li>
+     *  <li>Case {@code 011}, represent <b>3</b>.</li>
+     *  <li>Case {@code 100}, represent <b>4</b>.</li>
+     *  <li>Case {@code 101}, represent <b>5</b>.</li>
+     *  <li>Case {@code 110}, represent <b>6</b>.</li>
+     *  <li>Case {@code 111}, represent <b>7</b>.</li>
+     * </ul>
      */
     private void setOutputs() {
         if (outputs.isEmpty()) {
@@ -496,6 +520,10 @@ public class MainCircuit {
         }
     }
 
+    /**
+     * <b>SET SWITCHES WIRE</b>
+     * <p>In each switch, get a <b>state</b> to define the <b>next wire state</b> connected.</p>
+     */
     private void setSwitchesWire() {
         if (wires.isEmpty()) {
             return;
@@ -513,6 +541,16 @@ public class MainCircuit {
         }
     }
 
+    /**
+     * <b>SET ALL COMPONENTS</b>
+     * <p>Execute all set functions.</p>
+     * @see 
+     * <ul>
+     * <li>{@link #setWires()}</li>
+     * <li>{@link #setComponent()}</li>
+     * <li>{@link #setSwitchesWire()}</li>
+     * </ul>
+     */
     public void setAllStates() {
         // settar wires dos swictches
         // settar componentes dos wires
@@ -530,6 +568,10 @@ public class MainCircuit {
         setOutputs();
     }
 
+    /**
+     * <b>FORCE DRAW</b>
+     * <p>Draw all basic components and wires.</p>
+     */
     public void forceDraw() {
         ProgCircuito.drawPannel.clear();
 
@@ -547,12 +589,28 @@ public class MainCircuit {
         }
     }
 
-    // add cada um deles uma funcao pra settar valores
+    /**
+     * 
+     * <b>DRAW CIRCUIT</b>
+     * <p>Execute set all states function and draw all basic components and wires.</p>
+     * @see 
+     * <ul>
+     * <li>{@link #setAllStates()}</li>
+     * <li>{@link #forceDraw()}</li>
+     * </ul>
+     * 
+     */
     public void drawCircuit() {
         setAllStates();
         forceDraw();
     }
 
+    /**
+     * 
+     * <b>REMOVE ALL BASIC COMPONENTS, OUTPUTS AND WIRES</b>
+     * <p>Remove all {@code ArrayLists} elements ({@code switches[], components[], outputs[], wires[]}) and draw a new empety circuit.</p> 
+     * 
+     */
     public void clear() {
         switches.clear();
         components.clear();
