@@ -30,7 +30,7 @@ public class Switch extends BasicComponent {
 
     @Override
     public void draw() {
-        Main.drawPannel.drawComponent(super.getType(), super.getXY()[0], super.getXY()[1], state, super.getLegend());
+        ProgCircuito.drawPannel.drawComponent(super.getType(), super.getXY()[0], super.getXY()[1], state, super.getLegend());
     }
 
     public boolean allowPin(LCInputPin pin) {

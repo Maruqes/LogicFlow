@@ -7,7 +7,7 @@ import logicircuit.LCComponent;
 import logicircuit.LCDFrameCmd;
 import logicircuit.LCDPanel;
 
-public class Main {
+public class ProgCircuito {
     public static LCDPanel drawPannel;
 
     public static int SCREEN_WIDTH = 900;
@@ -25,7 +25,7 @@ public class Main {
     public static void restartProgram(String... newArgs) throws IOException {
         String javaBin = System.getProperty("java.home") + "/bin/java";
         String classPath = System.getProperty("java.class.path");
-        String className = Main.class.getName();
+        String className = ProgCircuito.class.getName();
 
         ProcessBuilder builder = new ProcessBuilder(
                 javaBin, "-cp", classPath, className);
