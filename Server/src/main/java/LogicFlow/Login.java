@@ -9,24 +9,6 @@ import java.util.UUID;
 public class Login {
     private static final Map<String, String> mapaTokens = new HashMap<>();
 
-    static class Utilizador {
-        private String username;
-        private String password;
-
-        public Utilizador(String username, String password) {
-            this.username = username;
-            this.password = password;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-    }
-
     public static String login(String username) {
         // Gera um token único
         String token = UUID.randomUUID().toString();

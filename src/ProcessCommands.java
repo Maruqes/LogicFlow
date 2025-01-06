@@ -169,6 +169,14 @@ public class ProcessCommands extends Parser {
             }
         };
         commands.put("send", sendCircuit);
+
+        HandleTokensInterface saveImage = (tokensVar) -> {
+            String imageName = tokensVar.get(1);
+            ProgCircuito.drawPannel.saveAsImage(imageName);
+            return "Image saved as circuit.png";
+        };
+        commands.put("saveimage", saveImage);
+
     }
 
     private ArrayList<MainCircuit> redoHistory = new ArrayList<>();

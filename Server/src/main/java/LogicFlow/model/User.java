@@ -6,6 +6,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+/**
+ * Class User that represents the user entity on the database.
+ * 
+ */
 @Entity
 @Table(name = "users") // Certifica o nome da tabela
 public class User {

@@ -14,6 +14,13 @@ import LogicFlow.repository.UserRepository;
 @RestController
 public class FileController {
 
+    /**
+     * Method to save a file
+     * 
+     * @param username Username of the user
+     * @param codigo   Code to save
+     * @param filename Name of the file
+     */
     private void saveFile(String username, String codigo, String filename) {
         try {
             java.nio.file.Path path = java.nio.file.Paths.get("save", username, filename);
@@ -28,6 +35,13 @@ public class FileController {
         }
     }
 
+    /**
+     * Method to read a file
+     * 
+     * @param username Username of the user
+     * @param filename Name of the file
+     * @return Code of the file
+     */
     private String readFile(String username, String filename) {
         try {
             java.nio.file.Path path = java.nio.file.Paths.get("save", username, filename);

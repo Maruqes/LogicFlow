@@ -280,10 +280,18 @@ public class LoginRegisterPanel extends JPanel {
         campo.setMargin(new Insets(5, 5, 5, 5));
     }
 
+    /**
+     * Method to login a user
+     * 
+     * @param username Username
+     * @param password Password
+     * @apiNote Adds automatic tokens and usernames to the LoginRegisterPanel class
+     */
     private void login(String username, String password) {
         System.out.println("[LOGIN] Utilizador: " + username + " | Pass: " + password);
         try {
             // URL do endpoint
+            @SuppressWarnings("deprecation")
             URL url = new URL(LoginRegisterPanel.DOMAIN + "/login");
 
             // Abrir a conexão
@@ -343,10 +351,18 @@ public class LoginRegisterPanel extends JPanel {
         }
     }
 
+    /**
+     * Method to register a user
+     * 
+     * @param username Username
+     * @param password Password
+     * @apiNote Does not login user after registration
+     */
     private void register(String username, String password) {
         System.out.println("[REGISTO] Novo Utilizador: " + username + " | Pass: " + password);
         try {
             // URL do endpoint
+            @SuppressWarnings("deprecation")
             URL url = new URL(LoginRegisterPanel.DOMAIN + "/create-user");
 
             // Abrir a conexão
@@ -381,10 +397,18 @@ public class LoginRegisterPanel extends JPanel {
         }
     }
 
+    /**
+     * Method to save a file on the server
+     * 
+     * @param codigo   Circuit code
+     * @param filename File name
+     * @apiNote Saves the file on the server
+     */
     public static void saveOnServer(String codigo, String filename) {
         System.out.println("[SAVE FILE] Código: " + codigo + " | Filename: " + filename);
         try {
             // URL do endpoint
+            @SuppressWarnings("deprecation")
             URL url = new URL(LoginRegisterPanel.DOMAIN + "/save-file");
 
             // Abrir a conexão
@@ -426,10 +450,17 @@ public class LoginRegisterPanel extends JPanel {
         }
     }
 
+    /**
+     * Method to open a file from the server
+     * 
+     * @param filename File name
+     * @return Circuit code as an ArrayList of strings
+     */
     public static ArrayList<String> openSave(String filename) {
         System.out.println("[OPEN FILE] Filename: " + filename);
         try {
             // URL do endpoint
+            @SuppressWarnings("deprecation")
             URL url = new URL(LoginRegisterPanel.DOMAIN + "/open-file");
 
             // Abrir a conexão
@@ -470,8 +501,9 @@ public class LoginRegisterPanel extends JPanel {
                 ProgCircuito.ErrorBox("Erro: Autorização falhou. Token inválido ou expirado.");
                 System.out.println("Erro: Autorização falhou. Token inválido ou expirado.");
             } else {
-                ProgCircuito.ErrorBox("Erro: O servidor retornou o código " + responseCode + "\n Provavelmente o " + filename
-                        + " não existe.");
+                ProgCircuito.ErrorBox(
+                        "Erro: O servidor retornou o código " + responseCode + "\n Provavelmente o " + filename
+                                + " não existe.");
                 System.out.println("Erro: O servidor retornou o código " + responseCode);
             }
 
@@ -495,10 +527,16 @@ public class LoginRegisterPanel extends JPanel {
         return list;
     }
 
+    /**
+     * Method to list all files from the server
+     * 
+     * @return List of files as an ArrayList of strings
+     */
     public static ArrayList<String> ListFiles() {
         System.out.println("[LIST FILES]");
         try {
             // URL do endpoint
+            @SuppressWarnings("deprecation")
             URL url = new URL(LoginRegisterPanel.DOMAIN + "/list-files");
 
             // Abrir a conexão
@@ -548,10 +586,18 @@ public class LoginRegisterPanel extends JPanel {
         return null;
     }
 
+    /**
+     * Sends a circuit to another user
+     * 
+     * @param username username of the recipient
+     * @param filename filename of the circuit
+     * @return String with the result of the operation
+     */
     public static String sendCircuit(String username, String filename) {
         System.out.println("[SEND CIRCUIT] Username: " + username + " | Filename: " + filename);
         try {
             // URL do endpoint
+            @SuppressWarnings("deprecation")
             URL url = new URL(LoginRegisterPanel.DOMAIN + "/send-circuit");
 
             // Abrir a conexão
@@ -597,10 +643,16 @@ public class LoginRegisterPanel extends JPanel {
         }
     }
 
+    /**
+     * Method to list all shared files from the server
+     * 
+     * @return List of shared files as an ArrayList of strings
+     */
     public static ArrayList<String> ListSharedFiles() {
         System.out.println("[LIST SHARED FILES]");
         try {
             // URL do endpoint
+            @SuppressWarnings("deprecation")
             URL url = new URL(LoginRegisterPanel.DOMAIN + "/list-shared-circuits");
 
             // Abrir a conexão
@@ -648,10 +700,16 @@ public class LoginRegisterPanel extends JPanel {
         return null;
     }
 
+    /**
+     * Method to accept a shared circuit
+     * 
+     * @param filename File name
+     */
     public static void AcceptCircuit(String filename) {
         System.out.println("[ACCEPT CIRCUIT] Filename: " + filename);
         try {
             // URL do endpoint
+            @SuppressWarnings("deprecation")
             URL url = new URL(LoginRegisterPanel.DOMAIN + "/accept-circuit");
 
             // Abrir a conexão

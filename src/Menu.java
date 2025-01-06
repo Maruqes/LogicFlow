@@ -8,6 +8,11 @@ public class Menu {
     private static ArrayList<BasicComponent> components = new ArrayList<>();
     public static String currentHolderName = "Nothing selected";
 
+    /**
+     * Get the component that is being clicked
+     * 
+     * @return The component that is being clicked
+     */
     public static BasicComponent getLeftClickColision() {
         int xy[] = ProgCircuito.drawPannel.getMouseXY();
         int x = xy[0];
@@ -28,12 +33,17 @@ public class Menu {
         components.add(new BasicComponent(LCComponent.NOT, "not", 10, 50 + 2 * ProgCircuito.SCREEN_HEIGHT / 15, "NOT"));
         components.add(new BasicComponent(LCComponent.XOR, "xor", 110, 50, "XOR"));
         components.add(new BasicComponent(LCComponent.NAND, "nand", 110, 50 + ProgCircuito.SCREEN_HEIGHT / 15, "NAND"));
-        components.add(new BasicComponent(LCComponent.NOR, "nor", 110, 50 + 2 * ProgCircuito.SCREEN_HEIGHT / 15, "NOR"));
+        components
+                .add(new BasicComponent(LCComponent.NOR, "nor", 110, 50 + 2 * ProgCircuito.SCREEN_HEIGHT / 15, "NOR"));
         components.add(new Switch(false, "switch1", 10, 50 + 5 * ProgCircuito.SCREEN_HEIGHT / 15, "SWITCH"));
         components.add(new Led(0, "led", 10, 50 + 10 * ProgCircuito.SCREEN_HEIGHT / 15, "LED"));
         components.add(new Display3bit(0, "display", 110, 70 + 10 * ProgCircuito.SCREEN_HEIGHT / 15));
     }
 
+    /**
+     * Draw the example gates
+     * @param space The space between the gates
+     */
     public static void drawExampleGates(int space) {
         components.get(0).setPosition(10, 50);
         components.get(1).setPosition(10, 50 + space);
@@ -82,6 +92,12 @@ public class Menu {
         selectedComponent = selectedComponentt.cloneCMP();
     }
 
+    /**
+     * Move the selected component to the new position, function called when the mouse is released
+     * @param x
+     * @param y
+     * @param circuit
+     */
     public static void moveSelected(int x, int y, MainCircuit circuit) {
         if (x < ProgCircuito.LeftMenuWidth) {
             ProgCircuito.DRAW_ALL_STUFF(circuit);
@@ -101,6 +117,12 @@ public class Menu {
         }
     }
 
+    /**
+     * Draw the selected component on the mouse position, function called when the mouse is moving, giving the illusion that the component is being dragged
+     * @param x
+     * @param y
+     * @param circuit
+     */
     public static void drawOnMouse(int x, int y, MainCircuit circuit) {
         if (anythingSelected) {
             ProgCircuito.drawPannel.clear();

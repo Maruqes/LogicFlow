@@ -37,6 +37,7 @@ public class ProgCircuito {
             ((Timer) e.getSource()).stop();
         });
         timer.start();
+
     }
 
     public static void restartProgram(String... newArgs) throws IOException {
@@ -262,5 +263,6 @@ public class ProgCircuito {
             e.printStackTrace();
         }
         runFullApp();
+
     }
 }

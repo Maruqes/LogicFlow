@@ -1,5 +1,6 @@
 package logicircuit;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import java.awt.event.MouseAdapter;
@@ -9,6 +10,8 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class LCDPanel {
     // Default color definition
@@ -74,6 +77,20 @@ public class LCDPanel {
                 }
             }
         });
+    }
+
+    public void saveAsImage(String filename) {
+
+        // create folder folder images if it does not exist
+        File file = new File("images");
+        if (!file.exists()) {
+            if (file.mkdir()) {
+                System.out.println("Directory is created!");
+            } else {
+                System.out.println("Failed to create directory!");
+            }
+        }
+        drawPanel.saveAsImage("images/" + filename);
     }
 
     /**
@@ -342,6 +359,14 @@ public class LCDPanel {
             super.paintComponent(g);
             // Draw the buffered canvas image onto the panel
             g.drawImage(canvas, 0, 0, null);
+        }
+
+        public void saveAsImage(String filename) {
+            try {
+                ImageIO.write(canvas, "png", new File(filename));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
     }

@@ -51,7 +51,7 @@ public class MainCircuit {
     }
 
     /**
-     * Draw a component that has no state
+     * Add a component to the circuit
      * 
      * @param cmp     Component type from LCComponent (AND, NAND, NOR, NOT, OR, XOR)
      * @param nome    name
@@ -89,7 +89,7 @@ public class MainCircuit {
     }
 
     /**
-     * Draw a component that has no state
+     * Add a component to the circuit
      * 
      * @param cmp     Component type from LCComponent (AND, NAND, NOR, NOT, OR, XOR)
      * @param x       coordinate X
@@ -116,7 +116,7 @@ public class MainCircuit {
     }
 
     /**
-     * Draw a component that has no state
+     * Add a component to the circuit
      * 
      * @param cmp    Component type from LCComponent (SWITCH)
      * @param state  state
@@ -140,7 +140,7 @@ public class MainCircuit {
     }
 
     /**
-     * Draw a component that has no state
+     * Add a component to the circuit
      * 
      * @param cmp    Component type from LCComponent (SWITCH)
      * @param state  state
@@ -158,7 +158,7 @@ public class MainCircuit {
     }
 
     /**
-     * Draw a component that has no state
+     * Add a component to the circuit
      * 
      * @param cmp    Component type from LCComponent (DISPLAY, LED)
      * @param value  value
@@ -185,7 +185,7 @@ public class MainCircuit {
     }
 
     /**
-     * Draw a component that has no state
+     * Add a component to the circuit
      * 
      * @param cmp    Component type from LCComponent (DISPLAY, LED)
      * @param value  value
@@ -205,11 +205,23 @@ public class MainCircuit {
 
     }
 
+    /**
+     * Add a MiniCircuit to the circuit
+     * 
+     * @param cmp MiniCircuit will be added as a component
+     */
     public void add_miniCircuit(MiniCircuit cmp) {
         nameCounter++;
         components.add(cmp);
     }
 
+    /**
+     * Add a MiniCircuit to the circuit
+     * 
+     * @param from name of the component that will be the input
+     * @param to   name of the component that will be the output
+     * @param pin  pin that will be used (PIN_A, PIN_B, PIN_C, ...)
+     */
     public void wire(String from, String to, LCInputPin pin) {
 
         BasicComponentInterface fromType = null;
@@ -263,6 +275,13 @@ public class MainCircuit {
 
     }
 
+    /**
+     * Remove a wire from the circuit
+     * 
+     * @param from name of the component that is the input
+     * @param to   name of the component that is the output
+     * @param pin  pin that is used (PIN_A, PIN_B, PIN_C, ...)
+     */
     public void dewire(String from, String to, LCInputPin pin) throws IllegalArgumentException {
 
         for (int i = 0; i < wires.size(); i++) {
@@ -289,6 +308,11 @@ public class MainCircuit {
         throw new IllegalArgumentException("Not found");
     }
 
+    /**
+     * Remove all wires from the circuit that are connected to a specific component
+     * 
+     * @param name name of the component
+     */
     public void dewireElement(String name) throws IllegalArgumentException {
 
         for (int i = 0; i < wires.size(); i++) {
@@ -301,6 +325,12 @@ public class MainCircuit {
         }
     }
 
+    /**
+     * Save the circuit in a server connected by your account
+     * 
+     * @param filename name of the file
+     * @return error message or empty string if success
+     */
     public String save(String filename) {
         if (filename.contains("/") || filename.contains("\\") || filename.contains("..")) {
             return "Error: Invalid filename";
@@ -322,6 +352,12 @@ public class MainCircuit {
         return "";
     }
 
+    /**
+     * Open a circuit from a server connected by your account
+     * 
+     * @param filename name of the file
+     * @return error message or empty string if success
+     */
     public String open(String filename) {
         if (filename.contains("/") || filename.contains("\\") || filename.contains("..")) {
             return "Error: Invalid filename";
@@ -403,6 +439,12 @@ public class MainCircuit {
         return "";
     }
 
+    /**
+     * Remove element and all wires connected to it
+     * 
+     * @param name name of the element
+     * @return error message or empty string if success
+     */
     public String removeElement(String name) {
 
         dewireElement(name);
@@ -450,7 +492,7 @@ public class MainCircuit {
         }
     }
 
-    public void setWires() {
+    private void setWires() {
         if (wires.isEmpty()) {
             return;
         }
@@ -467,7 +509,7 @@ public class MainCircuit {
         }
     }
 
-    public void setComponent() {
+    private void setComponent() {
         if (components.isEmpty()) {
             return;
         }
@@ -544,6 +586,9 @@ public class MainCircuit {
         }
     }
 
+    /**
+     * Set all states of the circuit
+     */
     public void setAllStates() {
         // settar wires dos swictches
         // settar componentes dos wires
@@ -551,7 +596,7 @@ public class MainCircuit {
         // repeat
         // settar outputs dos wires
 
-        //settar os fios dos swicthes
+        // settar os fios dos swicthes
         setSwitchesWire();
 
         // automaticamente os componentes
@@ -637,6 +682,14 @@ public class MainCircuit {
         return myThread;
     }
 
+    /**
+     * Turn on or off a switch
+     * 
+     * @param onOff ON or OFF
+     * @param nome  name of the switch
+     * @return error message or empty string if success
+     * 
+     */
     public String turn(String onOff, String nome) {
         for (Switch s : switches) {
             if (s.getName().equalsIgnoreCase(nome)) {
@@ -653,6 +706,14 @@ public class MainCircuit {
         return "Error: Switch not found";
     }
 
+    /**
+     * Move a component to a new position
+     * 
+     * @param nome name of the component
+     * @param x    new coordinate X
+     * @param y    new coordinate Y
+     * @return error message or empty string if success
+     */
     public String move(String nome, int x, int y) {
         for (Switch s : switches) {
             if (s.getName().equalsIgnoreCase(nome)) {
@@ -775,6 +836,11 @@ public class MainCircuit {
         }
     }
 
+    /**
+     * Check if the circuit is valid
+     * 
+     * @return error message or empty string if success
+     */
     public String validateCircuit() {
         // Check for inputs and outputs
         if (switches.isEmpty()) {
@@ -853,6 +919,13 @@ public class MainCircuit {
         return newCircuit;
     }
 
+    /**
+     * Colide with component
+     * 
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @return BasicComponentInterface that colides with the coordinates
+     */
     public BasicComponentInterface colideWithCompontent(int x, int y) {
         for (Switch s : switches) {
             if (s.getXY()[0] <= x && x <= s.getXY()[0] + LCComponent.getWidth(s.getType()) && s.getXY()[1] <= y
