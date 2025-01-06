@@ -626,6 +626,15 @@ public class MainCircuit {
         drawCircuit();
     }
 
+    /**
+     * 
+     * <b>ANIMATE ALL SET STATES</b>
+     * @param animacao 
+     * <ul>
+     * <li>Case {@code true} animate the circuit.</li>
+     * <li>Case {@code false} do not animate the circuit.</li>
+     * </ul>
+     */
     public void setAllStates(boolean animacao) throws InterruptedException {
         if (animacao) {
 
@@ -649,6 +658,16 @@ public class MainCircuit {
         }
     }
 
+    /**
+     * 
+     * <b>DRAW THE ANIMATION</b>
+     * @param animacao 
+     * <ul>
+     * <li>Case {@code true} draw animation.</li>
+     * <li>Case {@code false} do not draw animation.</li>
+     * </ul>
+     * 
+     */
     public Thread drawCircuitAnimation(boolean animacao) {
         Thread myThread = new Thread(() -> {
             if (animacao) {
@@ -667,6 +686,7 @@ public class MainCircuit {
         return myThread;
     }
 
+    
     public String turn(String onOff, String nome) {
         for (Switch s : switches) {
             if (s.getName().equalsIgnoreCase(nome)) {
