@@ -1,0 +1,8 @@
+BasicCmp//SWITCH//sw1//10//50//switch1 
+BasicCmp//SWITCH//sw2//10//150//
+BasicCmp//SWITCH//sw3//10//330//
+BasicCmp//AND//and1//100//100//
+BasicCmp//AND//and2//220//200//and e2 
+BasicCmp//OR//or//330//330//or ou1 
+BasicCmp//LED//led1//440//220//
+BasicCmp//LED//led2//440//330//

@@ -25,6 +25,12 @@ public class MainCircuit {
         wires = new ArrayList<Wire>();
     }
 
+    /**
+     * <b>VERIFY IF NAME IS REPEATED</b>
+     * 
+     * @param name Name to be verifyed if that is repeated.
+     * @return {@code true} if some name is repeated or {@code false} if not.
+     */
     private boolean block_same_names(String name) {
         for (int i = 0; i < switches.size(); i++) {
             if (switches.get(i).getName().equalsIgnoreCase(name)) {
@@ -48,13 +54,14 @@ public class MainCircuit {
     }
 
     /**
-     * Draw a component that has no state
+     * <b>ADD A COMPONENT THAT HAS NO STATE</b>
      * 
-     * @param cmp     Component type from LCComponent (AND, NAND, NOR, NOT, OR, XOR)
-     * @param nome    name
-     * @param x       coordinate X
-     * @param y       coordinate Y
-     * @param legenda legend
+     * @param cmp     Component type from LCComponent <b>AND, NAND, NOR, NOT, OR, XOR</b>.
+     * @param nome    Component name.
+     * @param x       Component coordinate <b>X</b>.  
+     * @param y       Component coordinate <b>Y</b>.
+     * @param legenda Component legend.
+     * 
      */
     public void add(LCComponent cmp, String nome, int x, int y, String legenda) {
         if (block_same_names(nome)) {
@@ -84,14 +91,14 @@ public class MainCircuit {
     }
 
     /**
-     * Draw a component that has no state
+     * <b> ADD A COMPONENT THAT HAS STATE </b>
      * 
-     * @param cmp    Component type from LCComponent (SWITCH)
-     * @param state  state
-     * @param nome   name
-     * @param setX   coordinate X
-     * @param setY   coordinate Y
-     * @param legend legend
+     * @param cmp    Component type from LCComponent <b>SWITCH</b>.
+     * @param state  Component state defined with {@code true} or {@code false}.
+     * @param nome   Component name.
+     * @param setX   Component coordinate <b>X</b>.
+     * @param setY   Component coordinate <b>Y</b>.
+     * @param legend Component legend.
      */
     public void add(LCComponent cmp, boolean state, String nome, int setX, int setY, String legend) {
         if (block_same_names(nome)) {
@@ -106,14 +113,14 @@ public class MainCircuit {
     }
 
     /**
-     * Draw a component that has no state
+     * <b> ADD A COMPONENT THAT HAS STATE </b>
      * 
-     * @param cmp    Component type from LCComponent (DISPLAY, LED)
-     * @param value  value
-     * @param nome   name
-     * @param SetX   coordinate X
-     * @param SetY   coordinate Y
-     * @param legend legend
+     * @param cmp    Component type from LCComponent <b>DISPLAY, LED</b>.
+     * @param value  Component state defined whith {@code 1} or {@code 0}.
+     * @param nome   Component name.
+     * @param setX   Component coordinate <b>X</b>.
+     * @param setY   Component coordinate <b>Y</b>.
+     * @param legend Component legend.
      */
     public void add(LCComponent cmp, int value, String nome, int setX, int setY, String legend) {
         if (block_same_names(nome)) {
@@ -130,6 +137,14 @@ public class MainCircuit {
         }
     }
 
+    /**
+     * <b>ADD A WIRE</b>
+     * 
+     * @param from   Origin component name (Ex: <b>Switch1, Or9</b>).
+     * @param to     Destination component name (Ex: <b>And1, Xor7</b>).
+     * @param pin    Destination PIN {@code PIN_A, PIN_B, PIN_C}.
+     *
+     */
     public void wire(String from, String to, LCInputPin pin) {
 
         BasicComponentInterface fromType = null;
@@ -181,6 +196,14 @@ public class MainCircuit {
 
     }
 
+    /**
+     * <b>REMOVE A WIRE</b>
+     * 
+     * @param from   Origin component name (Ex: <b>Switch1, Or9</b>).
+     * @param to     Destination component name (Ex: <b>And1, Xor7</b>).
+     * @param pin    Destination PIN {@code PIN_A, PIN_B, PIN_C}.
+     *
+     */
     public void dewire(String from, String to, LCInputPin pin) throws IllegalArgumentException {
 
         for (int i = 0; i < wires.size(); i++) {
@@ -207,6 +230,12 @@ public class MainCircuit {
         throw new IllegalArgumentException("Not found");
     }
 
+    /**
+     * <b>REMOVE THE WIRES THAT HAS CONNECTED TO SOME COMPONENT</b>
+     * 
+     * @param name  Component name (Ex: <b>Switch1, Or9</b>) where wires gonna be disconnected.
+     *
+     */
     public void dewireElement(String name) throws IllegalArgumentException {
 
         for (int i = 0; i < wires.size(); i++) {
@@ -219,6 +248,12 @@ public class MainCircuit {
         }
     }
 
+    /**
+     * <b>SAVE THE CURRENT DIAGRAM IN A TEXT FILE</b>
+     * 
+     * @param filename  File name to be saved (Ex:{@code filename.txt}).
+     *
+     */
     public String save(String filename) {
         if (filename.contains("/") || filename.contains("\\") || filename.contains("..")) {
             return "Error: Invalid filename";
@@ -251,6 +286,12 @@ public class MainCircuit {
         return "";
     }
 
+    /**
+     * <b>OPEN A SAVED FILE IMAGE HAS DIAGRAM</b>
+     * 
+     * @param filename  File name to be opened (Ex:{@code filename.txt}).
+     *
+     */
     public String open(String filename) {
         if (filename.contains("/") || filename.contains("\\") || filename.contains("..")) {
             return "Error: Invalid filename";
@@ -318,6 +359,12 @@ public class MainCircuit {
         return "";
     }
 
+    /**
+     * <b>REMOVE A COMPONENT</b>
+     * 
+     * @param name  Component name to be removed.
+     *
+     */
     public String removeElement(String name) {
         dewireElement(name);
 
@@ -353,6 +400,9 @@ public class MainCircuit {
         return "Error: Element not found";
     }
 
+    /**
+     * <b>PRINT ALL NAMES ON CONSOLE</b>
+     */
     public void printAllNames() {
         for (Switch s : switches) {
             System.out.println(s.getName());
@@ -365,7 +415,7 @@ public class MainCircuit {
         }
     }
 
-    public void setWires() {
+    private void setWires() {
         if (wires.isEmpty()) {
             return;
         }
@@ -382,7 +432,7 @@ public class MainCircuit {
         }
     }
 
-    public void setComponent() {
+    private void setComponent() {
         if (components.isEmpty()) {
             return;
         }
@@ -408,6 +458,9 @@ public class MainCircuit {
         }
     }
 
+    /**
+     * <b>PRINT ALL NAMES ON CONSOLE</b>
+     */
     private void setOutputs() {
         if (outputs.isEmpty()) {
             return;
