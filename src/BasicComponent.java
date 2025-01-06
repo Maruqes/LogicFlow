@@ -78,7 +78,7 @@ public class BasicComponent implements BasicComponentInterface {
             return LCComponent.XOR;
         } else if (tipoPorta.equalsIgnoreCase("switch")) {
             return LCComponent.SWITCH;
-        } else if (tipoPorta.equalsIgnoreCase("display")) {
+        } else if (tipoPorta.equalsIgnoreCase("display") || tipoPorta.equalsIgnoreCase("BIT3_DISPLAY")) {
             return LCComponent.BIT3_DISPLAY;
         } else if (tipoPorta.equalsIgnoreCase("led")) {
             return LCComponent.LED;

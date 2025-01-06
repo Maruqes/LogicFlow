@@ -56,9 +56,10 @@ public class MainCircuit {
     /**
      * <b>ADD A COMPONENT THAT HAS NO STATE</b>
      * 
-     * @param cmp     Component type from LCComponent <b>AND, NAND, NOR, NOT, OR, XOR</b>.
+     * @param cmp     Component type from LCComponent <b>AND, NAND, NOR, NOT, OR,
+     *                XOR</b>.
      * @param nome    Component name.
-     * @param x       Component coordinate <b>X</b>.  
+     * @param x       Component coordinate <b>X</b>.
      * @param y       Component coordinate <b>Y</b>.
      * @param legenda Component legend.
      * 
@@ -140,9 +141,9 @@ public class MainCircuit {
     /**
      * <b>ADD A WIRE</b>
      * 
-     * @param from   Origin component name (Ex: <b>Switch1, Or9</b>).
-     * @param to     Destination component name (Ex: <b>And1, Xor7</b>).
-     * @param pin    Destination PIN {@code PIN_A, PIN_B, PIN_C}.
+     * @param from Origin component name (Ex: <b>Switch1, Or9</b>).
+     * @param to   Destination component name (Ex: <b>And1, Xor7</b>).
+     * @param pin  Destination PIN {@code PIN_A, PIN_B, PIN_C}.
      *
      */
     public void wire(String from, String to, LCInputPin pin) {
@@ -199,9 +200,9 @@ public class MainCircuit {
     /**
      * <b>REMOVE A WIRE</b>
      * 
-     * @param from   Origin component name (Ex: <b>Switch1, Or9</b>).
-     * @param to     Destination component name (Ex: <b>And1, Xor7</b>).
-     * @param pin    Destination PIN {@code PIN_A, PIN_B, PIN_C}.
+     * @param from Origin component name (Ex: <b>Switch1, Or9</b>).
+     * @param to   Destination component name (Ex: <b>And1, Xor7</b>).
+     * @param pin  Destination PIN {@code PIN_A, PIN_B, PIN_C}.
      *
      */
     public void dewire(String from, String to, LCInputPin pin) throws IllegalArgumentException {
@@ -233,7 +234,8 @@ public class MainCircuit {
     /**
      * <b>REMOVE THE WIRES THAT HAS CONNECTED TO SOME COMPONENT</b>
      * 
-     * @param name  Component name (Ex: <b>Switch1, Or9</b>) where wires gonna be disconnected.
+     * @param name Component name (Ex: <b>Switch1, Or9</b>) where wires gonna be
+     *             disconnected.
      *
      */
     public void dewireElement(String name) throws IllegalArgumentException {
@@ -251,7 +253,7 @@ public class MainCircuit {
     /**
      * <b>SAVE THE CURRENT DIAGRAM IN A TEXT FILE</b>
      * 
-     * @param filename  File name to be saved (Ex:{@code filename.txt}).
+     * @param filename File name to be saved (Ex:{@code filename.txt}).
      *
      */
     public String save(String filename) {
@@ -289,7 +291,7 @@ public class MainCircuit {
     /**
      * <b>OPEN A SAVED FILE IMAGE HAS DIAGRAM</b>
      * 
-     * @param filename  File name to be opened (Ex:{@code filename.txt}).
+     * @param filename File name to be opened (Ex:{@code filename.txt}).
      *
      */
     public String open(String filename) {
@@ -351,8 +353,10 @@ public class MainCircuit {
 
             }
         } catch (IOException e) {
+            e.getStackTrace();
             return e.getMessage();
         } catch (IllegalArgumentException er) {
+            er.getStackTrace();
             return er.getMessage();
         }
         ProgCircuito.DRAW_ALL_STUFF(this);
@@ -362,7 +366,7 @@ public class MainCircuit {
     /**
      * <b>REMOVE A COMPONENT</b>
      * 
-     * @param name  Component name to be removed.
+     * @param name Component name to be removed.
      *
      */
     public String removeElement(String name) {
