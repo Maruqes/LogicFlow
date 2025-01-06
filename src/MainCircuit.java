@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 import java.util.HashSet;
+
+import javax.swing.Timer;
+
 import java.io.BufferedWriter;
 import java.io.BufferedReader;
 import java.io.FileWriter;
@@ -642,23 +645,23 @@ public class MainCircuit {
 
     public void setAllStates(boolean animacao) throws InterruptedException {
         if (animacao) {
-            setSwitchesWire();
-            setOutputs();
-            forceDraw();
-            Thread.sleep(700);
 
-            // Atualiza automaticamente os componentes
-            for (int i = 0; i < components.size() + 1; i++) {
-                setWires();
-                setComponent();
-                setOutputs();
-                forceDraw();
-                Thread.sleep(700);
-            }
+            Timer timer = new Timer(10, new java.awt.event.ActionListener() {
+                int i = 0;
 
-            setOutputs();
-            forceDraw();
-            Thread.sleep(700);
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    ProgCircuito.drawPannel.clear();
+                    Menu.drawAllMenus();
+                    MainCircuit.this.drawCircuit();
+                    if (i == components.size() + 1) {
+                        ((Timer) e.getSource()).stop();
+                    }
+                    i++;
+                }
+
+            });
+            timer.start();
         } else {
             setAllStates();
         }
@@ -669,10 +672,10 @@ public class MainCircuit {
             if (animacao) {
                 try {
                     setAllStates(animacao);
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                forceDraw();
             } else {
                 drawCircuit();
             }
