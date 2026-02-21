@@ -4,6 +4,7 @@ Logic Flow is an application developed with **Spring Boot** to manage logical fl
 
 This was a 2nd year university project, graded 20 out of 20.
 
+Example of modded branch
 ![Demo](output.gif)
 
 ---
