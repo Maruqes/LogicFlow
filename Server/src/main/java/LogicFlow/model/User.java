@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Column;
 import jakarta.persistence.Table;
 
 /**
@@ -16,17 +17,21 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Certifica o mapeamento da chave primária
-    private int id;
+    private Long id;
 
+    // Keep API field names used by controllers/repository, but map to the real DB columns.
+    @Column(name = "email", nullable = false, unique = true)
     private String username;
+
+    @Column(name = "password_hash", nullable = false)
     private String hash;
 
     // Getters e Setters
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

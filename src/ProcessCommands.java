@@ -104,14 +104,11 @@ public class ProcessCommands extends Parser {
         commands.put("clear", clearFunc);
 
         HandleTokensInterface createMiniCircuit = (tokensVar) -> {
-            String nameLegends = "";
-            String filename = "";
-            try {
-                nameLegends = tokensVar.get(2);
-                filename = tokensVar.get(1);
-            } catch (Exception e) {
-                return "Error: Missing name for mini circuit";
+            if (tokensVar.size() < 3) {
+                return "Error: Missing required parameters for mini circuit. Usage: mini <filename> <name>";
             }
+            String filename = tokensVar.get(1);
+            String nameLegends = tokensVar.get(2);
 
             MainCircuit miniOpenFile = new MainCircuit();
             try {
@@ -177,6 +174,9 @@ public class ProcessCommands extends Parser {
         };
         commands.put("saveimage", saveImage);
 
+        HandleTokensInterface exemploCalcFunc = (tokensVar) -> exmeploCalc(tokensVar);
+        commands.put("exmeplocalc", exemploCalcFunc);
+
     }
 
     private ArrayList<MainCircuit> redoHistory = new ArrayList<>();
@@ -218,6 +218,89 @@ public class ProcessCommands extends Parser {
 
     public void addComands(HashMap<String, HandleTokensInterface> commands) {
         this.commands.putAll(commands);
+    }
+
+    private String exmeploCalc(ArrayList<String> tokens) {
+        if (tokens.size() != 1) {
+            return "Error: Usage exmeplocalc";
+        }
+
+        try {
+            circuit.clear();
+
+            // Dois conjuntos de 3 bits: A2 A1 A0 e B2 B1 B0
+            circuit.add(LCComponent.SWITCH, false, "a2", 60, 80, "A2 (4)");
+            circuit.add(LCComponent.SWITCH, false, "a1", 60, 150, "A1 (2)");
+            circuit.add(LCComponent.SWITCH, false, "a0", 60, 220, "A0 (1)");
+            circuit.add(LCComponent.SWITCH, false, "b2", 60, 320, "B2 (4)");
+            circuit.add(LCComponent.SWITCH, false, "b1", 60, 390, "B1 (2)");
+            circuit.add(LCComponent.SWITCH, false, "b0", 60, 460, "B0 (1)");
+
+            // Somador de 3 bits (ripple-carry)
+            // bit 0: s0 = a0 XOR b0 ; c1 = a0 AND b0
+            circuit.add(LCComponent.XOR, "x0", 220, 220, "S0");
+            circuit.add(LCComponent.AND, "c1", 220, 280, "C1");
+
+            // bit 1: s1 = (a1 XOR b1) XOR c1 ; c2 = (a1 AND b1) OR ((a1 XOR b1) AND c1)
+            circuit.add(LCComponent.XOR, "x1", 220, 120, "A1 XOR B1");
+            circuit.add(LCComponent.XOR, "s1", 360, 120, "S1");
+            circuit.add(LCComponent.AND, "c2a", 360, 180, "A1 AND B1");
+            circuit.add(LCComponent.AND, "c2b", 360, 60, "X1 AND C1");
+            circuit.add(LCComponent.OR, "c2", 500, 120, "C2");
+
+            // bit 2: s2 = (a2 XOR b2) XOR c2 ; c3 = (a2 AND b2) OR ((a2 XOR b2) AND c2)
+            circuit.add(LCComponent.XOR, "x2", 220, 360, "A2 XOR B2");
+            circuit.add(LCComponent.XOR, "s2", 360, 360, "S2");
+            circuit.add(LCComponent.AND, "c3a", 360, 420, "A2 AND B2");
+            circuit.add(LCComponent.AND, "c3b", 360, 300, "X2 AND C2");
+            circuit.add(LCComponent.OR, "c3", 500, 360, "C3");
+
+            // Resultado: 3 bits baixos no contador e carry final no LED
+            circuit.add(LCComponent.BIT3_DISPLAY, 0, "contador", 650, 250, "Soma");
+            circuit.add(LCComponent.LED, 0, "carry_led", 650, 150, "Carry (8)");
+
+            // Ligações do bit 0
+            circuit.wire("a0", "x0", LCInputPin.PIN_A);
+            circuit.wire("b0", "x0", LCInputPin.PIN_B);
+            circuit.wire("a0", "c1", LCInputPin.PIN_A);
+            circuit.wire("b0", "c1", LCInputPin.PIN_B);
+
+            // Ligações do bit 1
+            circuit.wire("a1", "x1", LCInputPin.PIN_A);
+            circuit.wire("b1", "x1", LCInputPin.PIN_B);
+            circuit.wire("x1", "s1", LCInputPin.PIN_A);
+            circuit.wire("c1", "s1", LCInputPin.PIN_B);
+            circuit.wire("a1", "c2a", LCInputPin.PIN_A);
+            circuit.wire("b1", "c2a", LCInputPin.PIN_B);
+            circuit.wire("x1", "c2b", LCInputPin.PIN_A);
+            circuit.wire("c1", "c2b", LCInputPin.PIN_B);
+            circuit.wire("c2a", "c2", LCInputPin.PIN_A);
+            circuit.wire("c2b", "c2", LCInputPin.PIN_B);
+
+            // Ligações do bit 2
+            circuit.wire("a2", "x2", LCInputPin.PIN_A);
+            circuit.wire("b2", "x2", LCInputPin.PIN_B);
+            circuit.wire("x2", "s2", LCInputPin.PIN_A);
+            circuit.wire("c2", "s2", LCInputPin.PIN_B);
+            circuit.wire("a2", "c3a", LCInputPin.PIN_A);
+            circuit.wire("b2", "c3a", LCInputPin.PIN_B);
+            circuit.wire("x2", "c3b", LCInputPin.PIN_A);
+            circuit.wire("c2", "c3b", LCInputPin.PIN_B);
+            circuit.wire("c3a", "c3", LCInputPin.PIN_A);
+            circuit.wire("c3b", "c3", LCInputPin.PIN_B);
+
+            // Saída final
+            circuit.wire("x0", "contador", LCInputPin.PIN_A); // S0
+            circuit.wire("s1", "contador", LCInputPin.PIN_B); // S1
+            circuit.wire("s2", "contador", LCInputPin.PIN_C); // S2
+            circuit.wire("c3", "carry_led", LCInputPin.PIN_A); // bit 8
+
+            saveCurrentState();
+            ProgCircuito.DRAW_ALL_STUFF(circuit);
+            return "";
+        } catch (Exception e) {
+            return "Error: " + e.getMessage();
+        }
     }
 
     private String addFunc(ArrayList<String> tokens) {

@@ -38,7 +38,7 @@ public class LoginRegisterPanel extends JPanel {
      * Construtor do painel principal
      */
     public LoginRegisterPanel() {
-        DOMAIN = "http://marquesserver.freeddns.org:2020";
+        DOMAIN = "http://127.0.0.1:8080";
         cardLayout = new CardLayout();
         setLayout(cardLayout);
 
