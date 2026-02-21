@@ -1,77 +1,81 @@
 # Logic Flow
 
-Logic Flow é uma aplicação desenvolvida com **Spring Boot** para gerir fluxos lógicos de informações e processos. Este projeto utiliza **PostgreSQL** como base de dados e está configurado com **Gradle** como sistema de build.
+Logic Flow is an application developed with **Spring Boot** to manage logical flows of information and processes. This project uses **PostgreSQL** as the database and is configured with **Gradle** as the build system.
+
+This was a 2nd year university project, graded 20 out of 20.
+
+![Demo](output.gif)
 
 ---
 
-## Funcionalidades
-- Gestão de utilizadores com autenticação via token.
-- Manipulação de dados dinâmicos para fluxos lógicos.
-- APIs REST para comunicação eficiente com o frontend.
-- Configurações seguras para integrações futuras.
+## Features
+- User management with token-based authentication.
+- Dynamic data handling for logical flows.
+- REST APIs for efficient communication with the frontend.
+- Secure configurations for future integrations.
 
 ---
 
-## Tecnologias Utilizadas
-- **Java 21**: Linguagem principal do projeto.
-- **Spring Boot 3.4.1**: Framework para desenvolvimento backend.
-- **PostgreSQL**: Base de dados relacional.
-- **Gradle**: Sistema de build e gestão de dependências.
-- **NGINX** (opcional): Proxy reverso para servir a aplicação.
+## Technologies Used
+- **Java 21**: Main programming language.
+- **Spring Boot 3.4.1**: Backend development framework.
+- **PostgreSQL**: Relational database.
+- **Gradle**: Build system and dependency management.
+- **NGINX** (optional): Reverse proxy to serve the application.
 
 ---
 
-## Requisitos
-Certifica-te de que tens os seguintes programas instalados:
+## Requirements
+Make sure you have the following installed:
 
-- Java 21 ou superior
+- Java 21 or higher
 - Gradle
-- PostgreSQL 14 ou superior
-- NGINX (se aplicável)
+- PostgreSQL 14 or higher
+- NGINX (if applicable)
 
 ---
 
-## Configuração
+## Setup
 
-### 1. Clonar o Repositório
+### 1. Clone the Repository
 ```bash
-git clone <url-do-repositorio>
+git clone <repository-url>
 cd LogicFlow
 ```
 
-### 2. Configurar o PostgreSQL
-1. Cria uma base de dados chamada `logicflow`.
-2. Atualiza as credenciais no ficheiro `application.properties` ou `application.yml`:
+### 2. Configure PostgreSQL
+1. Create a database named `logicflow`.
+2. Update the credentials in `application.properties` or `application.yml`:
 
 ```properties
 spring.datasource.url=jdbc:postgresql://localhost:5432/logicflow
-spring.datasource.username=<teu-username>
-spring.datasource.password=<tua-password>
+spring.datasource.username=<your-username>
+spring.datasource.password=<your-password>
 ```
 
-### 3. Construir o Projeto
-Executa o comando abaixo para fazer build da aplicação:
+### 3. Build the Project
+Run the following command to build the application:
 ```bash
 ./gradlew build
 ```
 
-### 4. Iniciar a Aplicação
-Executa a aplicação com:
+### 4. Start the Application
+Run the application with:
 ```bash
 ./gradlew bootRun
 ```
-A aplicação estará disponível em [http://localhost:8080](http://localhost:8080) por padrão.
+The application will be available at [http://localhost:8080](http://localhost:8080) by default.
 
 ---
 
-## Endpoints Principais
-### 1. Testar Conectividade
+## Main Endpoints
+### 1. Test Connectivity
 **Endpoint:** `/ping`
-- **Método:** GET
-- **Parâmetros:**
-  - `username`: Nome do utilizador
-  - `token`: Token de autenticação
-- **Exemplo de Resposta:**
+- **Method:** GET
+- **Parameters:**
+  - `username`: Username
+  - `token`: Authentication token
+- **Example Response:**
   ```json
   {
       "message": "pong"
@@ -80,7 +84,7 @@ A aplicação estará disponível em [http://localhost:8080](http://localhost:80
 
 ---
 
-## Estrutura do Projeto
+## Project Structure
 
 ```
 LogicFlow/
@@ -97,10 +101,10 @@ LogicFlow/
 
 ---
 
-## Licença
-Este projeto é distribuído sob a licença GPL-3.0 license. Consulta o ficheiro `LICENSE` para mais informações.
+## License
+This project is distributed under the GPL-3.0 license. See the `LICENSE` file for more information.
 
 ---
 
-## Autor
-Criado por **Gonçalo Marques** e **João Barbosa**. Para dúvidas ou sugestões, entra em contacto!
+## Authors
+Created by **Goncalo Marques** and **Joao Barbosa**.
